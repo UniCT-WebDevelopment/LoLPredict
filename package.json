@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/alaendro/lol_predict/issues"
   },
-  "homepage": "https://github.com/alaendro/lol_predict#readme"
+  "homepage": "https://github.com/alaendro/lol_predict#readme",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^3.18.0"
+  }
 }
