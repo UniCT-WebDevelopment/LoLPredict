@@ -63,7 +63,7 @@ async function trainModel(model, inputs, targets){
         metrics: ['mse']
     });
 
-    const batchSize = 30; //sotto gruppo di dati da addestrare
+    const batchSize = 100; //sotto gruppo di dati da addestrare
     const epochs = 50; //epochs numero di iterazioni
 
     return await model.fit(inputs, targets, { //fa training del modello con certi input, target e parametri
