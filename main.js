@@ -59,7 +59,7 @@ function dataToTensor(data){
 async function trainModel(model, inputs, targets){
     model.compile({
         optimizer: tf.train.adam(),
-        loss: tf.losses.meanSquaredError,
+        loss: tf.losses.meanSquaredError, //quanto un modello si comporta male sui dati
         metrics: ['mse']
     });
 
