@@ -8,7 +8,8 @@ async function getData(){
     const data = carsData.map(car => {
         return {
             mpg: car.Miles_per_Gallon,
-            weight: car.Weight_in_lbs
+            weight: car.Weight_in_lbs,
+            horsepower: car.Horsepower
         }
     })
     return data;
@@ -16,18 +17,20 @@ async function getData(){
 
 function createModel(){
     const model = tf.sequential(); //un modello a strati dove uno strato alimenta l'altro
-    model.add(tf.layers.dense({inputShape:[1], units:1, useBias: true}));
-
-    model.add(tf.layers.dense({units:1, useBias: true}));
-
+    model.add(tf.layers.dense({inputShape:[1], units:50, activation: "relu"}));//indica layer nascosto cioè quello che prende dati e input per lavorare
+    model.add(tf.layers.dense({units: 50, activation: "sigmoid"})); //livello con 50 sigmoidi per fare curva
+    model.add(tf.layers.dense({units:1, activation: "sigmoid"}));//strato di output
+    //inputshape prende gli input
+    //importante livello di attivazione -> activation è funzione che viene usata sui nodi dei dati
+    //neurone prende input e li somma con pesi relativi e poi applica funzione applicazione (in activation)
     return model;
 }
 
 function dataToTensor(data){
     return tf.tidy(()=>{
         tf.util.shuffle(data); //mescola array?
-        const inputs = data.map(d => d.mpg);
-        const outputs = data.map(d => d.weight);
+        const inputs = data.map(d => d.horsepower);
+        const outputs = data.map(d => d.mpg);
         //trasformare in tensore
 
         const inputsT = tf.tensor2d(inputs, [inputs.length, 1]);
@@ -63,8 +66,8 @@ async function trainModel(model, inputs, targets){
         metrics: ['mse']
     });
 
-    const batchSize = 100; //sotto gruppo di dati da addestrare
-    const epochs = 50; //epochs numero di iterazioni
+    const batchSize = 10; //sotto gruppo di dati da addestrare
+    const epochs = 120; //epochs numero di iterazioni
 
     return await model.fit(inputs, targets, { //fa training del modello con certi input, target e parametri
         batchSize,
@@ -111,15 +114,15 @@ async function run(){
 
     const data = await getData(); //i dati estrapolati dal JSON {mpg, weight}
     const data_xy = data.map(d => {
-        return {x: d.mpg, y: d.weight};
+        return {x: d.horsepower, y: d.mpg};
     });
     console.log(data_xy)
     tfvis.render.scatterplot(
         {name: "Consumo vs Peso"},
         {values: data_xy},
         {
-            xLabel:"Miles_per_Gallon",
-            yLabel:"Weight_in_lbs",
+            xLabel:"x", //Miles_per_Gallon?
+            yLabel:"y", //Weight_in_lbs?
             height: 300
         }
     );
