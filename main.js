@@ -15,7 +15,7 @@ async function getData(){
 }
 
 function createModel(){
-    const model = tf.sequential();
+    const model = tf.sequential(); //un modello a strati dove uno strato alimenta l'altro
     model.add(tf.layers.dense({inputShape:[1], units:1, useBias: true}));
 
     model.add(tf.layers.dense({units:1, useBias: true}));
@@ -25,7 +25,7 @@ function createModel(){
 
 function dataToTensor(data){
     return tf.tidy(()=>{
-        tf.util.shuffle(data);
+        tf.util.shuffle(data); //mescola array?
         const inputs = data.map(d => d.mpg);
         const outputs = data.map(d => d.weight);
         //trasformare in tensore
@@ -66,7 +66,7 @@ async function trainModel(model, inputs, targets){
     const batchSize = 30; //sotto gruppo di dati da addestrare
     const epochs = 50; //epochs numero di iterazioni
 
-    return await model.fit(inputs, targets, {
+    return await model.fit(inputs, targets, { //fa training del modello con certi input, target e parametri
         batchSize,
         epochs,
         shuffle : true,
@@ -83,12 +83,12 @@ async function testModel(model,data_xy, {inputs, iMin, iMax, oMin, oMax}){
 
     const [x, y] = tf.tidy(() => {
         const nx = tf.linspace(0,1,100); //crea un vettore uni dim da 100
-        const ny = model.predict(nx.reshape([100, 1]));
+        const ny = model.predict(nx.reshape([100, 1])); //modifica forma del tensore e genera predizione su esso (perché la fa?)
 
         const x = nx.mul(iMax.sub(iMin)).add(iMin);
         const y = ny.mul(oMax.sub(oMin)).add(oMin);
 
-        return [x.dataSync(), y.dataSync()];
+        return [x.dataSync(), y.dataSync()]; //scarica valori dal tf.Tensor
     })
 
     const predictedValues = Array.from(x).map((val, i)=>{
