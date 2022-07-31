@@ -23,6 +23,9 @@
   "homepage": "https://github.com/alaendro/lol_predict#readme",
   "dependencies": {
     "@tensorflow/tfjs-node": "^3.18.0",
-    "@tensorflow/tfjs-vis": "^1.5.1"
+    "@tensorflow/tfjs-vis": "^1.5.1",
+    "jquery": "^3.6.0",
+    "lcu-connector": "^2.1.3",
+    "socket.io": "^4.5.1"
   }
 }
