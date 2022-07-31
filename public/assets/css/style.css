@@ -1,0 +1,20 @@
+#container{
+    display: grid;
+    grid-template-columns: 500px 500px;
+    grid-template-rows: auto;
+    grid-template-areas: 
+    "profile profile"
+    "data result";
+}
+
+#player_info{
+    grid-area: profile;
+}
+
+#data_player{
+    grid-area: data;
+}
+
+#result{
+    grid-area: result;
+}
