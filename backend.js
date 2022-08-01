@@ -15,7 +15,7 @@ const MESSAGE_TYPES = {
     EVENT: 8
 };
 
-let lolData;
+var lolData;
 
 class RiotWSProtocol extends WebSocket {
 
@@ -48,11 +48,14 @@ class RiotWSProtocol extends WebSocket {
 
     send(type, message) {
         super.send(JSON.stringify([type, message]));
+        //console.log("prova console.log", JSON.stringify([type, message]));
     }
 
     _onMessage(message) {
         const [type, ...data] = JSON.parse(message);
-        lolData = JSON.parse(message);
+        //lolData = data.payload;
+
+        //console.log("DATI PRESI DA NOI" + lolData + "altri dati\n");
 
         switch (type) {
             case MESSAGE_TYPES.WELCOME:
@@ -68,6 +71,7 @@ class RiotWSProtocol extends WebSocket {
                 break;
             case MESSAGE_TYPES.EVENT:
                 const [topic, payload] = data;
+                console.log("il playload" + JSON.stringify(payload) +"zono payload");
                 this.emit(topic, payload);
                 break;
             default:
@@ -88,7 +92,6 @@ connector.on('connect', data => {
 
     ws.on('open', () => {
         ws.subscribe('OnJsonApiEvent', console.log);
-        console.log("DATI PRESI DA NOI" + lolData)
     });
 });
 
