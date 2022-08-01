@@ -8,7 +8,6 @@
 
 let user_info_json;
 
-
 $.ajax({
     url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/AlexNext?api_key=RGAPI-86459c0f-49f2-448e-b5c7-e11cdb91c1a9",
     type: "GET",
@@ -34,7 +33,7 @@ $.ajax({
     console.log( "Status: " + status );
 });   
 
-//let set_puuid = user_info_json.puuid;  //fixare cazzi della richiesta ajax con funzioni asincrone
+//let set_puuid = user_info_json.puuid;  //TODO fixare cazzi della richiesta ajax con funzioni asincrone
 
 $.ajax({
     url: "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/Yv1Ql3_Hf0O_8iiZ_rV5etYEnIAZyAEacPupj2KGQuRTnwedTCOdECWA68ifHe-LABKxJOrlU_V-vg/ids?start=0&count=50&api_key=RGAPI-86459c0f-49f2-448e-b5c7-e11cdb91c1a9",
@@ -59,7 +58,7 @@ $.ajax({
     console.log( "Status: " + status );
 });   
 
-//dal file esempiogame.json vedere dove è il puuid così da prendere l'elemento corrento dai partecipanti, da lì vedere alla fine se win: true o false
+//TODO dal file esempiogame.json vedere dove è il puuid così da prendere l'elemento corrento dai partecipanti, da lì vedere alla fine se win: true o false
 
 $.ajax({
     url: "https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_5995849487?api_key=RGAPI-86459c0f-49f2-448e-b5c7-e11cdb91c1a9",
