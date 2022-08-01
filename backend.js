@@ -96,6 +96,7 @@ connector.on('disconnect', () => {
 connector.start();
 console.log('Listening for League Client');
 
+/*
 console.stdlog = console.log.bind(console);
 console.logs = [];
 console.log = function(){
@@ -103,7 +104,7 @@ console.log = function(){
     console.stdlog.apply(console, arguments);
 }
 
-
+*/
 // const WebSocket = require('ws');
 // const UUID = require("uuid");
 
