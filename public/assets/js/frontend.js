@@ -107,13 +107,96 @@ async function get_info_match(){
     });   
 }
 
+//funzione definiva?
+let summoner_id_player;
+let puuid_player;
+let winrate_player;
+let games_winned = 0;
+let games_played;
+
+
+function get_winrate(num_games, summoner_name){
+    games_played = num_games;
+    let url_req = "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + summoner_name + "?api_key=";
+    fetch(url_req + key_api, {
+    method: "GET",
+    headers:{
+        //'Access-Control-Allow-Origin': "Accept",
+        'Access-Control-Request-Method': "GET",
+        //'Access-Control-Allow-Headers': "Accept"
+    }
+    })
+    .then(response => response.json())
+    .then(data => {
+        let url_games_req = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + data.puuid + "/ids?start=0&count=" + num_games + "&api_key=";
+        puuid_player = data.puuid;
+        fetch(url_games_req + key_api, {
+            method: "GET",
+            headers:{
+                'Access-Control-Request-Method': "GET",
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            let last_games_played = JSON.stringify(JSON.stringify(data));
+            let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
+            let second_half_url = "?api_key=" + key_api;
+
+            let name_game = last_games_played.split(',');
+            
+            for(let i = 0; i < num_games; i++){
+                //console.log(name_game[i]);
+                if(i == 0){
+                    name_game[i] = name_game[i].substr(4, 15);
+                }
+                else if(i == num_games-1){
+                    name_game[i] = name_game[i].substr(2, 15);
+                }
+                else{
+                    name_game[i] = name_game[i].substr(2, 15);
+                }
+                //console.log(name_game[i]);
+            }
+
+            for(let i = 0; i < num_games; i++){
+                //console.log(name_game);
+
+                let complete_url = first_half_url + name_game[i] + second_half_url;
+                fetch(complete_url, {
+                    method: "GET",
+                    headers:{
+                        'Access-Control-Request-Method': "GET",
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    for(let y = 0; y < 10; y++){
+                        //console.log(data.info.participants[y]);
+                        if(data.info.participants[y].puuid == puuid_player){ 
+                            if(data.info.participants[y].win == "true"){
+                                games_winned++;
+                                break;
+                            }
+                        }
+                    }  
+                })
+            }
+            winrate_player = (games_winned/num_games)*100;
+            console.log(winrate_player);
+            console.log(num_games);
+            console.log(games_winned);
+        })
+    })
+    .catch((error) => {
+        console.log("error: ", error);
+    });
+}
+
+get_winrate(50, "Alexnext");
+
 
 //non funziona se metti await, a caso ma dà le cose in ordine con i console.log dentro ajax
 //non si applica la stessa cosa, come dovrebbe essere, con i console log dei valori di ritorno
-
-get_data_from_name("AlexNext").then((json) => {
-    get_matches_from_puuid(json.puuid);
-})
 
 /*
 let user_info_json = get_data_from_name();
