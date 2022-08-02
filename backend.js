@@ -1,5 +1,6 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+const { data } = require("jquery");
 const LCUConnector = require("lcu-connector");
 const WebSocket = require('ws');
 
@@ -15,7 +16,7 @@ const MESSAGE_TYPES = {
     EVENT: 8
 };
 
-var lolData;
+var lolData = null;
 
 class RiotWSProtocol extends WebSocket {
 
@@ -71,6 +72,7 @@ class RiotWSProtocol extends WebSocket {
                 break;
             case MESSAGE_TYPES.EVENT:
                 const [topic, payload] = data;
+                lolData = payload;
                 console.log("il playload" + JSON.stringify(payload) +"zono payload");
                 this.emit(topic, payload);
                 break;
@@ -99,10 +101,15 @@ connector.on('disconnect', () => {
     console.log('League Client has been closed');
 });
 
+function getGameData(){
+    return lolData;
+}
+
 // Start listening for the LCU client
 connector.start();
 console.log('Listening for League Client');
 
+module.exports = getGameData;
 /*
 console.stdlog = console.log.bind(console);
 console.logs = [];

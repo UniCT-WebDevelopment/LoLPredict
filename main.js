@@ -8,6 +8,10 @@ const createWindow = () => {
         width: 900,
         height: 700,
         titleBarStyle: "hiddenInset",
+        webPreferences : {
+            nodeIntegration: true,
+            contextIsolation: false,
+        }
     })
 
     //mainWindow.webContents.openDevTools();
