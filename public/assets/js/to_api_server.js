@@ -125,7 +125,7 @@ function rejectDelay(reason) {
 function sleep(miliseconds) {
     var currentTime = new Date().getTime();
 
-    console.log(currentTime);
+    //console.log(currentTime);
     while (currentTime + miliseconds >= new Date().getTime()) {
         //console.log("aspetta");
     }
@@ -211,7 +211,7 @@ function get_winrate(num_games, summoner_name){
                     console.log("games_winned " + games_winned);
                 })
                 if((j % 15) == 0){
-                    sleep(800);
+                    sleep(2000); //2000 va bene e non dà troppi rallentamenti se non si tocca la funzione sleep
                 }
                 //await sleep(50);
 
@@ -220,11 +220,15 @@ function get_winrate(num_games, summoner_name){
         })
     })
     .catch((error) => {
-        console.log("error: ", error);
+        console.log("error prima fetch: ", error);
     });
 }
 
 get_winrate(50, "Alexnext");
+//mettere return nelle fetch e concatenare le varie promise così da riusare i metodi
+
+
+
 
 //to_api_server.js passa le informazioni al render.js che lui li cambia
 //backend.js rimane singolo se lo si fa comunicare con main.js o render.js sennò si mette nel main.js (metterlo modulo in caso)

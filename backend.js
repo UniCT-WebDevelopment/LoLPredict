@@ -3,6 +3,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const { data } = require("jquery");
 const LCUConnector = require("lcu-connector");
 const WebSocket = require('ws');
+import fetch from 'node-fetch';
 
 const MESSAGE_TYPES = {
     WELCOME: 0,
@@ -127,6 +128,9 @@ connector.on('disconnect', () => {
 });
 
 // Start listening for the LCU client
+const response = await fetch("/lol-career-stats/v1/summoner-games/Yv1Ql3_Hf0O_8iiZ_rV5etYEnIAZyAEacPupj2KGQuRTnwedTCOdECWA68ifHe-LABKxJOrlU_V-vg");
+console.log(response);
+
 connector.start();
 console.log('Listening for League Client');
 
