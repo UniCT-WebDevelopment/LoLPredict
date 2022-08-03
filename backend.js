@@ -17,6 +17,7 @@ const MESSAGE_TYPES = {
 };
 
 var lolData = null;
+let player_name;
 
 class RiotWSProtocol extends WebSocket {
 
@@ -73,7 +74,17 @@ class RiotWSProtocol extends WebSocket {
             case MESSAGE_TYPES.EVENT:
                 const [topic, payload] = data;
                 lolData = payload;
-                console.log("il playload" + JSON.stringify(payload) +"zono payload");
+                //console.log("il playload" + JSON.stringify(payload) +"zono payload");
+
+                console.log(lolData);
+                try{
+                    if(lolData.data.gameName != undefined){
+                        player_name = lolData.data.gameName;
+                    }
+                } catch(error){
+                    console.log(error);
+                }
+                
 
                 /*
                 var headers = new Headers();
