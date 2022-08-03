@@ -215,7 +215,10 @@ function get_winrate(num_games, summoner_name){
     });
 }
 
-get_winrate(50, "Alexnext");
+//get_winrate(50, "Alexnext");
+
+
+
 
 
 //non funziona se metti await, a caso ma dà le cose in ordine con i console.log dentro ajax

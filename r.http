@@ -1,1 +1,4 @@
-GET https://127.0.0.1:2999/liveclientdata/allgamedata
+GET https://riot:F6bRek66lTKDzcn1KTUTfA@127.0.0.1:51762/lol-career-stats/v1/summoner-games/t98zb5-DNQNNLYnLi82-fQwZsXjQ79d7_we2jUbKZSxfb4Oj7eSwg2fN2aVfg3qiBnevyPkiK8fcLw
+
+###
+GET https://riot:F6bRek66lTKDzcn1KTUTfA@127.0.0.1:51762/lol-trophies/v1/current-summoner/trophies/profile

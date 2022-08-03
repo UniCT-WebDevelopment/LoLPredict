@@ -74,6 +74,13 @@ class RiotWSProtocol extends WebSocket {
                 const [topic, payload] = data;
                 lolData = payload;
                 console.log("il playload" + JSON.stringify(payload) +"zono payload");
+
+                //test fetch
+                    fetch("https://riot:F6bRek66lTKDzcn1KTUTfA@127.0.0.1:51762/lol-service-status/v1/lcu-status")
+                    .then((data)=>data.json())
+                    .then((resp)=>console.log("\n DATI DA FETCH" + resp +"\n"))
+                    .catch((e)=>console.log(e));
+                //
                 this.emit(topic, payload);
                 break;
             default:
