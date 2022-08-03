@@ -193,7 +193,7 @@ function get_winrate(num_games, summoner_name){
                         }
                     }  
                 })
-                await sleep(50);
+                //await sleep(50);
                 /*
                 .then(function(response) {
                     if (!response.ok) {
@@ -220,7 +220,7 @@ function get_winrate(num_games, summoner_name){
 get_winrate(50, "Alexnext");
 
 //to_api_server.js passa le informazioni al render.js che lui li cambia
-//backend.js rimane singolo se lo si fa comunicare sennò si mette nel main.js (metterlo modulo in caso)
+//backend.js rimane singolo se lo si fa comunicare con main.js o render.js sennò si mette nel main.js (metterlo modulo in caso)
 //render.js metti robe del dom
 
 //fare display di Nome, rank e livello nell'html

@@ -10,8 +10,10 @@ window.addEventListener("DOMContentLoaded", () => {
         playerLevel : document.getElementById("playerLevel"),
     }
 
+    console.log("sono render");
+
     //richiamare metodo di backend.js per avere le informazioni quando disponibili
     //prendere informazioni e settare name, level e rank
-    playerName.innerHTML = "FRA"
+    playerName.innerHTML = "FRA";
 
 })
