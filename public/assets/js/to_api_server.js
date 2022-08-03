@@ -114,14 +114,22 @@ let winrate_player;
 let games_winned = 0;
 let games_played;
 
-let t = 1000;
-
+/*
 function rejectDelay(reason) {
     return (function(resolve, reject) {
         setTimeout(reject.bind(null, reason), t); 
     });
 }
+*/
 
+function sleep(miliseconds) {
+    var currentTime = new Date().getTime();
+
+    console.log(currentTime);
+    while (currentTime + miliseconds >= new Date().getTime()) {
+        //console.log("aspetta");
+    }
+ }
 
 function get_winrate(num_games, summoner_name){
     games_played = num_games;
@@ -166,13 +174,15 @@ function get_winrate(num_games, summoner_name){
                 //console.log(name_game[i]);
             }
 
-            for(let i = 0; i < num_games; i++){
-                //console.log(name_game);
+            //setInterval(compute_winrate(num_games, first_half_url, second_half_url, name_game), 1000);
 
+            for(let j = 0; j < num_games; j++){
+                //console.log(name_game);
+        
                 //https://stackoverflow.com/questions/46240418/http-request-error-code-429-cannot-be-caught
                 //https://www.useanvil.com/blog/engineering/throttling-and-consuming-apis-with-429-rate-limits/
-
-                let complete_url = first_half_url + name_game[i] + second_half_url;
+        
+                let complete_url = first_half_url + name_game[j] + second_half_url;
                 fetch(complete_url, { //gestire errore 429
                     method: "GET",
                     headers:{
@@ -181,35 +191,32 @@ function get_winrate(num_games, summoner_name){
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("eseguendo fetch n" + i);
+                    console.log("eseguendo fetch n" + j);
                     for(let y = 0; y < 10; y++){
+                        console.log("ciclo n " + y + " di richiesta fetch numero " + j);
                         //console.log(data.info.participants[y]);
                         if(data.info.participants[y].puuid == puuid_player){ 
                             if(data.info.participants[y].win == true){
                                 games_winned++;
                                 console.log(games_winned);
-                                break;
                             }
+                            break;
                         }
                     }  
                 })
+                .then(() => {
+                    winrate_player = (games_winned/num_games)*100;
+                    console.log("winrate player " + winrate_player);
+                    console.log("num_games " + num_games);
+                    console.log("games_winned " + games_winned);
+                })
+                if((j % 15) == 0){
+                    sleep(800);
+                }
                 //await sleep(50);
-                /*
-                .then(function(response) {
-                    if (!response.ok) {
-                        throw Error(response.statusText);
-                    }
-                })/*
-                .catch((error) =>{
-                    console.log(error);
-                    i--;
-                    rejectDelay(error);
-                });*/
+
+                //console.log("finito ciclo " + j);
             }
-            winrate_player = (games_winned/num_games)*100;
-            console.log(winrate_player);
-            console.log(num_games);
-            console.log(games_winned);
         })
     })
     .catch((error) => {
