@@ -75,11 +75,18 @@ class RiotWSProtocol extends WebSocket {
                 lolData = payload;
                 console.log("il playload" + JSON.stringify(payload) +"zono payload");
 
+                /*
+                var headers = new Headers();
+                headers.append('Authorization', 'Basic ' + btoa("riot" + ':' + "AvgOeCnPbvhl6GSRKeWZzQ"));
+                fetch('http://riot@127.0.0.1:51491/lol-career-stats/v1/summoner-games/t98zb5-DNQNNLYnLi82-fQwZsXjQ79d7_we2jUbKZSxfb4Oj7eSwg2fN2aVfg3qiBnevyPkiK8fcLw', {headers: headers})
+                */
                 //test fetch
-                    fetch("https://riot:F6bRek66lTKDzcn1KTUTfA@127.0.0.1:51762/lol-service-status/v1/lcu-status")
+                /*
+                    fetch("https://riot:AvgOeCnPbvhl6GSRKeWZzQ@127.0.0.1:51491/lol-career-stats/v1/summoner-games/t98zb5-DNQNNLYnLi82-fQwZsXjQ79d7_we2jUbKZSxfb4Oj7eSwg2fN2aVfg3qiBnevyPkiK8fcLw")
                     .then((data)=>data.json())
                     .then((resp)=>console.log("\n DATI DA FETCH" + resp +"\n"))
-                    .catch((e)=>console.log(e));
+                    .catch((e)=>console.log(e));4
+                    */
                 //
                 this.emit(topic, payload);
                 break;
