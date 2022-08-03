@@ -8,7 +8,7 @@
 
 
 //valutare se fare queste call in backend e poi il backend passa solo i dati che servono
-let key_api = "RGAPI-83d1f1dc-4f5d-4c4f-b41a-0867b828bef6";
+let key_api = "RGAPI-84c05a14-1945-41db-a906-0460b66f708e";
 
 /*
 async function get_data_from_name(){
@@ -192,7 +192,9 @@ function get_winrate(num_games, summoner_name){
                             }
                         }
                     }  
-                })/*
+                })
+                await sleep(50);
+                /*
                 .then(function(response) {
                     if (!response.ok) {
                         throw Error(response.statusText);
@@ -215,8 +217,15 @@ function get_winrate(num_games, summoner_name){
     });
 }
 
-//get_winrate(50, "Alexnext");
+get_winrate(50, "Alexnext");
 
+//to_api_server.js passa le informazioni al render.js che lui li cambia
+//backend.js rimane singolo se lo si fa comunicare sennò si mette nel main.js (metterlo modulo in caso)
+//render.js metti robe del dom
+
+//fare display di Nome, rank e livello nell'html
+//prendere informazioni su server api per ottenere informazioni riot
+//MACHINE LEARNING
 
 
 

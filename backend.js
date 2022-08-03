@@ -126,15 +126,12 @@ connector.on('disconnect', () => {
     console.log('League Client has been closed');
 });
 
-function getGameData(){
-    return lolData;
-}
-
 // Start listening for the LCU client
 connector.start();
 console.log('Listening for League Client');
 
-module.exports = getGameData;
+
+
 /*
 console.stdlog = console.log.bind(console);
 console.logs = [];
