@@ -13,8 +13,19 @@
 
 #data_player{
     grid-area: data;
+    display: flex;
+    align-content: center;
 }
 
 #result{
     grid-area: result;
+}
+
+.player_app{
+    display: flex;
+    align-content: center;
+}
+
+.info_player{
+    border: 1px solid black;
 }
