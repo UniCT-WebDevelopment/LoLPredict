@@ -170,6 +170,7 @@ function analize_matches_champions(data, num_games){
     }
 
     let sum_games = 0;
+    let num_error = 0;
 
     for(let j = 0; j < num_games; j++){
         let complete_url = first_half_url + name_game[j] + second_half_url;
@@ -223,6 +224,19 @@ function analize_matches_champions(data, num_games){
                 }
                 console.log("winrate player " + winrate_player);
                 console.log("num_games " + num_games);
+                console.log("games_winned " + games_winned);
+            }
+        })
+        .catch(() =>{
+            num_error++;
+            if((num_error+sum_games) == num_games){
+                winrate_player = (games_winned/sum_games)*100;
+                for(let i = 0; i < champions_player.length; i++){
+                    champions_player[i].calculate_winrate();
+                    champions_player[i].get_info();
+                }
+                console.log("winrate player " + winrate_player);
+                console.log("num_games " + sum_games);
                 console.log("games_winned " + games_winned);
             }
         })
