@@ -284,6 +284,8 @@ d().then(response => response.json())
 });
 */
 
+//TODO #1 STABILIRE NUOVE COSE DA FARE
+
 //to_api_server.js passa le informazioni al render.js che lui li cambia
 //backend.js rimane singolo se lo si fa comunicare con main.js o render.js sennò si mette nel main.js (metterlo modulo in caso)
 //render.js metti robe del dom
