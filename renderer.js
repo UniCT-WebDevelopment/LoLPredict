@@ -14,6 +14,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
     //richiamare metodo di backend.js per avere le informazioni quando disponibili
     //prendere informazioni e settare name, level e rank
-    playerName.innerHTML = "FRA";
+    ipcRenderer.on("info-player-get", (_,{player_name, player_level, player_rank})=>{
+        el.playerName.innerHTML = player_name;
+        el.playerLevel.innerHTML = player_level;
+
+        if(player_rank != undefined){
+            el.playerRank.innerHTML = player_rank;
+        }
+    })
 
 })
