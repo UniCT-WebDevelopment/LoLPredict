@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
+    gap: 30px;
     grid-template-areas: 
     "profile profile"
     "data result";
@@ -9,12 +10,13 @@
 
 #player_info{
     grid-area: profile;
+    border: 1px solid black;
 }
 
 #data_player{
     grid-area: data;
     display: flex;
-    align-content: center;
+    flex-direction: row;
 }
 
 #result{
@@ -23,9 +25,35 @@
 
 .player_app{
     display: flex;
-    align-content: center;
+    flex-direction: column;
+    width: 50%;
 }
 
-.info_player{
+.player_stat{
     border: 1px solid black;
+}
+
+#player_info{
+    display: flex;
+    flex-direction: row;
+}
+
+.player-things{
+    width: 33.3333%;
+    height: 100px;
+}
+
+#playerName{
+    text-align: center;
+    background: aqua; /*metti immagine del campione che ha giocato di più nelle ultime partite fetchate o dell'ultima partita o immagine dell'icona*/
+}
+
+#playerRank{    /*metti immagine che ha rank di corrispondenza*/
+    text-align: center;
+    background: grey;
+}
+
+#playerLevel{
+    text-align: center;
+    background: rgb(38, 217, 38); /*inventa qualcosa vedi riga in playername */
 }
