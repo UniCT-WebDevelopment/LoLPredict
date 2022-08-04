@@ -3,7 +3,6 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const { data } = require("jquery");
 const LCUConnector = require("lcu-connector");
 const WebSocket = require('ws');
-import fetch from 'node-fetch';
 
 const MESSAGE_TYPES = {
     WELCOME: 0,
@@ -87,6 +86,7 @@ class RiotWSProtocol extends WebSocket {
                 }
                 
 
+
                 /*
                 var headers = new Headers();
                 headers.append('Authorization', 'Basic ' + btoa("riot" + ':' + "AvgOeCnPbvhl6GSRKeWZzQ"));
@@ -113,11 +113,14 @@ class RiotWSProtocol extends WebSocket {
 
 
 const connector = new LCUConnector();
-
+var base64_pass
+var port
 connector.on('connect', data => {
     console.log('League Client has started', data);
     const ws = new RiotWSProtocol('wss://riot:'+data.password+'@localhost:'+data.port+'/');
 
+    base64_pass = btoa('riot:'+data.password);
+    port = data.port;
     ws.on('open', () => {
         ws.subscribe('OnJsonApiEvent', console.log);
     });
@@ -127,9 +130,6 @@ connector.on('disconnect', () => {
     console.log('League Client has been closed');
 });
 
-// Start listening for the LCU client
-const response = await fetch("/lol-career-stats/v1/summoner-games/Yv1Ql3_Hf0O_8iiZ_rV5etYEnIAZyAEacPupj2KGQuRTnwedTCOdECWA68ifHe-LABKxJOrlU_V-vg");
-console.log(response);
 
 connector.start();
 console.log('Listening for League Client');
