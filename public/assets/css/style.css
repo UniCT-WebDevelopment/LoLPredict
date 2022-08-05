@@ -1,5 +1,18 @@
-#container{
-    display: grid;
+@import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap');
+
+*{
+    font-family: 'Mouse Memoirs', sans-serif;
+    color: #F0E6D2;
+    padding: 0;
+    margin: 0;
+}
+
+html, body{
+    background-image: linear-gradient(to right, #091428 , #0A1428);
+}
+
+#playerInfoContainer{
+    display: none;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     gap: 30px;
@@ -10,7 +23,8 @@
 
 #player_info{
     grid-area: profile;
-    border: 1px solid black;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 5px;
 }
 
 #data_player{
@@ -41,23 +55,43 @@
 .player-things{
     width: 33.3333%;
     height: 100px;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+
+.info_box{
+    font-size: 35;
+    text-align:end;
+    padding-right: 20px;
+    box-shadow: 2px 5px #0A1428;
 }
 
 #playerName{
-    text-align: center;
-    background: aqua; /*metti immagine del campione che ha giocato di più nelle ultime partite fetchate o dell'ultima partita o immagine dell'icona*/
+    background: #463714; /*metti immagine del campione che ha giocato di più nelle ultime partite fetchate o dell'ultima partita o immagine dell'icona*/
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 #playerRank{    /*metti immagine che ha rank di corrispondenza*/
-    text-align: center;
-    background: grey;
+    background: #463714;
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 #playerLevel{
+    background: #463714; /*inventa qualcosa vedi riga in playername */
+}
+
+#caricamento{
+    height: 90%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#load_txt{
+    font-size: 50;
     text-align: center;
-    background: rgb(38, 217, 38); /*inventa qualcosa vedi riga in playername */
 }

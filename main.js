@@ -34,6 +34,8 @@ const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 900,
         height: 700,
+        minWidth: 600,
+        minHeight: 500,
         titleBarStyle: "hiddenInset",
         webPreferences : {
             nodeIntegration: true,
@@ -144,7 +146,6 @@ class RiotWSProtocol extends WebSocket {
                         let icon_id = lolData.data.icon;
 
                         //console.log("PLAYER NAME: " + player_name);
-
                         mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id});
 
                     }
@@ -167,6 +168,7 @@ var pass;
 
 const connector = new LCUConnector();
 connector.on('connect', data => {
+
     console.log('League Client has started', data);
 
     port = data.port;

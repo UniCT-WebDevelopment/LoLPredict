@@ -5,6 +5,8 @@ const { ipcRenderer } = require("electron");
 
 window.addEventListener("DOMContentLoaded", () => {
     const el = {
+        playerInfoContainer: document.getElementById("playerInfoContainer"),
+        loadContainer: document.getElementById("caricamento"),
         playerName : document.getElementById("playerName"),
         playerRank: document.getElementById("playerRank"),
         playerLevel : document.getElementById("playerLevel"),
@@ -24,6 +26,10 @@ window.addEventListener("DOMContentLoaded", () => {
             el.playerRank.innerHTML = player_ranked_tier + player_ranked_level;
             el.playerRank.style.backgroundImage = "url('../ranked-emblems/Emblem_" + player_ranked_tier + ".png')";
         }
+
+        console.log("Eseguo cambio loading screen")
+        el.loadContainer.style.display =  "none";
+        el.playerInfoContainer.style.display = "grid";
     })
 
 })
