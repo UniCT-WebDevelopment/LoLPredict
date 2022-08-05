@@ -7,7 +7,7 @@
 
 
 //valutare se fare queste call in backend e poi il backend passa solo i dati che servono
-let key_api = "RGAPI-af8be21a-00e3-4c80-90ea-2504da46efa5";
+let key_api = "RGAPI-85b552a9-51c6-45e2-b3ca-3d01b429cfb7";
 
 //funzione definiva?
 let summoner_id_player;
@@ -15,6 +15,7 @@ let puuid_player;
 let winrate_player;
 let games_winned = 0;
 let games_played;
+let last_champion_played;
 
 function sleep(miliseconds) {
     var currentTime = new Date().getTime();
@@ -246,6 +247,46 @@ function analize_matches_champions(data, num_games){
     }
 }
 
+function get_champion_match(puuid){
+    let url_games_req = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=1&api_key=";
+    puuid_player = puuid;
+    fetch(url_games_req + key_api, {
+        method: "GET",
+        headers:{
+            'Access-Control-Request-Method': "GET",
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        let last_game_played = JSON.stringify(JSON.stringify(data));
+        let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
+        let second_half_url = "?api_key=" + key_api;
+        //console.log(last_game_played);
+        let name_game = last_game_played.substr(4, 15);
+        //console.log(name_game);
+
+        let complete_url = first_half_url + name_game + second_half_url;
+        fetch(complete_url, {
+            method: "GET",
+            headers:{
+                'Access-Control-Request-Method': "GET",
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            for(let i = 0; i < 10; i++){
+                if(data.info.participants[i].puuid == puuid_player){
+                    last_champion_played = data.info.participants[i].championName;
+                    break;
+                }
+            }
+        })
+        .then(() =>{
+            console.log("last champion played: " + last_champion_played);
+        })
+    })
+}
+
 function get_winrate_player(summoner_name, num_games){
     get_info_summoner_name(summoner_name)
     .then(response => response.json())
@@ -270,39 +311,48 @@ function get_winrate_player_champions(summoner_name, num_games){
     })
 }
 
-//get_winrate_player("AlexNext", 40);
-get_winrate_player_champions("AlexNext", 40);
-
-/* //prova per vedere se funzionava 
-function d(){
-    return fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/AlexNext?api_key=" + key_api);
+function get_last_champion_played(summoner_name){
+    get_info_summoner_name(summoner_name)
+    .then(response => response.json())
+    .then(data => {
+        get_champion_match(data.puuid);
+    })
 }
 
-d().then(response => response.json())
-.then(data => {
-    console.log(data.puuid);
-});
-*/
+//get_winrate_player("AlexNext", 40);
+//get_winrate_player_champions("AlexNext", 40); //da usare per mostare le informazioni nel riquadro
+//get_last_champion_played("AlexNext"); //utile per mettere immagine del campione nella grafica
 
-//TODO #1 STABILIRE NUOVE COSE DA FARE
 
-//fixare cambio di nome buggato perché cambiamento di stato in game fa aggiornare il nome, controllando la uri
 
-//spostare questo file in main.js facendo diventare modulo?
-//prendere immagini tramite fetch
-//completare main.js per prendere informazioni rendendo to_api_server un modulo
 
-//animazioni di attesa e caricamento
-//metodo per prendere dati player da dare al tensorflow
-//dati da prendere - verosimilmente winrate player, winrate con quel champion, winrate contro quello contro cui è, differenza di rank nella partita
+//fixare bug dove se chiudi il launcher ti dà il nickname (feature?)
+
+//spostare questo file in main.js facendo diventare modulo? vedere se si può fare tutto sennò si hanno problemi con la fetch
+
+//completare main.js per prendere informazioni      -quali, quelli per il machine learning? le uniche che ormai servono     
+//-per alessandro
+
+//to_api_server.js passa le informazioni al render.js che lui li cambia     -è fattibile?
+
+//metodo per prendere dati player da dare al tensorflow    
+// -per alessandro?
+
+//dati da prendere - verosimilmente winrate player, winrate con quel champion, winrate contro quello contro cui è, differenza di rank nella partita sia tra la squadre che tra il giocatore e l'avversario
 //come salvare modello di tensorflow
 
 
+//prendere immagini tramite fetch e gestire la grafica bene   
+//-per ciccio
 
-//to_api_server.js passa le informazioni al render.js che lui li cambia
+//animazioni di attesa e caricamento
+
+
+
+
+
+
 //backend.js rimane singolo se lo si fa comunicare con main.js o render.js sennò si mette nel main.js (metterlo modulo in caso)
 //render.js metti robe del dom
 
-//fare display di Nome, rank e livello nell'html
-//prendere informazioni su server api per ottenere informazioni riot
 //MACHINE LEARNING
