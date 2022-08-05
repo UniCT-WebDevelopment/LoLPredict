@@ -25,7 +25,7 @@ const MESSAGE_TYPES = {
 };
 
 var lolData = null;
-let player_name;
+let player_name = null;
 //fine
 
 let mainWindow;
@@ -135,15 +135,18 @@ class RiotWSProtocol extends WebSocket {
 
                 //console.log(lolData);
                 try{
-                    if(lolData.data.gameName != undefined){
+                    if(lolData.data.gameName != undefined && player_name == null){
                         player_name = lolData.data.gameName;
                         let player_level = lolData.data.lol.level;
-                        let player_ranked_level = lolData.data.lol.rankedLeagueTier + " " + lolData.data.lol.rankedLeagueDivision;
+                        let player_ranked_tier = lolData.data.lol.
+                        letrankedLeagueTier;
+                        let player_ranked_level = lolData.data.lol.rankedLeagueDivision;
                         //console.log(player_ranked_level);
+                        let icon_id = lolData.data.icon;
 
                         //console.log("PLAYER NAME: " + player_name);
 
-                        mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_level});
+                        mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id});
 
                     }
                 } catch(error){
