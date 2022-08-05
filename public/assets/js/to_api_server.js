@@ -286,6 +286,19 @@ d().then(response => response.json())
 
 //TODO #1 STABILIRE NUOVE COSE DA FARE
 
+//fixare cambio di nome buggato perché cambiamento di stato controllando la uri
+
+//spostare questo file in main.js facendo diventare modulo?
+//prendere immagini tramite fetch
+//completare main.js per prendere informazioni
+
+//animazioni di attesa e caricamento
+//metodo per prendere dati player da dare al tensorflow
+//dati da prendere - verosimilmente winrate player, winrate con quel champion, winrate contro quello contro cui è, differenza di rank nella partita
+//come salvare modello di tensorflow
+
+
+
 //to_api_server.js passa le informazioni al render.js che lui li cambia
 //backend.js rimane singolo se lo si fa comunicare con main.js o render.js sennò si mette nel main.js (metterlo modulo in caso)
 //render.js metti robe del dom
