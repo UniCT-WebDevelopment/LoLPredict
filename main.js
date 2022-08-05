@@ -30,7 +30,6 @@ let player_name;
 
 let mainWindow;
 
-
 const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 900,
@@ -51,7 +50,31 @@ app.whenReady().then(createWindow);
 
 console.log("SONO IL MAIN");
 
+/*
+setTimeout(5000, ()=>{
+    let options = {
+        hostname: '127.0.0.1',
+        port: port,
+        path:'/lol-service-status/v1/lcu-status',
+        method: 'GET',
+        rejectUnauthorized: false
+    }
 
+    let req = https.request(options, (res)=>{
+        console.log('All OK. Server matched our pinned cert or public key');
+        console.log('statusCode:', res.statusCode);
+        // Print the HPKP values
+        console.log('headers:', res.headers['public-key-pins']);
+        res.on("data", (d)=>{console.log("\n DATI FETCH \n"+d+"\nDATI FETCH")});
+    })
+
+    req.on('error', (e) => {
+        console.error("ERROR"+e.message);
+      });
+    
+    req.end();
+})
+*/
 
 class RiotWSProtocol extends WebSocket {
 
@@ -137,11 +160,16 @@ class RiotWSProtocol extends WebSocket {
 }
 
 /** HOW TO USE */
-
+var port;
+var pass;
 
 const connector = new LCUConnector();
 connector.on('connect', data => {
     console.log('League Client has started', data);
+
+    port = data.port;
+    pass = data.pass;
+
     const ws = new RiotWSProtocol('wss://riot:'+data.password+'@localhost:'+data.port+'/');
     ws.on('open', () => {
         ws.subscribe('OnJsonApiEvent', console.log);
