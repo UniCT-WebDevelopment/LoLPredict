@@ -286,11 +286,11 @@ d().then(response => response.json())
 
 //TODO #1 STABILIRE NUOVE COSE DA FARE
 
-//fixare cambio di nome buggato perché cambiamento di stato controllando la uri
+//fixare cambio di nome buggato perché cambiamento di stato in game fa aggiornare il nome, controllando la uri
 
 //spostare questo file in main.js facendo diventare modulo?
 //prendere immagini tramite fetch
-//completare main.js per prendere informazioni
+//completare main.js per prendere informazioni rendendo to_api_server un modulo
 
 //animazioni di attesa e caricamento
 //metodo per prendere dati player da dare al tensorflow
