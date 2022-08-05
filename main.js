@@ -138,8 +138,7 @@ class RiotWSProtocol extends WebSocket {
                     if(lolData.data.gameName != undefined && player_name == null){
                         player_name = lolData.data.gameName;
                         let player_level = lolData.data.lol.level;
-                        let player_ranked_tier = lolData.data.lol.
-                        letrankedLeagueTier;
+                        let player_ranked_tier = lolData.data.lol.rankedLeagueTier;
                         let player_ranked_level = lolData.data.lol.rankedLeagueDivision;
                         //console.log(player_ranked_level);
                         let icon_id = lolData.data.icon;
