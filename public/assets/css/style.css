@@ -46,11 +46,13 @@
 #playerName{
     text-align: center;
     background: aqua; /*metti immagine del campione che ha giocato di più nelle ultime partite fetchate o dell'ultima partita o immagine dell'icona*/
+    background-size: contain;
 }
 
 #playerRank{    /*metti immagine che ha rank di corrispondenza*/
     text-align: center;
     background: grey;
+    background-size: contain;
 }
 
 #playerLevel{
