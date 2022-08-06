@@ -6,6 +6,9 @@ const path = require("path");
 const fs = require("fs");
 const { setTimeout } = require("timers/promises");
 const https = require('node:https');
+//const fetch = require('node-fetch');
+//import {get_winrate_player_champions  , get_last_champion_played} from "./public/assets/js/to_api_server";
+//const function_player = require("./public/assets/js/to_api_server");
 
 //roba backend
 const { data } = require("jquery");
@@ -147,7 +150,35 @@ class RiotWSProtocol extends WebSocket {
 
                         //console.log("PLAYER NAME: " + player_name);
                         mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id});
+                        //get_winrate_player_champions("AlexNext", 10, "Olaf");
+                        //get_last_champion_played("AlexNext");
+                        /*
+                        fetch("https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_5941739548?api_key=RGAPI-85b552a9-51c6-45e2-b3ca-3d01b429cfb7")
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("dati stampati da fetch" + JSON.stringify(JSON.stringify(data)));
+                        })
+                        */
 
+                        //codice momentaneo(?) di seguito per vedere differenza di elo tra i vari tizi
+                        //visti i dati che vengono forniti dall'app l'idea è sempre quella di utilizzare le api per ottenere il match da cui poi si prendono i partecipanti
+                        //serve il summonerId che è salvato dalla API come Id
+                        //la funzione ultima da chiamare per calcolare elo etc è 
+                        //https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/Z2FkqeYQXUklIqRdkbrKdyV1nSuAxP68x9tqpVsrCDURtpo
+                        //dove l'ultimo è il summonerId di un tizio random
+                        //da questa funzione si prendono tutti i summonerId o i nickname e si chiama
+                        //https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/Z2FkqeYQXUklIqRdkbrKdyV1nSuAxP68x9tqpVsrCDURtpo
+                        //che ritorna le informazioni richieste in modo semplice
+
+                        //risolvere la fetch del nodoJS è NECESSARIO per fare funzionare il programma
+                        /*
+                        if(lolData.phase == 'GameStart'){
+                            fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Keycraftsman?api_key=RGAPI-85b552a9-51c6-45e2-b3ca-3d01b429cfb7")
+                            .then(result => result.json())
+                            .then(data => {
+                                console.log("dati del cazzo" + data);
+                            })
+                        }*/
                     }
                 } catch(error){
                     console.log(error);

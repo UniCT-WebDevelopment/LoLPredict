@@ -369,6 +369,9 @@ function get_last_champion_played(summoner_name){
     })
 }
 
+//export const foo = get_last_champion_played;
+//export const bar = get_winrate_player_champions;
+
 //get_winrate_player("AlexNext", 40);
 //get_winrate_player_champions("AlexNext", 40); //da usare per mostare le informazioni sia nel riquadro che per il machine learning
 //get_winrate_player_champions("AlexNext", 10, "Olaf"); //winrate contro il cammpione con cui è
@@ -378,14 +381,19 @@ function get_last_champion_played(summoner_name){
 //appunto momentaneo, fare nel main.js l'ultimo punto della riga 400, forse meglio fare prima il file json?
 
 
-//PER CICCIO, INVECE DI RENDERE QUESTO FILE UN MODULO LO SI FA COMUNQUE ESEGUIRE COSì COM'è MA I DATI VENGONO SALVATI SU UN JSON A CUI IL MAIN ACCEDE
-//VANTAGGI: NIENTE CAZZI NEL GESTIRE MODULI, FUNZIONI ETC VISTO CHE è TUTTO IN QUESTO FILE, RENDERE MODULO QUESTO FILE NON è POSSIBILE PERCHè NON è UN NODE FILE, TUTTI I DATI SONO SALVATI E NON SI FANNO ALTRE FETCH
-//SVANTAGGI: NESSUNO, PERCHè I CONSOLE LOG VANNO POI GESTITI NEL JSON FIN DA SUBITO
-//FORSE UNO SVANTAGGIO è GESTIRE LA LETTURA DAL FILE JSON MA NEMMENO COSì TANTO VISTO CHE C'è IL MODULO ADATTO
+//PER CICCIO, avevo pensato di usare un file json così da mettere i dati lì ma potrebbe essere più difficile se non impossibile da fare
+//passare questi script a main.js inolte non è possibile, o comunque da problemi tra moduli anche senza senso etc ecco dei link
+//https://stackoverflow.com/questions/69081410/error-err-require-esm-require-of-es-module-not-supported
+//ad esempio questo problema nasce perché faccio quello che dice
+//idea del file json non è male perché fa risparmiare tempo e i dati rimangono salvati quindi si fanno meno richieste
+//non si può scrivere il file lato client quindi bisogna trovare un altro modo, tipo renderer.js?
+//il problema di node è che non ha la cazzo di fetch, la si deve esportare ma forse da problemi?
+//spostare questo file in main.js facendo diventare modulo? vedere se si può fare tutto sennò si hanno problemi con la fetch
+
+//i moduli mi hanno rotto il cazzo non voglio più occuparmene
+//aggiungere   "type": "module", al json dovrebbe essere la soluzione ma da solo più problemi
 
 //fixare bug dove se chiudi il launcher ti dà il nickname (feature?)
-
-//spostare questo file in main.js facendo diventare modulo? vedere se si può fare tutto sennò si hanno problemi con la fetch //probabilmente non si fa
 
 //completare main.js per prendere informazioni      -quali, quelli per il machine learning? le uniche che ormai servono     
 //-per alessandro
@@ -402,7 +410,6 @@ function get_last_champion_played(summoner_name){
 
 
 //prendere immagini tramite fetch e gestire la grafica bene   
-//-per ciccio
 
 //animazioni di attesa e caricamento
 
