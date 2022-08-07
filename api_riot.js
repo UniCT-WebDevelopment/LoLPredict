@@ -361,11 +361,7 @@ function get_last_champion_played(summoner_name){
     })
 }
 
-module.exports.get_info_summoner_name = get_info_summoner_name;
-module.exports.get_list_matches = get_list_matches;
-module.exports.analize_matches = analize_matches;
-module.exports.get_champion_match = get_champion_match;
-module.exports.analize_matches_champions = analize_matches_champions;
+
 module.exports.get_winrate_player = get_winrate_player;
 module.exports.get_winrate_player_champions = get_winrate_player_champions;
 module.exports.get_last_champion_played = get_last_champion_played;
