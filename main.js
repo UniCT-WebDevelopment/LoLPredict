@@ -6,7 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const { setTimeout } = require("timers/promises");
 const https = require('node:https');
-const api_server = require('./api_riot');
+const api_server = require('./modules/api_riot');
 
 //const fetch = require('node-fetch');
 //import {get_winrate_player_champions  , get_last_champion_played} from "./public/assets/js/to_api_server";
