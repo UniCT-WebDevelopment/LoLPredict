@@ -173,7 +173,8 @@ class RiotWSProtocol extends WebSocket {
                         //console.log("PLAYER NAME: " + player_name);
                         mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id});
 
-                        api_server.get_last_champion_played("AlexNext");
+                        //api_server.get_last_champion_played("AlexNext");
+                        api_server.get_winrate_player_champions("AlexNext", 10);
                
                         //get_winrate_player_champions("AlexNext", 10, "Olaf");
                         //get_last_champion_played("AlexNext");

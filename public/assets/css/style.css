@@ -68,10 +68,14 @@
     grid-area: result;
 }
 
-.player_app{
+.winrate_col{
     display: flex;
     flex-direction: column;
     width: 50%;
+}
+
+.winrate_infos{
+    
 }
 
 .player_stat{

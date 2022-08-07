@@ -1,6 +1,10 @@
+const fs = require('fs');
+
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 let key_api = "RGAPI-b7af8e8e-b89c-4805-a7f2-98c0691d2a68";
+
+const jsonFilePath = '../information.json';
 
 let summoner_id_player;
 let puuid_player;
@@ -148,10 +152,13 @@ class champion{
             return false;
     }
     get_info(){
+        let return_string = {"champion_stats": {"champion": this.champion_name, "winrate": this.winrate, "games_played": this.games_played, "games_winned": this.games_winned}};
         console.log("Champion: " + this.champion_name);
         console.log("Winrate with " + this.champion_name + ": " + this.winrate);
         console.log("Games played with" + this.champion_name + ": " + this.games_played);
         console.log("Games winned with" + this.champion_name + ": " + this.games_winned);
+
+        return return_string;
     }
 }
 
@@ -202,7 +209,7 @@ function analize_matches_champions(data, num_games, champion_againts){
                     games_againts_champion++;
                     teamid_againts = data.info.participants[y].teamId;
                     num_player = y;
-                    console.log("campione trovato", games_againts_champion, teamid_againts, num_player);
+                    //console.log("campione trovato", games_againts_champion, teamid_againts, num_player);
                 }
                 if(data.info.participants[y].puuid == puuid_player){
                     teamid_player = data.info.participants[y].teamId;
@@ -236,7 +243,7 @@ function analize_matches_champions(data, num_games, champion_againts){
                     }
                 }
                 if(teamid_againts != undefined && teamid_player != undefined){
-                    console.log("dentro ultimo if");
+                    //console.log("dentro ultimo if");
                     if(teamid_againts == teamid_player){
                         games_againts_champion--;
                     }
@@ -250,22 +257,57 @@ function analize_matches_champions(data, num_games, champion_againts){
             }  
         })
         .then(() => {
+            let winrate_champions_array = new Array();
+
             if(sum_games == num_games){ //così da fare il calcolo solo una volta
                 winrate_player = (games_winned/num_games)*100;
                 for(let i = 0; i < champions_player.length; i++){
                     champions_player[i].calculate_winrate();
-                    champions_player[i].get_info();
+                    winrate_champions_array[i] = champions_player[i].get_info();
                 }
                 console.log("winrate player " + winrate_player);
                 //scrivi sul file json
                 console.log("num_games " + num_games);
                 console.log("games_winned " + games_winned);
 
-                //console.log(win_againts_champion, games_againts_champion);
                 if(champion_againts != undefined){
                     winrate_againts_champion = (win_againts_champion/games_againts_champion)*100; 
                     console.log("Winrate againts " + champion_againts + " is: " + winrate_againts_champion);
                 }
+
+                let obj_winrate;
+                if(champion_againts != undefined){
+                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned, "champion_against": champion_againts }}
+                }
+                else{
+                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned, "champion_againt":0}}
+                }
+
+                let string_obj = JSON.stringify(obj_winrate);
+                let obj_array = new Array();
+                
+
+                fs.readFile('information.json', 'utf8', (err, data)=>{
+                    if (err){
+                        console.log(err);
+                    } else {
+                        obj = JSON.parse(data); //now it an object
+                        obj_array.push(obj);
+                        obj_array.push(obj_winrate);
+                        obj_array.push(winrate_champions_array);
+                        let json_array = JSON.stringify(obj_array,  undefined, 3); //convert it back to json
+                        fs.writeFile('information.json', json_array, 'utf8', function (err) {
+                            if (err) {
+                                console.log("An error occured while writing JSON Object to File.");
+                                return console.log(err);
+                            }
+                            console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                            console.log("JSON file has been saved.");
+                        });
+                    }
+                });
+
+                
             }
         })
         .catch(() =>{
@@ -328,7 +370,17 @@ function get_champion_match(puuid){
             }
         })
         .then(() =>{
-            console.log("last champion played: " + last_champion_played);
+            let obj_champ = {"last_champion_played": {name: last_champion_played}};
+            let string_obj = JSON.stringify(obj_champ);
+
+            fs.writeFile('information.json', string_obj, 'utf8', function (err) {
+                if (err) {
+                    console.log("An error occured while writing JSON Object to File.");
+                    return console.log(err);
+                }
+                console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                console.log("JSON file has been saved.");
+            });
         })
     })
 }
