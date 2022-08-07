@@ -1,15 +1,7 @@
-//per ottenere informazioni del player tocca capire prima come prendere quei dati stampati dal backend.js
-//TODO fare il #data_player dove prende dati dati per ora d default
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-//risultati machine learning appena si ha machine learning
+let key_api = "RGAPI-b7af8e8e-b89c-4805-a7f2-98c0691d2a68";
 
-//https://stackoverflow.com/questions/5618827/ajaxy-add-parameters-to-request
-
-
-//valutare se fare queste call in backend e poi il backend passa solo i dati che servono
-let key_api = "RGAPI-85b552a9-51c6-45e2-b3ca-3d01b429cfb7";
-
-//funzione definiva?
 let summoner_id_player;
 let puuid_player;
 let winrate_player;
@@ -377,57 +369,3 @@ module.exports.analize_matches_champions = analize_matches_champions;
 module.exports.get_winrate_player = get_winrate_player;
 module.exports.get_winrate_player_champions = get_winrate_player_champions;
 module.exports.get_last_champion_played = get_last_champion_played;
-
-//export const foo = get_last_champion_played;
-//export const bar = get_winrate_player_champions;
-
-//get_winrate_player("AlexNext", 40);
-//get_winrate_player_champions("AlexNext", 40); //da usare per mostare le informazioni sia nel riquadro che per il machine learning
-//get_winrate_player_champions("AlexNext", 10, "Olaf"); //winrate contro il cammpione con cui è
-//si deve eseguire lo stesso codice anche per avere solo l'informazione per lo specifico campione e si scriverebbe una funzione uguale quindi meglio averne una sola così che viene fatta partire una sola volta per il player avversario
-//get_last_champion_played("AlexNext"); //utile per mettere immagine del campione nella grafica
-
-//appunto momentaneo, fare nel main.js l'ultimo punto della riga 400, forse meglio fare prima il file json?
-
-
-//PER CICCIO, avevo pensato di usare un file json così da mettere i dati lì ma potrebbe essere più difficile se non impossibile da fare
-//passare questi script a main.js inolte non è possibile, o comunque da problemi tra moduli anche senza senso etc ecco dei link
-//https://stackoverflow.com/questions/69081410/error-err-require-esm-require-of-es-module-not-supported
-//ad esempio questo problema nasce perché faccio quello che dice
-//idea del file json non è male perché fa risparmiare tempo e i dati rimangono salvati quindi si fanno meno richieste
-//non si può scrivere il file lato client quindi bisogna trovare un altro modo, tipo renderer.js?
-//il problema di node è che non ha la cazzo di fetch, la si deve esportare ma forse da problemi?
-//spostare questo file in main.js facendo diventare modulo? vedere se si può fare tutto sennò si hanno problemi con la fetch
-
-//i moduli mi hanno rotto il cazzo non voglio più occuparmene
-//aggiungere   "type": "module", al json dovrebbe essere la soluzione ma da solo più problemi
-
-//fixare bug dove se chiudi il launcher ti dà il nickname (feature?)
-
-//completare main.js per prendere informazioni      -quali, quelli per il machine learning? le uniche che ormai servono     
-//-per alessandro
-
-//to_api_server.js passa le informazioni al render.js che lui li cambia     -è fattibile?
-
-//creare file json per memorizzare i record per i player che si loggano così da non fare troppe richieste all'api, quindi creare metodi analoghi (più semplici da fare)
-
-//metodo per prendere dati player da dare al tensorflow    
-// -per alessandro?
-
-//dati da prendere - verosimilmente winrate players, winrate con quel champion, winrate contro quello contro cui è (per entrambi i player), differenza di rank nella partita sia tra la squadre che tra il giocatore e l'avversario
-//come salvare modello di tensorflow
-
-
-//prendere immagini tramite fetch e gestire la grafica bene   
-
-//animazioni di attesa e caricamento
-
-
-
-
-
-
-//backend.js rimane singolo se lo si fa comunicare con main.js o render.js sennò si mette nel main.js (metterlo modulo in caso)
-//render.js metti robe del dom
-
-//MACHINE LEARNING

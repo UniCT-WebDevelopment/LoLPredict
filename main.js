@@ -6,6 +6,8 @@ const path = require("path");
 const fs = require("fs");
 const { setTimeout } = require("timers/promises");
 const https = require('node:https');
+const api_server = require('./api_riot');
+
 //const fetch = require('node-fetch');
 //import {get_winrate_player_champions  , get_last_champion_played} from "./public/assets/js/to_api_server";
 //const function_player = require("./public/assets/js/to_api_server");
@@ -150,6 +152,13 @@ class RiotWSProtocol extends WebSocket {
 
                         //console.log("PLAYER NAME: " + player_name);
                         mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id});
+
+                        api_server.get_info_summoner_name("AlexNext")
+                        .then(response => response.json())
+                        .then((data) => {
+                            console.log("DATI DA APIT_RIOT" + JSON.stringify(JSON.stringify(data)));
+                        })
+               
                         //get_winrate_player_champions("AlexNext", 10, "Olaf");
                         //get_last_champion_played("AlexNext");
                         /*
