@@ -261,9 +261,11 @@ function analize_matches_champions(data, num_games, champion_againts){
                 console.log("num_games " + num_games);
                 console.log("games_winned " + games_winned);
 
-                console.log(win_againts_champion, games_againts_champion);
-                winrate_againts_champion = (win_againts_champion/games_againts_champion)*100; 
-                console.log("Winrate againts " + champion_againts + " is: " + winrate_againts_champion);
+                //console.log(win_againts_champion, games_againts_champion);
+                if(champion_againts != undefined){
+                    winrate_againts_champion = (win_againts_champion/games_againts_champion)*100; 
+                    console.log("Winrate againts " + champion_againts + " is: " + winrate_againts_champion);
+                }
             }
         })
         .catch(() =>{
@@ -278,9 +280,10 @@ function analize_matches_champions(data, num_games, champion_againts){
                 console.log("num_games " + sum_games);
                 console.log("games_winned " + games_winned);
 
-                winrate_againts_champion = (win_againts_champion/games_againts_champion)*100;
-                console.log("Winrate againts " + champion_againts + " is " + winrate_againts_champion);
-
+                if(champion_againts != undefined){
+                    winrate_againts_champion = (win_againts_champion/games_againts_champion)*100;
+                    console.log("Winrate againts " + champion_againts + " is " + winrate_againts_champion);
+                }
                 console.log("Fetch error: " + num_error);
             }
         })
