@@ -1,5 +1,4 @@
 const fs = require('fs');
-
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 let key_api = "RGAPI-b7af8e8e-b89c-4805-a7f2-98c0691d2a68";
@@ -427,5 +426,5 @@ module.exports.get_last_champion_played = get_last_champion_played;
 //get_winrate_player_champions("AlexNext", 10, "Olaf"); //winrate contro il cammpione con cui è
 //get_last_champion_played("AlexNext"); //utile per mettere immagine del campione nella grafica
 
-//dati da prendere - verosimilmente winrate players, winrate con quel champion, winrate contro quello contro cui è (per entrambi i player), differenza di rank nella partita sia tra la squadre che tra il giocatore e l'avversario
+//dati da prendere - verosimilmente winrate players, winrate con quel champion, winrate contro quello contro cui è (per entrambi i player), differenza di rank nella partita tra la squadre
 //come salvare modello di tensorflow

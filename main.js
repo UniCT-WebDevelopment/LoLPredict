@@ -1,5 +1,6 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const { BrowserWindow, app, ipcMain, dialog, Menu } = require("electron");
 const { webContents } = require("electron");
 const path = require("path");
@@ -31,7 +32,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-//fine
+let api_key = "RGAPI-e57452bf-f65f-488e-b69e-97b1968a7a98";
 
 let mainWindow;
 
@@ -102,6 +103,45 @@ setTimeout(5000, ()=>{
     req.end();
 })
 */
+
+function calculate_team_elo(players_tier, players_rank){
+    let result = 0;
+    for(let i = 0; i < 5; i++){
+        switch(players_tier[i]){
+            case "IRON":
+                result += 1;
+            case "BRONZE":
+                result += 5;
+            case "SILVER":
+                result += 9;
+            case "GOLD":
+                result += 13;
+            case "PLATINUM":
+                result += 17;
+            case "DIAMOND":
+                result += 21;
+            case "MASTER":
+                result += 25;
+            case "GRANDMASTER":
+                result += 27;
+            case "CHALLENGER":
+                result += 29;
+        }
+    }
+    for(let i = 0; i < 5; i++){
+        switch(players_rank[i]){
+            case "II":
+                result += 1;
+            case "III":
+                result += 2;
+            case "IV":
+                result += 3;
+        }
+    }
+
+    result = result / 5;
+    return result;
+}
 
 class RiotWSProtocol extends WebSocket {
 
@@ -174,40 +214,115 @@ class RiotWSProtocol extends WebSocket {
                         mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id});
 
                         //api_server.get_last_champion_played("AlexNext");
-                        api_server.get_winrate_player_champions("AlexNext", 10);
-               
+                        //api_server.get_winrate_player_champions("AlexNext", 10);
                         //get_winrate_player_champions("AlexNext", 10, "Olaf");
+
+
                         //get_last_champion_played("AlexNext");
+                        
+                        //differenza di rank nella partita sia tra la squadre che tra il giocatore e l'avversario
+
                         /*
-                        fetch("https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_5941739548?api_key=RGAPI-85b552a9-51c6-45e2-b3ca-3d01b429cfb7")
+                        fetch("https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_5941739548?api_key=" + api_key)
                         .then(response => response.json())
                         .then(data => {
-                            console.log("dati stampati da fetch" + JSON.stringify(JSON.stringify(data)));
+                            console.log("dati stampati da fetch" + JSON.stringify(data) + "fine dati stampati");
                         })
                         */
+                        
+                    } 
+                } catch(error){
+                    //console.log(error);
+                }
 
-                        //codice momentaneo(?) di seguito per vedere differenza di elo tra i vari tizi
-                        //visti i dati che vengono forniti dall'app l'idea è sempre quella di utilizzare le api per ottenere il match da cui poi si prendono i partecipanti
-                        //serve il summonerId che è salvato dalla API come Id
-                        //la funzione ultima da chiamare per calcolare elo etc è 
-                        //https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/Z2FkqeYQXUklIqRdkbrKdyV1nSuAxP68x9tqpVsrCDURtpo
-                        //dove l'ultimo è il summonerId di un tizio random
-                        //da questa funzione si prendono tutti i summonerId o i nickname e si chiama
-                        //https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/Z2FkqeYQXUklIqRdkbrKdyV1nSuAxP68x9tqpVsrCDURtpo
-                        //che ritorna le informazioni richieste in modo semplice
-
-                        //risolvere la fetch del nodoJS è NECESSARIO per fare funzionare il programma
-                        /*
-                        if(lolData.phase == 'GameStart'){
-                            fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Keycraftsman?api_key=RGAPI-85b552a9-51c6-45e2-b3ca-3d01b429cfb7")
+                try{
+                    let summonerId;
+                    let enemies_tier = new Array(); //gold, plat etc
+                    let enemies_rank = new Array(); //I, II, III, IV
+                    let allies_tier = new Array();
+                    let allies_rank = new Array();
+                    let average_elo_enemies;
+                    let average_elo_allies;
+                    let difference_between_teams;
+                    //visti i dati che vengono forniti dall'app l'idea è sempre quella di utilizzare le api per ottenere il match da cui poi si prendono i partecipanti
+                    //serve il summonerId che è salvato dalla API come Id
+                    //la funzione ultima da chiamare per calcolare elo etc è 
+                    //https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/Z2FkqeYQXUklIqRdkbrKdyV1nSuAxP68x9tqpVsrCDURtpo
+                    //dove l'ultimo è il summonerId di un tizio random
+                    //da questa funzione si prendono tutti i summonerId o i nickname e si chiama
+                    //https://euw1.api.riotgames.com/lol/league/v4/ entries/by-summoner/Z2FkqeYQXUklIqRdkbrKdyV1nSuAxP68x9tqpVsrCDURtpo
+                    //che ritorna le informazioni richieste in modo semplice
+                    
+                    if(lolData.data.phase == "GameStart"){
+                        console.log("dentro gamestart");
+                        fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
+                        .then(result => result.json())
+                        .then(data => {
+                            summonerId = data.id;
+                            console.log("data.id", data.id);
+                            console.log("summonerId", summonerId);
+                            console.log("api_key", api_key);
+                            fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
-                                console.log("dati del cazzo" + data);
+                                console.log("dati", data); //trovato errore, lo fixo domani
+                                let participants_array = new Array();
+                                let teamId_array = new Array();
+                                let teamId_player;
+                                console.log("prima del for");
+                                //console.log("participants_array[0]", participants_array[0]); 
+                                for(let i = 0; i < 10; i++){
+                                    console.log("prima di participants_array.push(data.participants[i].summonerId);")
+                                    participants_array.push(data.participants[i].summonerId);
+                                    console.log("prima di teamId_array.push(data.participants[i].teamId);")
+                                    teamId_array.push(data.participants[i].teamId);
+                                    console.log("prima di if");
+                                    if(participants_array[i] == summonerId){
+                                        teamId_player = data.participants[i].teamId;
+                                    }
+                                    console.log("data.participants[i].summonerId", data.participants[i].summonerId);
+                                    console.log("data.participants[i].teamId", data.participants[i].teamId);
+                                }
+                                console.log("dopo for");
+                                for(let i = 0; i < 10; i++){
+                                    fetch("https://euw1.api.riotgames.com/lol/league/v4/entries/" + participants_array[i] + "?api_key=" + api_key)
+                                    .then(result => result.json())
+                                    .then(data =>{
+                                        for(let j = 0; j < 10; j++){
+                                            if(teamId_array[i] == teamId_player){
+                                                console.log("data tier e data rank", data.tier, data.rank);
+                                                allies_tier.push(data.tier);
+                                                allies_rank.push(data.rank);
+                                                console.log("allies tier e allies rank", allies_tier[i%5], allies_rank[i%5]);
+                                            }
+                                            else{
+                                                enemies_tier.push(data.tier);
+                                                enemies_rank.push(data.rank);
+                                            }
+                                        }
+                                    })
+                                    .catch((error) =>{
+                                        console.log("errore nella terza fetch", error);
+                                    })
+                                }
                             })
-                        }*/
+                            .catch((error) =>{
+                                console.log("errore nella seconda fetch", error);
+                            })
+                        })
+                        .then(() =>{
+                            average_elo_allies = calculate_team_elo(allies_tier, allies_rank);
+                            average_elo_enemies = calculate_team_elo(enemies_tier, enemies_rank);
+                            difference_between_teams = average_elo_allies - average_elo_enemies; //quindi valori negativi non sono buoni
+                            console.log("average_elo_allies average_elo_enemies difference_between_teams", average_elo_allies, average_elo_enemies, difference_between_teams);
+                        })
+                        .catch(() =>{
+                            console.log("errore nella prima fetch", error);
+                        })
                     }
-                } catch(error){
-                    console.log(error);
+                }
+                catch(error){
+                    //console.log("ha fatto errore lo studio del game", error);
                 }
                 
                 this.emit(topic, payload);
