@@ -7,8 +7,38 @@
     margin: 0;
 }
 
-html, body{
-    background-image: linear-gradient(to right, #091428 , #0A1428);
+.nav-bar{
+    grid-area: nav;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #0A323C;
+    height: 40px;
+}
+
+.title-bar{
+    display: inline-block;
+    -webkit-app-region: drag;
+    -webkit-user-select: none;
+}
+
+.btn{
+    cursor: pointer;
+    width: 50px;
+    color: black;
+    display: inline-block;
+}
+
+#closeBtn{
+
+}
+
+#reduce{
+
+}
+
+#max{
+
 }
 
 #playerInfoContainer{
@@ -16,7 +46,8 @@ html, body{
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     gap: 30px;
-    grid-template-areas: 
+    grid-template-areas:
+    "nav nav" 
     "profile profile"
     "data result";
 }

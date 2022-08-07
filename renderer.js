@@ -12,6 +12,12 @@ window.addEventListener("DOMContentLoaded", () => {
         playerLevel : document.getElementById("playerLevel"),
     }
 
+    const ui = {
+        closeBtn : document.getElementById("closeBtn"),
+        minBtn : document.getElementById("minBtn"),
+        maxBtn : document.getElementById("maxBtn"),
+    }
+
     console.log("sono render");
 
     //richiamare metodo di backend.js per avere le informazioni quando disponibili
@@ -32,4 +38,15 @@ window.addEventListener("DOMContentLoaded", () => {
         el.playerInfoContainer.style.display = "grid";
     })
 
+    ui.closeBtn.addEventListener('click', ()=>{
+        ipcRenderer.send('closeApp');
+    })
+
+    ui.minBtn.addEventListener('click', ()=>{
+        ipcRenderer.send('minimizeApp');
+    })
+
+    ui.maxBtn.addEventListener('click', ()=>{
+        ipcRenderer.send('maximizeApp');
+    })
 })

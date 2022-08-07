@@ -42,15 +42,35 @@ const createWindow = () => {
         minWidth: 600,
         minHeight: 500,
         titleBarStyle: "hiddenInset",
+        transparent: true,
+        frame:false,
         webPreferences : {
             nodeIntegration: true,
             contextIsolation: false,
             preload: path.join(app.getAppPath(), "renderer.js")
         }
     })
-
+    mainWindow.setBackgroundColor("rgba(10, 20, 40, 0.692)");
     mainWindow.webContents.openDevTools();
     mainWindow.loadFile("./public/index.html");
+
+    ipcMain.on('closeApp', ()=>{
+        console.log("CLOSE");
+        mainWindow.close();
+    })
+
+    ipcMain.on('minimizeApp', ()=>{
+        console.log("MIN");
+        mainWindow.minimize();
+    })
+
+    ipcMain.on('maximizeApp', ()=>{
+        console.log("MAX");
+        if(mainWindow.isMaximized()){
+            mainWindow.unmaximize();
+        }else
+            mainWindow.maximize();
+    })
 }
 
 app.whenReady().then(createWindow);
