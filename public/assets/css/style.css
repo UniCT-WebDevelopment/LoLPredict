@@ -7,6 +7,11 @@
     margin: 0;
 }
 
+body{
+    backdrop-filter: blur(50px);
+    overflow-y: hidden;
+}
+
 .nav-bar{
     grid-area: nav;
     display: flex;
@@ -17,28 +22,43 @@
 }
 
 .title-bar{
+    font-family: system-ui;
+    flex: 2;
+    text-align: center;
+    font-size: 20px;
     display: inline-block;
     -webkit-app-region: drag;
     -webkit-user-select: none;
 }
 
 .btn{
+    font-family: system-ui;
+    all:unset;
     cursor: pointer;
     width: 50px;
-    color: black;
+    color: white;
     display: inline-block;
+    text-align: center;
+    font-size: 20px;
+}
+#minBtn{
+    font-family: system-ui;
+    border-left: 2px solid #104d5c;
+    border-right: 1px solid #104d5c;
+}
+
+#maxBtn{
+    font-family: system-ui;
+    border-left: 1px solid #104d5c;
+    border-right: 1px solid #104d5c;
 }
 
 #closeBtn{
-
+    font-family: system-ui;
+    border-left: 1px solid #104d5c;
 }
-
-#reduce{
-
-}
-
-#max{
-
+.btn:hover{
+    background-color: #0e4654;
 }
 
 #playerInfoContainer{
@@ -58,7 +78,25 @@
     border-radius: 5px;
 }
 
-#data_player{
+.champ_vs{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border: 2px solid beige;
+    border-radius: 5px;
+}
+
+.champ_vs_name{
+    font-size: 30px;
+    text-align: center;
+    flex: 2;
+}
+
+.champ_vs_img{
+    width: 80px;
+}
+
+#winrate_infos {
     grid-area: data;
     display: flex;
     flex-direction: row;
@@ -72,10 +110,18 @@
     display: flex;
     flex-direction: column;
     width: 50%;
+    height: 60%;
+    background-color: rgba(30, 26, 110, 0.628);
+    box-shadow: 2px 5px #00000063;
+    overflow-y: scroll;
 }
 
 .winrate_infos{
-    
+    grid-area: data;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .player_stat{
@@ -130,3 +176,24 @@
     font-size: 50;
     text-align: center;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f100; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: rgb(211, 211, 211); 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(164, 164, 164); 
+  }

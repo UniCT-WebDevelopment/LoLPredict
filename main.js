@@ -50,7 +50,7 @@ const createWindow = () => {
             preload: path.join(app.getAppPath(), "renderer.js")
         }
     })
-    mainWindow.setBackgroundColor("rgba(10, 20, 40, 0.692)");
+    mainWindow.setBackgroundColor("rgba(10, 20, 40, 0.8)");
     mainWindow.webContents.openDevTools();
     mainWindow.loadFile("./public/index.html");
 
