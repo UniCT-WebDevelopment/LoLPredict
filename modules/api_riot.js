@@ -257,6 +257,7 @@ function analize_matches_champions(data, num_games, champion_againts){
                     champions_player[i].get_info();
                 }
                 console.log("winrate player " + winrate_player);
+                //scrivi sul file json
                 console.log("num_games " + num_games);
                 console.log("games_winned " + games_winned);
 
@@ -365,3 +366,11 @@ function get_last_champion_played(summoner_name){
 module.exports.get_winrate_player = get_winrate_player;
 module.exports.get_winrate_player_champions = get_winrate_player_champions;
 module.exports.get_last_champion_played = get_last_champion_played;
+
+//get_winrate_player("AlexNext", 40);
+//get_winrate_player_champions("AlexNext", 40); //da usare per mostare le informazioni sia nel riquadro che per il machine learning
+//get_winrate_player_champions("AlexNext", 10, "Olaf"); //winrate contro il cammpione con cui è
+//get_last_champion_played("AlexNext"); //utile per mettere immagine del campione nella grafica
+
+//dati da prendere - verosimilmente winrate players, winrate con quel champion, winrate contro quello contro cui è (per entrambi i player), differenza di rank nella partita sia tra la squadre che tra il giocatore e l'avversario
+//come salvare modello di tensorflow
