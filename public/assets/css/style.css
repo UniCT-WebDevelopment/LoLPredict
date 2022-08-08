@@ -63,7 +63,7 @@ body{
 }
 
 #playerInfoContainer{
-    display: none;
+    display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     gap: 30px;
@@ -76,7 +76,7 @@ body{
 
 #player_info{
     grid-area: profile;
-    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, 0);
     border-radius: 5px;
 }
 
@@ -121,7 +121,7 @@ body{
     grid-area: data-me;
     display: flex;
     flex-direction: column;
-    background-color: rgba(30, 26, 110, 0.628);
+    background-color: rgba(15, 15, 15, 0.674);
     box-shadow: 2px 5px #00000063;
     overflow-y: scroll;
     position: relative;
@@ -132,7 +132,7 @@ body{
     grid-area: data-vs;
     display: flex;
     flex-direction: column;
-    background-color: rgba(30, 26, 110, 0.628);
+    background-color: rgba(15, 15, 15, 0.674);
     box-shadow: 2px 5px #00000063;
     overflow-y: scroll;
 }
@@ -157,32 +157,71 @@ body{
 .player-things{
     width: 33.3333%;
     height: 100px;
-    border: 1px solid white;
+    border: 1px solid rgb(58, 58, 58);
     border-radius: 5px;
 }
 
+#playerName{
+    font-size: 25px;
+    font-weight: bolder;
+    margin-left: 20px;
+}
 
 .info_box{
-    font-size: 35;
-    text-align:end;
+    font-size: 35px;
+    text-align:start;
     padding-right: 20px;
     box-shadow: 2px 5px #0A1428;
 }
 
-#playerName{
-    background: #463714; /*metti immagine del campione che ha giocato di più nelle ultime partite fetchate o dell'ultima partita o immagine dell'icona*/
+
+
+#playerNameBox{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(15, 15, 15, 0.674); /*metti immagine del campione che ha giocato di più nelle ultime partite fetchate o dell'ultima partita o immagine dell'icona*/
     background-size: contain;
     background-repeat: no-repeat;
 }
 
-#playerRank{    /*metti immagine che ha rank di corrispondenza*/
-    background: #463714;
+#playerIcon{
+    border: 3px solid rgb(186, 0, 0);
+    border-radius: 50%;
+    height: 95%;
+    display: inline-block;
+}
+
+#playerNameBox:hover{
+    background: rgba(40, 40, 40, 0.851);
+    transform: scale(1.03);
+    background-size: auto;
+}
+
+#playerRankBox{    /*metti immagine che ha rank di corrispondenza*/
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(15, 15, 15, 0.674);
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+#rankIcon{
+    border: 3px solid rgb(186, 0, 0);
+    border-radius: 50%;
+    height: 95%;
+    display: inline-block;
+}
+
+#playerRank{
+    font-size: 25px;
+    font-weight: bolder;
+    margin-left: 20px;
 }
 
 .level{
-    background: #463714; /*inventa qualcosa vedi riga in playername */
+    background: rgba(15, 15, 15, 0.674); /*inventa qualcosa vedi riga in playername */
 }
 
 #caricamento{

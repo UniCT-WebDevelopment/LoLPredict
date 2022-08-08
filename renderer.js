@@ -8,7 +8,9 @@ window.addEventListener("DOMContentLoaded", () => {
         playerInfoContainer: document.getElementById("playerInfoContainer"),
         loadContainer: document.getElementById("caricamento"),
         playerName : document.getElementById("playerName"),
+        playerIcon: document.getElementById("playerIcon"),
         playerRank: document.getElementById("playerRank"),
+        rankIcon: document.getElementById("rankIcon"),
         playerLevel : document.getElementById("playerLevel"),
     }
 
@@ -25,12 +27,12 @@ window.addEventListener("DOMContentLoaded", () => {
     ipcRenderer.on("info-player-get", (_,{player_name, player_level,player_ranked_tier, player_ranked_level, icon_id})=>{
         el.playerName.innerHTML = player_name;
         el.playerLevel.innerHTML = player_level;
-        el.playerName.style.backgroundImage = "url('http://ddragon.leagueoflegends.com/cdn/12.14.1/img/profileicon/"+icon_id+".png')";
+        el.playerIcon.setAttribute("src", "http://ddragon.leagueoflegends.com/cdn/12.14.1/img/profileicon/"+icon_id+".png" );
 
         //console.log(player_ranked_level); //vanno messi i nomi dei parametri passati uguali sia qui che in main.js
         if(player_ranked_level != undefined){
             el.playerRank.innerHTML = player_ranked_tier + player_ranked_level;
-            el.playerRank.style.backgroundImage = "url('../ranked-emblems/Emblem_" + player_ranked_tier + ".png')";
+            el.rankIcon.setAttribute("src", "../ranked-emblems/Emblem_" + player_ranked_tier + ".png");
         }
 
         console.log("Eseguo cambio loading screen")

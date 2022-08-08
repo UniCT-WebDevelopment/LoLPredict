@@ -40,8 +40,8 @@ const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 900,
         height: 700,
-        minWidth: 600,
-        minHeight: 500,
+        minWidth: 900,
+        minHeight: 700,
         titleBarStyle: "hiddenInset",
         transparent: true,
         frame:false,
