@@ -1,15 +1,28 @@
 <head>
     <title>Lol predict</title>
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <script src="./assets/jquery/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="nav-bar"> 
         <div class="title-bar">LoL Predict</div>
-        <button class="btn" id="minBtn">_</button>
-        <button class="btn" id="maxBtn">O</button>
-        <button class="btn" id="closeBtn">X</button>
+        <button class="btn" id="minBtn">
+            <span class="material-symbols-outlined">
+                remove
+            </span>
+        </button>
+        <button class="btn" id="maxBtn">
+            <span class="material-symbols-outlined">
+                check_box_outline_blank
+            </span>
+        </button>
+        <button class="btn" id="closeBtn">
+            <span class="material-symbols-outlined">
+                close
+            </span>
+        </button>
     </div>
 
     <div id="caricamento">
@@ -21,15 +34,53 @@
         <div id="player_info">
             <div class="player-things info_box" id="playerName">Player Name</div>
             <div class="player-things info_box" id="playerRank" style="background-image: url('../ranked-emblems/Emblem_Gold.png')">RankTier RankLevel</div> <!--style="background-image: url("Aatrox_0.jpg");"-->
-            <div class="player-things info_box" id="playerLevel">Livello: Livello</div>
+            <div class="player-things info_box level">Livello:
+                <span id="playerLevel">Livello</span></div>
          </div>
         <!--decidere le immagini da mettere in background e gestirle-->
-
-        <div id="winrate_infos">
-
             <div class="winrate_col">
-                <div class="player_stat">
+                <div class="player_stat_winrate">
                     Winrate: 50% 
+                </div>
+                <div class="player_stat">
+                    <!--<img src="Aatrox_0.jpg"> fixare in modo che entra nel riquadro-->
+                    <div class="champ_vs">
+                       <div class="champ_vs_name">Sivir</div> 
+                       <img src="http://ddragon.leagueoflegends.com/cdn/12.14.1/img/champion/Sivir.png" class="champ_vs_img">
+                    </div>
+                    Winrate contro: <span class="winrate_vs_champ">80%</span><br>
+                    Numero partite giocate: <span class="games_played">10</span><br>
+                    Numero partite vinte: <span class="games_winned">8</span>
+                </div>
+                <div class="player_stat">
+                    <!--<img src="Aatrox_0.jpg"> fixare in modo che entra nel riquadro-->
+                    <div class="champ_vs">
+                       <div class="champ_vs_name">Sivir</div> 
+                       <img src="http://ddragon.leagueoflegends.com/cdn/12.14.1/img/champion/Sivir.png" class="champ_vs_img">
+                    </div>
+                    Winrate contro: <span class="winrate_vs_champ">80%</span><br>
+                    Numero partite giocate: <span class="games_played">10</span><br>
+                    Numero partite vinte: <span class="games_winned">8</span>
+                </div>
+                <div class="player_stat">
+                    <!--<img src="Aatrox_0.jpg"> fixare in modo che entra nel riquadro-->
+                    <div class="champ_vs">
+                       <div class="champ_vs_name">Sivir</div> 
+                       <img src="http://ddragon.leagueoflegends.com/cdn/12.14.1/img/champion/Sivir.png" class="champ_vs_img">
+                    </div>
+                    Winrate contro: <span class="winrate_vs_champ">80%</span><br>
+                    Numero partite giocate: <span class="games_played">10</span><br>
+                    Numero partite vinte: <span class="games_winned">8</span>
+                </div>
+                <div class="player_stat">
+                    <!--<img src="Aatrox_0.jpg"> fixare in modo che entra nel riquadro-->
+                    <div class="champ_vs">
+                       <div class="champ_vs_name">Sivir</div> 
+                       <img src="http://ddragon.leagueoflegends.com/cdn/12.14.1/img/champion/Sivir.png" class="champ_vs_img">
+                    </div>
+                    Winrate contro: <span class="winrate_vs_champ">80%</span><br>
+                    Numero partite giocate: <span class="games_played">10</span><br>
+                    Numero partite vinte: <span class="games_winned">8</span>
                 </div>
                 <div class="player_stat">
                     <!--<img src="Aatrox_0.jpg"> fixare in modo che entra nel riquadro-->
@@ -73,9 +124,7 @@
                 </div>
             </div>
 
-
-
-           <div class="winrate_col">
+           <div class="winrate_col_vs">
                 <div class="player_stat">
                     winrate 32434234
                 </div>
@@ -92,8 +141,6 @@
                     campione
                 </div>
            </div>
-
-        </div>
 
         <div id="result">
             result machine learning
