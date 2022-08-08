@@ -32,7 +32,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-e57452bf-f65f-488e-b69e-97b1968a7a98";
+let api_key = "RGAPI-1a9f3ef7-bbc8-46a5-bb50-145473fe6750";
 
 let mainWindow;
 
@@ -105,39 +105,56 @@ setTimeout(5000, ()=>{
 */
 
 function calculate_team_elo(players_tier, players_rank){
+    console.log("player_tiers", players_tier, "players_rank", players_rank);
+    console.log("player_tiers[1]", players_tier[1], "players_rank[1]", players_rank[1]);
+
     let result = 0;
     for(let i = 0; i < 5; i++){
         switch(players_tier[i]){
             case "IRON":
                 result += 1;
+                break;
             case "BRONZE":
                 result += 5;
+                break;
             case "SILVER":
                 result += 9;
+                break;
             case "GOLD":
                 result += 13;
+                break;
             case "PLATINUM":
                 result += 17;
+                break;
             case "DIAMOND":
                 result += 21;
+                break;
             case "MASTER":
                 result += 25;
+                break;
             case "GRANDMASTER":
                 result += 27;
+                break;
             case "CHALLENGER":
                 result += 29;
+                break;
         }
     }
+    console.log("result pre rank", result);
     for(let i = 0; i < 5; i++){
         switch(players_rank[i]){
             case "II":
                 result += 1;
+                break;
             case "III":
                 result += 2;
+                break;
             case "IV":
                 result += 3;
+                break;
         }
     }
+    console.log("result finale", result);
 
     result = result / 5;
     return result;
@@ -254,51 +271,98 @@ class RiotWSProtocol extends WebSocket {
                     //che ritorna le informazioni richieste in modo semplice
                     
                     if(lolData.data.phase == "GameStart"){
-                        console.log("dentro gamestart");
                         fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
                         .then(result => result.json())
                         .then(data => {
+
                             summonerId = data.id;
-                            console.log("data.id", data.id);
-                            console.log("summonerId", summonerId);
-                            console.log("api_key", api_key);
+                            summonerId = "X82Oq0h87oqfadaKqjRtZkKi-uujjXXQhv8BJv8Io13rlAM";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
-                                console.log("dati", data); //trovato errore, lo fixo domani
+                                let call_num = 0;
+                                //console.log("dati seconda fetch",data);
+
                                 let participants_array = new Array();
                                 let teamId_array = new Array();
                                 let teamId_player;
-                                console.log("prima del for");
-                                //console.log("participants_array[0]", participants_array[0]); 
+
                                 for(let i = 0; i < 10; i++){
-                                    console.log("prima di participants_array.push(data.participants[i].summonerId);")
                                     participants_array.push(data.participants[i].summonerId);
-                                    console.log("prima di teamId_array.push(data.participants[i].teamId);")
                                     teamId_array.push(data.participants[i].teamId);
-                                    console.log("prima di if");
+
                                     if(participants_array[i] == summonerId){
                                         teamId_player = data.participants[i].teamId;
                                     }
-                                    console.log("data.participants[i].summonerId", data.participants[i].summonerId);
-                                    console.log("data.participants[i].teamId", data.participants[i].teamId);
+
+                                    //console.log("data.participants[i].summonerId", data.participants[i].summonerId);
+                                    //console.log("data.participants[i].teamId", data.participants[i].teamId);
                                 }
-                                console.log("dopo for");
                                 for(let i = 0; i < 10; i++){
-                                    fetch("https://euw1.api.riotgames.com/lol/league/v4/entries/" + participants_array[i] + "?api_key=" + api_key)
+                                    fetch("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + participants_array[i] + "?api_key=" + api_key)
                                     .then(result => result.json())
                                     .then(data =>{
-                                        for(let j = 0; j < 10; j++){
-                                            if(teamId_array[i] == teamId_player){
-                                                console.log("data tier e data rank", data.tier, data.rank);
-                                                allies_tier.push(data.tier);
-                                                allies_rank.push(data.rank);
-                                                console.log("allies tier e allies rank", allies_tier[i%5], allies_rank[i%5]);
+                                        //console.log("partecipanti", participants_array);
+                                        //console.log("data terza fetch", data);
+                                        //console.log("data[k].queueType", data[0].queueType);
+                                        if(teamId_array[i] == teamId_player){
+                                            //console.log("dati dei player alleati", data);
+                                            for(let k = 0; k < 3; k++){
+                                                if(data[k].queueType == "RANKED_SOLO_5x5"){
+                                                    allies_tier.push(data[k].tier);
+                                                    allies_rank.push(data[k].rank);
+                                                    //console.log("data[k].tier", data[k].tier, "data[k].rank", data[k].rank);
+                                                    break;
+                                                }
                                             }
-                                            else{
-                                                enemies_tier.push(data.tier);
-                                                enemies_rank.push(data.rank);
+                                        }
+                                        else{
+                                            console.log("dati dei player nemici", data);
+                                            for(let k = 0; k < 3; k++){
+                                                if(data[k].queueType == "RANKED_SOLO_5x5"){
+                                                    enemies_tier.push(data[k].tier);
+                                                    enemies_rank.push(data[k].rank);
+                                                    break;
+                                                }
                                             }
+                                            //console.log("enemies tier e enemis rank", enemies_tier, enemies_rank);   
+                                        }
+                                    })
+                                    .then(() =>{
+                                        call_num++;
+                                        if(call_num == 10){
+                                            //console.log("allies tier e allies rank", allies_tier, allies_rank);
+                                            //console.log("enemies tier e enemis rank", enemies_tier, enemies_rank);   
+    
+                                            average_elo_allies = calculate_team_elo(allies_tier, allies_rank);
+                                            average_elo_enemies = calculate_team_elo(enemies_tier, enemies_rank);
+                                            difference_between_teams = average_elo_allies - average_elo_enemies; //quindi valori negativi non sono buoni
+                                            console.log("average_elo_allies average_elo_enemies difference_between_teams riga 331", average_elo_allies, average_elo_enemies, difference_between_teams);
+
+                                            let obj_difference_between_teams = {"difference_between_teams": difference_between_teams};
+
+                                            let string_obj = JSON.stringify(obj_difference_between_teams);
+                                            let obj_array = new Array();
+                                            
+
+                                            fs.readFile('information.json', 'utf8', (err, datas)=>{
+                                                if (err){
+                                                    console.log(err);
+                                                } else {
+                                                    let obj = JSON.parse(datas); //now it an object
+                                                    obj_array.push(obj);
+                                                    obj_array.push(obj_difference_between_teams);
+                                                    let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
+                                                    fs.writeFile('information.json', json_array, 'utf8', function (err) {
+                                                        if (err) {
+                                                            console.log("An error occured while writing JSON Object to File.");
+                                                            return console.log(err);
+                                                        }
+                                                        console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                                                        console.log("JSON file has been saved.");
+                                                    });
+                                                }
+                                            });
                                         }
                                     })
                                     .catch((error) =>{
@@ -309,12 +373,6 @@ class RiotWSProtocol extends WebSocket {
                             .catch((error) =>{
                                 console.log("errore nella seconda fetch", error);
                             })
-                        })
-                        .then(() =>{
-                            average_elo_allies = calculate_team_elo(allies_tier, allies_rank);
-                            average_elo_enemies = calculate_team_elo(enemies_tier, enemies_rank);
-                            difference_between_teams = average_elo_allies - average_elo_enemies; //quindi valori negativi non sono buoni
-                            console.log("average_elo_allies average_elo_enemies difference_between_teams", average_elo_allies, average_elo_enemies, difference_between_teams);
                         })
                         .catch(() =>{
                             console.log("errore nella prima fetch", error);
