@@ -404,14 +404,25 @@ function get_champion_match(puuid){
         .then(() =>{
             let obj_champ = {"last_champion_played": {name: last_champion_played}};
             let string_obj = JSON.stringify(obj_champ);
+            let obj_array = new Array();
 
-            fs.writeFile('information.json', string_obj, 'utf8', function (err) {
-                if (err) {
-                    console.log("An error occured while writing JSON Object to File.");
-                    return console.log(err);
+            fs.readFile('information.json', 'utf8', (err, datas)=>{
+                if (err){
+                    console.log(err);
+                } else {
+                    let obj = JSON.parse(datas); //now it an object
+                    obj_array.push(obj);
+                    obj_array.push(obj_champ);
+                    let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
+                    fs.writeFile('information.json', json_array, 'utf8', function (err) {
+                        if (err) {
+                            console.log("An error occured while writing JSON Object to File.");
+                            return console.log(err);
+                        }
+                        console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                        console.log("JSON file has been saved.");
+                    });
                 }
-                console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
-                console.log("JSON file has been saved.");
             });
         })
     })

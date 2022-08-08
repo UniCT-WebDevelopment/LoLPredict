@@ -9,6 +9,8 @@ const { setTimeout } = require("timers/promises");
 const https = require('node:https');
 const api_server = require('./modules/api_riot');
 
+const jsonFilePath = './information.json';
+
 //const fetch = require('node-fetch');
 //import {get_winrate_player_champions  , get_last_champion_played} from "./public/assets/js/to_api_server";
 //const function_player = require("./public/assets/js/to_api_server");
@@ -349,6 +351,7 @@ class RiotWSProtocol extends WebSocket {
                                                 if (err){
                                                     console.log(err);
                                                 } else {
+                                                    //console.log("datas", datas);
                                                     let obj = JSON.parse(datas); //now it an object
                                                     obj_array.push(obj);
                                                     obj_array.push(obj_difference_between_teams);
