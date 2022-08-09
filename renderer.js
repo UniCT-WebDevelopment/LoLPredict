@@ -31,7 +31,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         //console.log(player_ranked_level); //vanno messi i nomi dei parametri passati uguali sia qui che in main.js
         if(player_ranked_level != undefined){
-            el.playerRank.innerHTML = player_ranked_tier + player_ranked_level;
+            el.playerRank.innerHTML = player_ranked_tier+" "+ player_ranked_level;
             el.rankIcon.setAttribute("src", "../ranked-emblems/Emblem_" + player_ranked_tier + ".png");
         }
 
