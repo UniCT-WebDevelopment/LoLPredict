@@ -451,7 +451,7 @@ function get_winrate_player(summoner_name, num_games){
 }
 
 function get_winrate_player_champions(summoner_name, num_games, champion_againts = undefined){
-    get_info_summoner_name(summoner_name)
+    return get_info_summoner_name(summoner_name)
     .then(response => response.json())
     .then(data => {
         get_list_matches(data.puuid, num_games)
@@ -463,7 +463,7 @@ function get_winrate_player_champions(summoner_name, num_games, champion_againts
 }
 
 function get_last_champion_played(summoner_name){
-    get_info_summoner_name(summoner_name)
+    return get_info_summoner_name(summoner_name)
     .then(response => response.json())
     .then(data => {
         get_champion_match(data.puuid);
