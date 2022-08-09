@@ -34,7 +34,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-c4fce7bb-37f5-403e-825d-7cde5cf3c76e";
+let api_key = "RGAPI-f771141e-7364-4965-b5e4-0f9565ab3a94";
 
 let mainWindow;
 
@@ -236,7 +236,7 @@ class RiotWSProtocol extends WebSocket {
                         //svuotare file json
 
                         //api_server.get_last_champion_played("AlexNext");
-                        api_server.get_winrate_player_champions("AlexNext", 65);
+                        api_server.get_winrate_player_champions("AlexNext", 20);
                         
                         //api_server.get_winrate_player_champions("AlexNext", 75, "Olaf");
                         

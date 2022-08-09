@@ -1,7 +1,7 @@
 const fs = require('fs');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-let key_api = "RGAPI-c4fce7bb-37f5-403e-825d-7cde5cf3c76e";
+let key_api = "RGAPI-f771141e-7364-4965-b5e4-0f9565ab3a94";
 
 const jsonFilePath = '../information.json';
 
@@ -17,11 +17,13 @@ let win_againts_champion = 0;
 
 function sleep(miliseconds) {
     var currentTime = new Date().getTime();
+    console.log("current time", currentTime);
 
     //console.log(currentTime);
     while (currentTime + miliseconds >= new Date().getTime()) {
         //console.log("aspetta");
     }
+    console.log("while finito a ", new Date().getTime());
  }
 
 function get_info_summoner_name(summoner_name){
@@ -187,6 +189,7 @@ function analize_matches_champions(data, num_games, champion_againts){
 
     for(let j = 0; j < num_games; j++){
         let complete_url = first_half_url + name_game[j] + second_half_url;
+        console.log("name game", name_game[j]);
         fetch(complete_url, {
             method: "GET",
             headers:{
@@ -196,6 +199,7 @@ function analize_matches_champions(data, num_games, champion_againts){
         .then(response => response.json())
         .then(data => {
             //console.log("eseguendo fetch n" + j);
+            console.log("partita a buon fine n", j, data);
             sum_games++;
             let teamid_againts;
             let teamid_player;
@@ -204,11 +208,13 @@ function analize_matches_champions(data, num_games, champion_againts){
             for(let y = 0; y < 10; y++){
                 //console.log("ciclo n " + y + " di richiesta fetch numero " + j);
                 //console.log(data.info.participants[y]);
-                if(data.info.participants[y].championName == champion_againts && data.info.participants[y].puuid != puuid_player){
-                    games_againts_champion++;
-                    teamid_againts = data.info.participants[y].teamId;
-                    num_player = y;
-                    //console.log("campione trovato", games_againts_champion, teamid_againts, num_player);
+                if(champion_againts != undefined){
+                    if(data.info.participants[y].championName == champion_againts && data.info.participants[y].puuid != puuid_player){
+                        games_againts_champion++;
+                        teamid_againts = data.info.participants[y].teamId;
+                        num_player = y;
+                        //console.log("campione trovato", games_againts_champion, teamid_againts, num_player);
+                    }
                 }
                 if(data.info.participants[y].puuid == puuid_player){
                     teamid_player = data.info.participants[y].teamId;
@@ -265,9 +271,9 @@ function analize_matches_champions(data, num_games, champion_againts){
                     winrate_champions_array[i] = champions_player[i].get_info();
                 }
 
-                //console.log("winrate player " + winrate_player);
-                //console.log("num_games " + num_games);
-                //console.log("games_winned " + games_winned);
+                console.log("winrate player " + winrate_player);
+                console.log("num_games " + num_games);
+                console.log("games_winned " + games_winned);
 
                 if(champion_againts != undefined){
                     winrate_againts_champion = (win_againts_champion/games_againts_champion)*100; 
@@ -305,7 +311,7 @@ function analize_matches_champions(data, num_games, champion_againts){
                                 return console.log(err);
                             }
                             console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
-                            console.log("JSON file has been saved.");
+                            console.log("scrittura in then.");
                         });
                     }
                 });
@@ -315,6 +321,7 @@ function analize_matches_champions(data, num_games, champion_againts){
         })
         .catch(() =>{
             num_error++;
+            console.log("num errori", num_error);
             let winrate_champions_array = new Array();
             
             if((num_error+sum_games) == num_games){ //così da fare il calcolo solo una volta
@@ -336,10 +343,10 @@ function analize_matches_champions(data, num_games, champion_againts){
 
                 let obj_winrate;
                 if(champion_againts != undefined){
-                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned, "champion_against": champion_againts }}
+                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": sum_games, "games_winned":games_winned, "champion_against": champion_againts }}
                 }
                 else{
-                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned, "champion_againt":0}}
+                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": sum_games, "games_winned":games_winned, "champion_againt":0}}
                 }
 
                 let string_obj = JSON.stringify(obj_winrate);
@@ -364,7 +371,7 @@ function analize_matches_champions(data, num_games, champion_againts){
                                 return console.log(err);
                             }
                             console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
-                            console.log("JSON file has been saved.");
+                            console.log("scrittura in catch");
                         });
                     }
                 });
