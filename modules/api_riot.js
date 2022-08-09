@@ -315,11 +315,13 @@ function analize_matches_champions(data, num_games, champion_againts){
         })
         .catch(() =>{
             num_error++;
+            let winrate_champions_array = new Array();
+            
             if((num_error+sum_games) == num_games){ //così da fare il calcolo solo una volta
                 winrate_player = (games_winned/sum_games)*100;
                 for(let i = 0; i < champions_player.length; i++){
                     champions_player[i].calculate_winrate();
-                    champions_player[i].get_info();
+                    winrate_champions_array[i] = champions_player[i].get_info();
                 }
 
                 //console.log("winrate player " + winrate_player);

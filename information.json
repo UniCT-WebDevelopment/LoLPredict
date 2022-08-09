@@ -1,725 +1,802 @@
 [
- [
-  [
    [
-    [
-     [
       [
-       [
-        [
          [
-          [
-           [
             [
-             {
-              "winrate_infos": {
+               [
+                  [
+                     [
+                        [
+                           [
+                              [
+                                 [
+                                    [
+                                       {
+                                          "winrate_infos": {
+                                             "winrate_player": 70,
+                                             "num_games": 10,
+                                             "games_winned": 7,
+                                             "champion_againt": 0
+                                          }
+                                       },
+                                       [
+                                          {
+                                             "champion_stats": {
+                                                "champion": "Malzahar",
+                                                "winrate": 100,
+                                                "games_played": 3,
+                                                "games_winned": 3
+                                             }
+                                          },
+                                          {
+                                             "champion_stats": {
+                                                "champion": "Sivir",
+                                                "winrate": 100,
+                                                "games_played": 2,
+                                                "games_winned": 2
+                                             }
+                                          },
+                                          {
+                                             "champion_stats": {
+                                                "champion": "Tristana",
+                                                "winrate": 100,
+                                                "games_played": 1,
+                                                "games_winned": 1
+                                             }
+                                          },
+                                          {
+                                             "champion_stats": {
+                                                "champion": "Twitch",
+                                                "winrate": 0,
+                                                "games_played": 1,
+                                                "games_winned": 0
+                                             }
+                                          },
+                                          {
+                                             "champion_stats": {
+                                                "champion": "Swain",
+                                                "winrate": 100,
+                                                "games_played": 1,
+                                                "games_winned": 1
+                                             }
+                                          },
+                                          {
+                                             "champion_stats": {
+                                                "champion": "Jhin",
+                                                "winrate": 0,
+                                                "games_played": 2,
+                                                "games_winned": 0
+                                             }
+                                          }
+                                       ]
+                                    ],
+                                    {
+                                       "winrate_infos": {
+                                          "winrate_player": 70,
+                                          "num_games": 10,
+                                          "games_winned": 7,
+                                          "champion_againt": 0
+                                       }
+                                    },
+                                    [
+                                       {
+                                          "champion_stats": {
+                                             "champion": "Malzahar",
+                                             "winrate": 100,
+                                             "games_played": 3,
+                                             "games_winned": 3
+                                          }
+                                       },
+                                       {
+                                          "champion_stats": {
+                                             "champion": "Sivir",
+                                             "winrate": 100,
+                                             "games_played": 2,
+                                             "games_winned": 2
+                                          }
+                                       },
+                                       {
+                                          "champion_stats": {
+                                             "champion": "Jhin",
+                                             "winrate": 0,
+                                             "games_played": 2,
+                                             "games_winned": 0
+                                          }
+                                       },
+                                       {
+                                          "champion_stats": {
+                                             "champion": "Swain",
+                                             "winrate": 100,
+                                             "games_played": 1,
+                                             "games_winned": 1
+                                          }
+                                       },
+                                       {
+                                          "champion_stats": {
+                                             "champion": "Tristana",
+                                             "winrate": 100,
+                                             "games_played": 1,
+                                             "games_winned": 1
+                                          }
+                                       },
+                                       {
+                                          "champion_stats": {
+                                             "champion": "Twitch",
+                                             "winrate": 0,
+                                             "games_played": 1,
+                                             "games_winned": 0
+                                          }
+                                       }
+                                    ]
+                                 ],
+                                 {
+                                    "winrate_infos": {
+                                       "winrate_player": 70,
+                                       "num_games": 10,
+                                       "games_winned": 7,
+                                       "champion_againt": 0
+                                    }
+                                 },
+                                 [
+                                    {
+                                       "champion_stats": {
+                                          "champion": "Jhin",
+                                          "winrate": 0,
+                                          "games_played": 2,
+                                          "games_winned": 0
+                                       }
+                                    },
+                                    {
+                                       "champion_stats": {
+                                          "champion": "Malzahar",
+                                          "winrate": 100,
+                                          "games_played": 3,
+                                          "games_winned": 3
+                                       }
+                                    },
+                                    {
+                                       "champion_stats": {
+                                          "champion": "Twitch",
+                                          "winrate": 0,
+                                          "games_played": 1,
+                                          "games_winned": 0
+                                       }
+                                    },
+                                    {
+                                       "champion_stats": {
+                                          "champion": "Sivir",
+                                          "winrate": 100,
+                                          "games_played": 2,
+                                          "games_winned": 2
+                                       }
+                                    },
+                                    {
+                                       "champion_stats": {
+                                          "champion": "Swain",
+                                          "winrate": 100,
+                                          "games_played": 1,
+                                          "games_winned": 1
+                                       }
+                                    },
+                                    {
+                                       "champion_stats": {
+                                          "champion": "Tristana",
+                                          "winrate": 100,
+                                          "games_played": 1,
+                                          "games_winned": 1
+                                       }
+                                    }
+                                 ]
+                              ],
+                              {
+                                 "winrate_infos": {
+                                    "winrate_player": 70,
+                                    "num_games": 10,
+                                    "games_winned": 7,
+                                    "champion_againt": 0
+                                 }
+                              },
+                              [
+                                 {
+                                    "champion_stats": {
+                                       "champion": "Swain",
+                                       "winrate": 100,
+                                       "games_played": 1,
+                                       "games_winned": 1
+                                    }
+                                 },
+                                 {
+                                    "champion_stats": {
+                                       "champion": "Twitch",
+                                       "winrate": 0,
+                                       "games_played": 1,
+                                       "games_winned": 0
+                                    }
+                                 },
+                                 {
+                                    "champion_stats": {
+                                       "champion": "Sivir",
+                                       "winrate": 100,
+                                       "games_played": 2,
+                                       "games_winned": 2
+                                    }
+                                 },
+                                 {
+                                    "champion_stats": {
+                                       "champion": "Jhin",
+                                       "winrate": 0,
+                                       "games_played": 2,
+                                       "games_winned": 0
+                                    }
+                                 },
+                                 {
+                                    "champion_stats": {
+                                       "champion": "Tristana",
+                                       "winrate": 100,
+                                       "games_played": 1,
+                                       "games_winned": 1
+                                    }
+                                 },
+                                 {
+                                    "champion_stats": {
+                                       "champion": "Malzahar",
+                                       "winrate": 100,
+                                       "games_played": 3,
+                                       "games_winned": 3
+                                    }
+                                 }
+                              ]
+                           ],
+                           {
+                              "winrate_infos": {
+                                 "winrate_player": 70,
+                                 "num_games": 10,
+                                 "games_winned": 7,
+                                 "champion_againt": 0
+                              }
+                           },
+                           [
+                              {
+                                 "champion_stats": {
+                                    "champion": "Tristana",
+                                    "winrate": 100,
+                                    "games_played": 1,
+                                    "games_winned": 1
+                                 }
+                              },
+                              {
+                                 "champion_stats": {
+                                    "champion": "Sivir",
+                                    "winrate": 100,
+                                    "games_played": 2,
+                                    "games_winned": 2
+                                 }
+                              },
+                              {
+                                 "champion_stats": {
+                                    "champion": "Twitch",
+                                    "winrate": 0,
+                                    "games_played": 1,
+                                    "games_winned": 0
+                                 }
+                              },
+                              {
+                                 "champion_stats": {
+                                    "champion": "Malzahar",
+                                    "winrate": 100,
+                                    "games_played": 3,
+                                    "games_winned": 3
+                                 }
+                              },
+                              {
+                                 "champion_stats": {
+                                    "champion": "Jhin",
+                                    "winrate": 0,
+                                    "games_played": 2,
+                                    "games_winned": 0
+                                 }
+                              },
+                              {
+                                 "champion_stats": {
+                                    "champion": "Swain",
+                                    "winrate": 100,
+                                    "games_played": 1,
+                                    "games_winned": 1
+                                 }
+                              }
+                           ]
+                        ],
+                        {
+                           "winrate_infos": {
+                              "winrate_player": 70,
+                              "num_games": 10,
+                              "games_winned": 7,
+                              "champion_againt": 0
+                           }
+                        },
+                        [
+                           {
+                              "champion_stats": {
+                                 "champion": "Malzahar",
+                                 "winrate": 100,
+                                 "games_played": 3,
+                                 "games_winned": 3
+                              }
+                           },
+                           {
+                              "champion_stats": {
+                                 "champion": "Twitch",
+                                 "winrate": 0,
+                                 "games_played": 1,
+                                 "games_winned": 0
+                              }
+                           },
+                           {
+                              "champion_stats": {
+                                 "champion": "Tristana",
+                                 "winrate": 100,
+                                 "games_played": 1,
+                                 "games_winned": 1
+                              }
+                           },
+                           {
+                              "champion_stats": {
+                                 "champion": "Swain",
+                                 "winrate": 100,
+                                 "games_played": 1,
+                                 "games_winned": 1
+                              }
+                           },
+                           {
+                              "champion_stats": {
+                                 "champion": "Sivir",
+                                 "winrate": 100,
+                                 "games_played": 2,
+                                 "games_winned": 2
+                              }
+                           },
+                           {
+                              "champion_stats": {
+                                 "champion": "Jhin",
+                                 "winrate": 0,
+                                 "games_played": 2,
+                                 "games_winned": 0
+                              }
+                           }
+                        ]
+                     ],
+                     {
+                        "winrate_infos": {
+                           "winrate_player": 70,
+                           "num_games": 10,
+                           "games_winned": 7,
+                           "champion_againt": 0
+                        }
+                     },
+                     [
+                        {
+                           "champion_stats": {
+                              "champion": "Malzahar",
+                              "winrate": 100,
+                              "games_played": 3,
+                              "games_winned": 3
+                           }
+                        },
+                        {
+                           "champion_stats": {
+                              "champion": "Sivir",
+                              "winrate": 100,
+                              "games_played": 2,
+                              "games_winned": 2
+                           }
+                        },
+                        {
+                           "champion_stats": {
+                              "champion": "Jhin",
+                              "winrate": 0,
+                              "games_played": 2,
+                              "games_winned": 0
+                           }
+                        },
+                        {
+                           "champion_stats": {
+                              "champion": "Swain",
+                              "winrate": 100,
+                              "games_played": 1,
+                              "games_winned": 1
+                           }
+                        },
+                        {
+                           "champion_stats": {
+                              "champion": "Twitch",
+                              "winrate": 0,
+                              "games_played": 1,
+                              "games_winned": 0
+                           }
+                        },
+                        {
+                           "champion_stats": {
+                              "champion": "Tristana",
+                              "winrate": 100,
+                              "games_played": 1,
+                              "games_winned": 1
+                           }
+                        }
+                     ]
+                  ],
+                  {
+                     "winrate_infos": {
+                        "winrate_player": 70,
+                        "num_games": 10,
+                        "games_winned": 7,
+                        "champion_againt": 0
+                     }
+                  },
+                  [
+                     {
+                        "champion_stats": {
+                           "champion": "Jhin",
+                           "winrate": 0,
+                           "games_played": 2,
+                           "games_winned": 0
+                        }
+                     },
+                     {
+                        "champion_stats": {
+                           "champion": "Twitch",
+                           "winrate": 0,
+                           "games_played": 1,
+                           "games_winned": 0
+                        }
+                     },
+                     {
+                        "champion_stats": {
+                           "champion": "Malzahar",
+                           "winrate": 100,
+                           "games_played": 3,
+                           "games_winned": 3
+                        }
+                     },
+                     {
+                        "champion_stats": {
+                           "champion": "Tristana",
+                           "winrate": 100,
+                           "games_played": 1,
+                           "games_winned": 1
+                        }
+                     },
+                     {
+                        "champion_stats": {
+                           "champion": "Sivir",
+                           "winrate": 100,
+                           "games_played": 2,
+                           "games_winned": 2
+                        }
+                     },
+                     {
+                        "champion_stats": {
+                           "champion": "Swain",
+                           "winrate": 100,
+                           "games_played": 1,
+                           "games_winned": 1
+                        }
+                     }
+                  ]
+               ],
+               {
+                  "winrate_infos": {
+                     "winrate_player": 70,
+                     "num_games": 10,
+                     "games_winned": 7,
+                     "champion_againt": 0
+                  }
+               },
+               [
+                  {
+                     "champion_stats": {
+                        "champion": "Swain",
+                        "winrate": 100,
+                        "games_played": 1,
+                        "games_winned": 1
+                     }
+                  },
+                  {
+                     "champion_stats": {
+                        "champion": "Jhin",
+                        "winrate": 0,
+                        "games_played": 2,
+                        "games_winned": 0
+                     }
+                  },
+                  {
+                     "champion_stats": {
+                        "champion": "Sivir",
+                        "winrate": 100,
+                        "games_played": 2,
+                        "games_winned": 2
+                     }
+                  },
+                  {
+                     "champion_stats": {
+                        "champion": "Malzahar",
+                        "winrate": 100,
+                        "games_played": 3,
+                        "games_winned": 3
+                     }
+                  },
+                  {
+                     "champion_stats": {
+                        "champion": "Twitch",
+                        "winrate": 0,
+                        "games_played": 1,
+                        "games_winned": 0
+                     }
+                  },
+                  {
+                     "champion_stats": {
+                        "champion": "Tristana",
+                        "winrate": 100,
+                        "games_played": 1,
+                        "games_winned": 1
+                     }
+                  }
+               ]
+            ],
+            {
+               "winrate_infos": {
+                  "winrate_player": 70,
+                  "num_games": 10,
+                  "games_winned": 7,
+                  "champion_againt": 0
+               }
+            },
+            [
+               {
+                  "champion_stats": {
+                     "champion": "Sivir",
+                     "winrate": 100,
+                     "games_played": 2,
+                     "games_winned": 2
+                  }
+               },
+               {
+                  "champion_stats": {
+                     "champion": "Malzahar",
+                     "winrate": 100,
+                     "games_played": 3,
+                     "games_winned": 3
+                  }
+               },
+               {
+                  "champion_stats": {
+                     "champion": "Jhin",
+                     "winrate": 0,
+                     "games_played": 2,
+                     "games_winned": 0
+                  }
+               },
+               {
+                  "champion_stats": {
+                     "champion": "Twitch",
+                     "winrate": 0,
+                     "games_played": 1,
+                     "games_winned": 0
+                  }
+               },
+               {
+                  "champion_stats": {
+                     "champion": "Tristana",
+                     "winrate": 100,
+                     "games_played": 1,
+                     "games_winned": 1
+                  }
+               },
+               {
+                  "champion_stats": {
+                     "champion": "Swain",
+                     "winrate": 100,
+                     "games_played": 1,
+                     "games_winned": 1
+                  }
+               }
+            ]
+         ],
+         {
+            "winrate_infos": {
                "winrate_player": 70,
                "num_games": 10,
                "games_winned": 7,
                "champion_againt": 0
-              }
-             },
-             [
-              {
-               "champion_stats": {
-                "champion": "Malzahar",
-                "winrate": 100,
-                "games_played": 3,
-                "games_winned": 3
-               }
-              },
-              {
-               "champion_stats": {
-                "champion": "Sivir",
-                "winrate": 100,
-                "games_played": 2,
-                "games_winned": 2
-               }
-              },
-              {
-               "champion_stats": {
-                "champion": "Tristana",
-                "winrate": 100,
-                "games_played": 1,
-                "games_winned": 1
-               }
-              },
-              {
-               "champion_stats": {
-                "champion": "Twitch",
-                "winrate": 0,
-                "games_played": 1,
-                "games_winned": 0
-               }
-              },
-              {
-               "champion_stats": {
-                "champion": "Swain",
-                "winrate": 100,
-                "games_played": 1,
-                "games_winned": 1
-               }
-              },
-              {
-               "champion_stats": {
-                "champion": "Jhin",
-                "winrate": 0,
-                "games_played": 2,
-                "games_winned": 0
-               }
-              }
-             ]
-            ],
-            {
-             "winrate_infos": {
-              "winrate_player": 70,
-              "num_games": 10,
-              "games_winned": 7,
-              "champion_againt": 0
-             }
-            },
-            [
-             {
-              "champion_stats": {
-               "champion": "Malzahar",
-               "winrate": 100,
-               "games_played": 3,
-               "games_winned": 3
-              }
-             },
-             {
-              "champion_stats": {
-               "champion": "Sivir",
-               "winrate": 100,
-               "games_played": 2,
-               "games_winned": 2
-              }
-             },
-             {
-              "champion_stats": {
-               "champion": "Jhin",
-               "winrate": 0,
-               "games_played": 2,
-               "games_winned": 0
-              }
-             },
-             {
-              "champion_stats": {
-               "champion": "Swain",
-               "winrate": 100,
-               "games_played": 1,
-               "games_winned": 1
-              }
-             },
-             {
-              "champion_stats": {
-               "champion": "Tristana",
-               "winrate": 100,
-               "games_played": 1,
-               "games_winned": 1
-              }
-             },
-             {
-              "champion_stats": {
-               "champion": "Twitch",
-               "winrate": 0,
-               "games_played": 1,
-               "games_winned": 0
-              }
-             }
-            ]
-           ],
-           {
-            "winrate_infos": {
-             "winrate_player": 70,
-             "num_games": 10,
-             "games_winned": 7,
-             "champion_againt": 0
             }
-           },
-           [
+         },
+         [
             {
-             "champion_stats": {
-              "champion": "Jhin",
-              "winrate": 0,
-              "games_played": 2,
-              "games_winned": 0
-             }
+               "champion_stats": {
+                  "champion": "Twitch",
+                  "winrate": 0,
+                  "games_played": 1,
+                  "games_winned": 0
+               }
             },
             {
-             "champion_stats": {
-              "champion": "Malzahar",
-              "winrate": 100,
-              "games_played": 3,
-              "games_winned": 3
-             }
+               "champion_stats": {
+                  "champion": "Sivir",
+                  "winrate": 100,
+                  "games_played": 2,
+                  "games_winned": 2
+               }
             },
             {
-             "champion_stats": {
-              "champion": "Twitch",
-              "winrate": 0,
-              "games_played": 1,
-              "games_winned": 0
-             }
+               "champion_stats": {
+                  "champion": "Tristana",
+                  "winrate": 100,
+                  "games_played": 1,
+                  "games_winned": 1
+               }
             },
             {
-             "champion_stats": {
-              "champion": "Sivir",
-              "winrate": 100,
-              "games_played": 2,
-              "games_winned": 2
-             }
+               "champion_stats": {
+                  "champion": "Jhin",
+                  "winrate": 0,
+                  "games_played": 2,
+                  "games_winned": 0
+               }
             },
             {
-             "champion_stats": {
-              "champion": "Swain",
-              "winrate": 100,
-              "games_played": 1,
-              "games_winned": 1
-             }
+               "champion_stats": {
+                  "champion": "Swain",
+                  "winrate": 100,
+                  "games_played": 1,
+                  "games_winned": 1
+               }
             },
             {
-             "champion_stats": {
-              "champion": "Tristana",
-              "winrate": 100,
-              "games_played": 1,
-              "games_winned": 1
-             }
+               "champion_stats": {
+                  "champion": "Malzahar",
+                  "winrate": 100,
+                  "games_played": 3,
+                  "games_winned": 3
+               }
             }
-           ]
-          ],
-          {
-           "winrate_infos": {
+         ]
+      ],
+      {
+         "winrate_infos": {
             "winrate_player": 70,
             "num_games": 10,
             "games_winned": 7,
             "champion_againt": 0
-           }
-          },
-          [
-           {
-            "champion_stats": {
-             "champion": "Swain",
-             "winrate": 100,
-             "games_played": 1,
-             "games_winned": 1
-            }
-           },
-           {
-            "champion_stats": {
-             "champion": "Twitch",
-             "winrate": 0,
-             "games_played": 1,
-             "games_winned": 0
-            }
-           },
-           {
-            "champion_stats": {
-             "champion": "Sivir",
-             "winrate": 100,
-             "games_played": 2,
-             "games_winned": 2
-            }
-           },
-           {
-            "champion_stats": {
-             "champion": "Jhin",
-             "winrate": 0,
-             "games_played": 2,
-             "games_winned": 0
-            }
-           },
-           {
-            "champion_stats": {
-             "champion": "Tristana",
-             "winrate": 100,
-             "games_played": 1,
-             "games_winned": 1
-            }
-           },
-           {
-            "champion_stats": {
-             "champion": "Malzahar",
-             "winrate": 100,
-             "games_played": 3,
-             "games_winned": 3
-            }
-           }
-          ]
-         ],
-         {
-          "winrate_infos": {
-           "winrate_player": 70,
-           "num_games": 10,
-           "games_winned": 7,
-           "champion_againt": 0
-          }
-         },
-         [
-          {
-           "champion_stats": {
-            "champion": "Tristana",
-            "winrate": 100,
-            "games_played": 1,
-            "games_winned": 1
-           }
-          },
-          {
-           "champion_stats": {
-            "champion": "Sivir",
-            "winrate": 100,
-            "games_played": 2,
-            "games_winned": 2
-           }
-          },
-          {
-           "champion_stats": {
-            "champion": "Twitch",
-            "winrate": 0,
-            "games_played": 1,
-            "games_winned": 0
-           }
-          },
-          {
-           "champion_stats": {
-            "champion": "Malzahar",
-            "winrate": 100,
-            "games_played": 3,
-            "games_winned": 3
-           }
-          },
-          {
-           "champion_stats": {
-            "champion": "Jhin",
-            "winrate": 0,
-            "games_played": 2,
-            "games_winned": 0
-           }
-          },
-          {
-           "champion_stats": {
-            "champion": "Swain",
-            "winrate": 100,
-            "games_played": 1,
-            "games_winned": 1
-           }
-          }
-         ]
-        ],
-        {
-         "winrate_infos": {
-          "winrate_player": 70,
-          "num_games": 10,
-          "games_winned": 7,
-          "champion_againt": 0
          }
-        },
-        [
-         {
-          "champion_stats": {
-           "champion": "Malzahar",
-           "winrate": 100,
-           "games_played": 3,
-           "games_winned": 3
-          }
-         },
-         {
-          "champion_stats": {
-           "champion": "Twitch",
-           "winrate": 0,
-           "games_played": 1,
-           "games_winned": 0
-          }
-         },
-         {
-          "champion_stats": {
-           "champion": "Tristana",
-           "winrate": 100,
-           "games_played": 1,
-           "games_winned": 1
-          }
-         },
-         {
-          "champion_stats": {
-           "champion": "Swain",
-           "winrate": 100,
-           "games_played": 1,
-           "games_winned": 1
-          }
-         },
-         {
-          "champion_stats": {
-           "champion": "Sivir",
-           "winrate": 100,
-           "games_played": 2,
-           "games_winned": 2
-          }
-         },
-         {
-          "champion_stats": {
-           "champion": "Jhin",
-           "winrate": 0,
-           "games_played": 2,
-           "games_winned": 0
-          }
-         }
-        ]
-       ],
-       {
-        "winrate_infos": {
-         "winrate_player": 70,
-         "num_games": 10,
-         "games_winned": 7,
-         "champion_againt": 0
-        }
-       },
-       [
-        {
-         "champion_stats": {
-          "champion": "Malzahar",
-          "winrate": 100,
-          "games_played": 3,
-          "games_winned": 3
-         }
-        },
-        {
-         "champion_stats": {
-          "champion": "Sivir",
-          "winrate": 100,
-          "games_played": 2,
-          "games_winned": 2
-         }
-        },
-        {
-         "champion_stats": {
-          "champion": "Jhin",
-          "winrate": 0,
-          "games_played": 2,
-          "games_winned": 0
-         }
-        },
-        {
-         "champion_stats": {
-          "champion": "Swain",
-          "winrate": 100,
-          "games_played": 1,
-          "games_winned": 1
-         }
-        },
-        {
-         "champion_stats": {
-          "champion": "Twitch",
-          "winrate": 0,
-          "games_played": 1,
-          "games_winned": 0
-         }
-        },
-        {
-         "champion_stats": {
-          "champion": "Tristana",
-          "winrate": 100,
-          "games_played": 1,
-          "games_winned": 1
-         }
-        }
-       ]
-      ],
-      {
-       "winrate_infos": {
-        "winrate_player": 70,
-        "num_games": 10,
-        "games_winned": 7,
-        "champion_againt": 0
-       }
       },
       [
-       {
-        "champion_stats": {
-         "champion": "Jhin",
-         "winrate": 0,
-         "games_played": 2,
-         "games_winned": 0
-        }
-       },
-       {
-        "champion_stats": {
-         "champion": "Twitch",
-         "winrate": 0,
-         "games_played": 1,
-         "games_winned": 0
-        }
-       },
-       {
-        "champion_stats": {
-         "champion": "Malzahar",
-         "winrate": 100,
-         "games_played": 3,
-         "games_winned": 3
-        }
-       },
-       {
-        "champion_stats": {
-         "champion": "Tristana",
-         "winrate": 100,
-         "games_played": 1,
-         "games_winned": 1
-        }
-       },
-       {
-        "champion_stats": {
-         "champion": "Sivir",
-         "winrate": 100,
-         "games_played": 2,
-         "games_winned": 2
-        }
-       },
-       {
-        "champion_stats": {
-         "champion": "Swain",
-         "winrate": 100,
-         "games_played": 1,
-         "games_winned": 1
-        }
-       }
+         {
+            "champion_stats": {
+               "champion": "Swain",
+               "winrate": 100,
+               "games_played": 1,
+               "games_winned": 1
+            }
+         },
+         {
+            "champion_stats": {
+               "champion": "Jhin",
+               "winrate": 0,
+               "games_played": 2,
+               "games_winned": 0
+            }
+         },
+         {
+            "champion_stats": {
+               "champion": "Sivir",
+               "winrate": 100,
+               "games_played": 2,
+               "games_winned": 2
+            }
+         },
+         {
+            "champion_stats": {
+               "champion": "Malzahar",
+               "winrate": 100,
+               "games_played": 3,
+               "games_winned": 3
+            }
+         },
+         {
+            "champion_stats": {
+               "champion": "Twitch",
+               "winrate": 0,
+               "games_played": 1,
+               "games_winned": 0
+            }
+         },
+         {
+            "champion_stats": {
+               "champion": "Tristana",
+               "winrate": 100,
+               "games_played": 1,
+               "games_winned": 1
+            }
+         }
       ]
-     ],
-     {
-      "winrate_infos": {
-       "winrate_player": 70,
-       "num_games": 10,
-       "games_winned": 7,
-       "champion_againt": 0
-      }
-     },
-     [
-      {
-       "champion_stats": {
-        "champion": "Swain",
-        "winrate": 100,
-        "games_played": 1,
-        "games_winned": 1
-       }
-      },
-      {
-       "champion_stats": {
-        "champion": "Jhin",
-        "winrate": 0,
-        "games_played": 2,
-        "games_winned": 0
-       }
-      },
-      {
-       "champion_stats": {
-        "champion": "Sivir",
-        "winrate": 100,
-        "games_played": 2,
-        "games_winned": 2
-       }
-      },
-      {
-       "champion_stats": {
-        "champion": "Malzahar",
-        "winrate": 100,
-        "games_played": 3,
-        "games_winned": 3
-       }
-      },
-      {
-       "champion_stats": {
-        "champion": "Twitch",
-        "winrate": 0,
-        "games_played": 1,
-        "games_winned": 0
-       }
-      },
-      {
-       "champion_stats": {
-        "champion": "Tristana",
-        "winrate": 100,
-        "games_played": 1,
-        "games_winned": 1
-       }
-      }
-     ]
-    ],
-    {
-     "winrate_infos": {
-      "winrate_player": 70,
-      "num_games": 10,
-      "games_winned": 7,
-      "champion_againt": 0
-     }
-    },
-    [
-     {
-      "champion_stats": {
-       "champion": "Sivir",
-       "winrate": 100,
-       "games_played": 2,
-       "games_winned": 2
-      }
-     },
-     {
-      "champion_stats": {
-       "champion": "Malzahar",
-       "winrate": 100,
-       "games_played": 3,
-       "games_winned": 3
-      }
-     },
-     {
-      "champion_stats": {
-       "champion": "Jhin",
-       "winrate": 0,
-       "games_played": 2,
-       "games_winned": 0
-      }
-     },
-     {
-      "champion_stats": {
-       "champion": "Twitch",
-       "winrate": 0,
-       "games_played": 1,
-       "games_winned": 0
-      }
-     },
-     {
-      "champion_stats": {
-       "champion": "Tristana",
-       "winrate": 100,
-       "games_played": 1,
-       "games_winned": 1
-      }
-     },
-     {
-      "champion_stats": {
-       "champion": "Swain",
-       "winrate": 100,
-       "games_played": 1,
-       "games_winned": 1
-      }
-     }
-    ]
    ],
    {
-    "winrate_infos": {
-     "winrate_player": 70,
-     "num_games": 10,
-     "games_winned": 7,
-     "champion_againt": 0
-    }
+      "difference_between_teams": -0.40000000000000213
    },
-   [
-    {
-     "champion_stats": {
-      "champion": "Twitch",
-      "winrate": 0,
-      "games_played": 1,
-      "games_winned": 0
-     }
-    },
-    {
-     "champion_stats": {
-      "champion": "Sivir",
-      "winrate": 100,
-      "games_played": 2,
-      "games_winned": 2
-     }
-    },
-    {
-     "champion_stats": {
-      "champion": "Tristana",
-      "winrate": 100,
-      "games_played": 1,
-      "games_winned": 1
-     }
-    },
-    {
-     "champion_stats": {
-      "champion": "Jhin",
-      "winrate": 0,
-      "games_played": 2,
-      "games_winned": 0
-     }
-    },
-    {
-     "champion_stats": {
-      "champion": "Swain",
-      "winrate": 100,
-      "games_played": 1,
-      "games_winned": 1
-     }
-    },
-    {
-     "champion_stats": {
-      "champion": "Malzahar",
-      "winrate": 100,
-      "games_played": 3,
-      "games_winned": 3
-     }
-    }
-   ]
-  ],
-  {
-   "winrate_infos": {
-    "winrate_player": 70,
-    "num_games": 10,
-    "games_winned": 7,
-    "champion_againt": 0
+   {
+      "last_champion_played": {
+         "name": "Sivir"
+      }
+   },
+   {
+      "winrate_infos": {
+         "winrate_player": 8,
+         "num_games": 75,
+         "games_winned": 6,
+         "champion_against": "Olaf"
+      }
+   },
+   {
+      "winrate_infos": {
+         "winrate_player": 20,
+         "num_games": 65,
+         "games_winned": 13,
+         "champion_againt": 0
+      }
+   },
+   {
+      "champion_stats": {
+         "champion": "Jhin",
+         "winrate": 33.33333333333333,
+         "games_played": 3,
+         "games_winned": 1
+      }
+   },
+   {
+      "champion_stats": {
+         "champion": "Tristana",
+         "winrate": 33.33333333333333,
+         "games_played": 3,
+         "games_winned": 1
+      }
+   },
+   {
+      "champion_stats": {
+         "champion": "Twitch",
+         "winrate": 100,
+         "games_played": 1,
+         "games_winned": 1
+      }
+   },
+   {
+      "champion_stats": {
+         "champion": "Swain",
+         "winrate": 50,
+         "games_played": 2,
+         "games_winned": 1
+      }
+   },
+   {
+      "champion_stats": {
+         "champion": "Ashe",
+         "winrate": 100,
+         "games_played": 4,
+         "games_winned": 4
+      }
+   },
+   {
+      "champion_stats": {
+         "champion": "Sivir",
+         "winrate": 75,
+         "games_played": 4,
+         "games_winned": 3
+      }
+   },
+   {
+      "champion_stats": {
+         "champion": "Malzahar",
+         "winrate": 66.66666666666666,
+         "games_played": 3,
+         "games_winned": 2
+      }
    }
-  },
-  [
-   {
-    "champion_stats": {
-     "champion": "Swain",
-     "winrate": 100,
-     "games_played": 1,
-     "games_winned": 1
-    }
-   },
-   {
-    "champion_stats": {
-     "champion": "Jhin",
-     "winrate": 0,
-     "games_played": 2,
-     "games_winned": 0
-    }
-   },
-   {
-    "champion_stats": {
-     "champion": "Sivir",
-     "winrate": 100,
-     "games_played": 2,
-     "games_winned": 2
-    }
-   },
-   {
-    "champion_stats": {
-     "champion": "Malzahar",
-     "winrate": 100,
-     "games_played": 3,
-     "games_winned": 3
-    }
-   },
-   {
-    "champion_stats": {
-     "champion": "Twitch",
-     "winrate": 0,
-     "games_played": 1,
-     "games_winned": 0
-    }
-   },
-   {
-    "champion_stats": {
-     "champion": "Tristana",
-     "winrate": 100,
-     "games_played": 1,
-     "games_winned": 1
-    }
-   }
-  ]
- ],
- {
-  "difference_between_teams": -0.40000000000000213
- }
 ]
