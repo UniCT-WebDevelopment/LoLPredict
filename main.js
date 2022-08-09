@@ -9,7 +9,7 @@ const { setTimeout } = require("timers/promises");
 const https = require('node:https');
 const api_server = require('./modules/api_riot');
 
-const jsonFilePath = './information.json';
+const jsonFilePath = 'information.json';
 
 //const fetch = require('node-fetch');
 //import {get_winrate_player_champions  , get_last_champion_played} from "./public/assets/js/to_api_server";
@@ -229,52 +229,38 @@ class RiotWSProtocol extends WebSocket {
                         //console.log(player_ranked_level);
                         let icon_id = lolData.data.icon;
                         //svuotare file json
-                        fs.writeFile(jsonFilePath, "{\"lol\" : \"serverStart\"}" ,'utf8', ()=>{
-                            api_server.get_last_champion_played("AlexNext");
-                            api_server.get_winrate_player_champions("AlexNext", 10);
-
-                            fs.readFile(jsonFilePath, 'utf-8', (err, data) => {
-                                if(err){
-                                    console.log(err);
-                                }else{
-                                    let json_arr = Array.from(JSON.parse(data));
-
-                                    let last_played_champ = json_arr.filter(e => e.last_champion_played != undefined);
-
-                                    let last_matches = json_arr.filter(e => e.champion_stats != undefined);
-
-                                    console.log(json_arr);
-
-                                    mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id, last_played_champ, last_matches});
-                                }
-                            })
-                        });
-
-                        //console.log("PLAYER NAME: " + player_name);
-                        //fa transitare l'app dalla schermata di loading
-                        //alla vera e propria app
-
+                        fs.writeFileSync(jsonFilePath, "{\"lol\" : \"serverStart\"}" ,'utf8', undefined);
                         
+                        api_server.get_last_champion_played("AlexNext")
+                        .then(
+                        () => api_server.get_winrate_player_champions           ("AlexNext", 10))
+                        .then(()=>{
+                                fs.readFile(jsonFilePath, 'utf-8', (err, datas) => {
+                                    if(err){
+                                        console.log(err);
+                                    }else{
 
-                        
+                                        console.log("DATA FROM JSON", datas);
+                                        let _object = JSON.parse(datas);
+                                        
+                                        console.log("OBJECT FROM JSON", _object);
+                                        let json_arr = Array.from(_object);
+
+                                        console.log("DATI PARSATI", json_arr);
+    
+                                        let last_played_champ = json_arr.filter(e => e.last_champion_played != undefined);
+    
+                                        let last_matches = json_arr.filter(e => e.champion_stats != undefined);
+    
+                                        console.log(json_arr);
+    
+                                        mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id, last_played_champ, last_matches});
+                                    }
+                                })
+                            }
+                        )
                     
-                        //
-                        //get_winrate_player_champions("AlexNext", 10, "Olaf");
-
-
-                        //get_last_champion_played("AlexNext");
-                        
-                        //differenza di rank nella partita sia tra la squadre che tra il giocatore e l'avversario
-
-                        /*
-                        fetch("https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_5941739548?api_key=" + api_key)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log("dati stampati da fetch" + JSON.stringify(data) + "fine dati stampati");
-                        })
-                        */
-                        
-                    } 
+                    }
                 } catch(error){
                     //console.log(error);
                 }
@@ -298,14 +284,14 @@ class RiotWSProtocol extends WebSocket {
                     //da questa funzione si prendono tutti i summonerId o i nickname e si chiama
                     //https://euw1.api.riotgames.com/lol/league/v4/ entries/by-summoner/Z2FkqeYQXUklIqRdkbrKdyV1nSuAxP68x9tqpVsrCDURtpo
                     //che ritorna le informazioni richieste in modo semplice
-                    
+                    /*
                     if(lolData.data.phase == "GameStart"){
                         fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
                         .then(result => result.json())
                         .then(data => {
 
                             summonerId = data.id;
-                            summonerId = "X82Oq0h87oqfadaKqjRtZkKi-uujjXXQhv8BJv8Io13rlAM";
+                            summonerId = "FW4mwI3UhFBKruDOOyBVCbbAO_KjHg-HI-sSH27Iq9XckdU";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
@@ -410,6 +396,7 @@ class RiotWSProtocol extends WebSocket {
                             console.log("errore nella prima fetch", error);
                         })
                     }
+                    */
                 }
                 catch(error){
                     //console.log("ha fatto errore lo studio del game", error);
