@@ -254,6 +254,8 @@ class RiotWSProtocol extends WebSocket {
                     //console.log(error);
                 }
 
+                //aggiungere codice e dati sugli avversari così da avere un dataset completo + rivedere scrittura file / gestire cancellazione etc
+
                 try{
                     let summonerId;
                     let enemies_tier = new Array(); //gold, plat etc
@@ -349,9 +351,9 @@ class RiotWSProtocol extends WebSocket {
 
                                             fs.readFile('information.json', 'utf8', (err, datas)=>{
                                                 if (err){
-                                                    console.log(err);
+                                                    console.log("errore lettura", err);
                                                 } else {
-                                                    //console.log("datas", datas);
+                                                    console.log("datas letti dal file", datas);
                                                     let obj = JSON.parse(datas); //now it an object
                                                     obj_array.push(obj);
                                                     obj_array.push(obj_difference_between_teams);
