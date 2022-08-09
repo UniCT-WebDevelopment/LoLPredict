@@ -1,7 +1,7 @@
 const fs = require('fs');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-let key_api = "RGAPI-b7af8e8e-b89c-4805-a7f2-98c0691d2a68";
+let key_api = "RGAPI-c4fce7bb-37f5-403e-825d-7cde5cf3c76e";
 
 const jsonFilePath = '../information.json';
 
@@ -290,10 +290,14 @@ function analize_matches_champions(data, num_games, champion_againts){
                     if (err){
                         console.log(err);
                     } else {
-                        obj = JSON.parse(data); //now it an object
-                        obj_array.push(obj);
+                        let obj = JSON.parse(data); //now it an object
+                        Array.from(obj).forEach(e => obj_array.push(e));
+
                         obj_array.push(obj_winrate);
-                        obj_array.push(winrate_champions_array);
+
+                        Array.from(winrate_champions_array).forEach(e => obj_array.push(e));
+
+                        //obj_array.push(winrate_champions_array);
                         let json_array = JSON.stringify(obj_array,  undefined, 3); //convert it back to json
                         fs.writeFile('information.json', json_array, 'utf8', function (err) {
                             if (err) {

@@ -34,7 +34,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-1a9f3ef7-bbc8-46a5-bb50-145473fe6750";
+let api_key = "RGAPI-c4fce7bb-37f5-403e-825d-7cde5cf3c76e";
 
 let mainWindow;
 
@@ -230,10 +230,13 @@ class RiotWSProtocol extends WebSocket {
                         let icon_id = lolData.data.icon;
 
                         //console.log("PLAYER NAME: " + player_name);
+                        //fa transitare l'app dalla schermata di loading
+                        //alla vera e propria app
                         mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id});
+                        //svuotare file json
 
                         //api_server.get_last_champion_played("AlexNext");
-                        //api_server.get_winrate_player_champions("AlexNext", 10);
+                        api_server.get_winrate_player_champions("AlexNext", 10);
                         //get_winrate_player_champions("AlexNext", 10, "Olaf");
 
 
