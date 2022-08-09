@@ -348,10 +348,13 @@ function analize_matches_champions(data, num_games, champion_againts){
                     if (err){
                         console.log(err);
                     } else {
-                        obj = JSON.parse(data); //now it an object
-                        obj_array.push(obj);
+                        let obj = JSON.parse(data); //now it an object
+                        Array.from(obj).forEach(e => obj_array.push(e));
+
                         obj_array.push(obj_winrate);
-                        obj_array.push(winrate_champions_array);
+
+                        Array.from(winrate_champions_array).forEach(e => obj_array.push(e));
+
                         let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
                         fs.writeFile('information.json', json_array, 'utf8', function (err) {
                             if (err) {
@@ -415,7 +418,8 @@ function get_champion_match(puuid){
                     console.log(err);
                 } else {
                     let obj = JSON.parse(datas); //now it an object
-                    obj_array.push(obj);
+                    Array.from(obj).forEach(e => obj_array.push(e));
+                    
                     obj_array.push(obj_champ);
                     let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
                     fs.writeFile('information.json', json_array, 'utf8', function (err) {

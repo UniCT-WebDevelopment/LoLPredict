@@ -358,8 +358,10 @@ class RiotWSProtocol extends WebSocket {
                                                 } else {
                                                     console.log("datas letti dal file", datas);
                                                     let obj = JSON.parse(datas); //now it an object
-                                                    obj_array.push(obj);
+                                                    Array.from(obj).forEach(e =>  obj_array.push(e));
+                                                   
                                                     obj_array.push(obj_difference_between_teams);
+                                                    
                                                     let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
                                                     fs.writeFile('information.json', json_array, 'utf8', function (err) {
                                                         if (err) {
