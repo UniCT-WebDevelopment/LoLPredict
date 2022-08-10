@@ -489,3 +489,10 @@ module.exports.get_last_champion_played = get_last_champion_played;
 
 //dati da prendere - verosimilmente winrate players, winrate con quel champion, winrate contro quello contro cui è (per entrambi i player), differenza di rank nella partita tra la squadre
 //come salvare modello di tensorflow
+
+
+//fare funzione per ciccio che ritorna direttamente i dati senza scrivere nel json così da evitare problemi 
+//fixare tutte le altre funzioni sia che prendono dati sia che scrivono nel file
+//funzione che prende anche champion che sta giocando
+//difference between teams prendere anche il winrate della squadra per il 20%
+//tensorflow?
