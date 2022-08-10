@@ -232,7 +232,7 @@ class RiotWSProtocol extends WebSocket {
                         //svuotare file json
                         fs.writeFileSync(jsonFilePath, "{\"lol\" : \"serverStart\"}" ,'utf8', undefined);
                         
-                        api_server.get_data_last_champion_played("AlexNext")
+                        api_server.get_data_last_champion_played(player_name)
                         .then((res)=>{
                             console.log("LAST CHAMP" + res);
                             last_champ = res;

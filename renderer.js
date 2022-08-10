@@ -12,6 +12,7 @@ window.addEventListener("DOMContentLoaded", () => {
         playerRank: document.getElementById("playerRank"),
         rankIcon: document.getElementById("rankIcon"),
         playerLevel : document.getElementById("playerLevel"),
+        lastChampIcon :document.getElementById("lastChampIcon"),
     }
 
     const ui = {
@@ -28,7 +29,7 @@ window.addEventListener("DOMContentLoaded", () => {
         el.playerName.innerHTML = player_name;
         el.playerLevel.innerHTML = player_level;
         el.playerIcon.setAttribute("src", "http://ddragon.leagueoflegends.com/cdn/12.14.1/img/profileicon/"+icon_id+".png" );
-
+        el.lastChampIcon.setAttribute("src", "http://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/"+last_champ+".png")
         //console.log(player_ranked_level); //vanno messi i nomi dei parametri passati uguali sia qui che in main.js
         if(player_ranked_level != undefined){
             el.playerRank.innerHTML = player_ranked_tier+" "+ player_ranked_level;
@@ -36,7 +37,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         console.log("Eseguo cambio loading screen")
-        console.log(last_champ);
+        
         el.loadContainer.style.display =  "none";
         el.playerInfoContainer.style.display = "grid";
     })

@@ -214,6 +214,22 @@ body{
     display: inline-block;
 }
 
+#lastChampIcon{
+    border: 3px solid rgb(43, 175, 58);
+    border-radius: 50%;
+    height: 95%;
+    display: inline-block;
+}
+
+#playerLevelBox{    /*metti immagine che ha rank di corrispondenza*/
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(15, 15, 15, 0.674);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 #playerRank{
     font-size: 25px;
     font-weight: bolder;
