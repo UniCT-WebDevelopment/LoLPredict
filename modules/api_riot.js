@@ -328,7 +328,7 @@ function analize_matches_champions(data, num_games, champion_againts){
                 winrate_player = (games_winned/sum_games)*100;
                 for(let i = 0; i < champions_player.length; i++){
                     champions_player[i].calculate_winrate();
-                    winrate_champions_array[i] = champions_player[i].get_info();
+                    champions_player[i].get_info();
                 }
 
                 //console.log("winrate player " + winrate_player);
@@ -458,7 +458,7 @@ function get_winrate_player(summoner_name, num_games){
 }
 
 function get_winrate_player_champions(summoner_name, num_games, champion_againts = undefined){
-    return get_info_summoner_name(summoner_name)
+    get_info_summoner_name(summoner_name)
     .then(response => response.json())
     .then(data => {
         get_list_matches(data.puuid, num_games)
@@ -470,7 +470,7 @@ function get_winrate_player_champions(summoner_name, num_games, champion_againts
 }
 
 function get_last_champion_played(summoner_name){
-    return get_info_summoner_name(summoner_name)
+    get_info_summoner_name(summoner_name)
     .then(response => response.json())
     .then(data => {
         get_champion_match(data.puuid);

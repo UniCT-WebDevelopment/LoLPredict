@@ -9,7 +9,7 @@ const { setTimeout } = require("timers/promises");
 const https = require('node:https');
 const api_server = require('./modules/api_riot');
 
-const jsonFilePath = './information.json';
+const jsonFilePath = 'information.json';
 
 //const fetch = require('node-fetch');
 //import {get_winrate_player_champions  , get_last_champion_played} from "./public/assets/js/to_api_server";
@@ -228,19 +228,39 @@ class RiotWSProtocol extends WebSocket {
                         let player_ranked_level = lolData.data.lol.rankedLeagueDivision;
                         //console.log(player_ranked_level);
                         let icon_id = lolData.data.icon;
-
-                        //console.log("PLAYER NAME: " + player_name);
-                        //fa transitare l'app dalla schermata di loading
-                        //alla vera e propria app
-                        mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id});
                         //svuotare file json
+                        fs.writeFileSync(jsonFilePath, "{\"lol\" : \"serverStart\"}" ,'utf8', undefined);
+                        
+                        api_server.get_last_champion_played("AlexNext")
+                        .then(
+                        () => api_server.get_winrate_player_champions           ("AlexNext", 10))
+                        .then(()=>{
+                                fs.readFile(jsonFilePath, 'utf-8', (err, datas) => {
+                                    if(err){
+                                        console.log(err);
+                                    }else{
 
-                        //api_server.get_last_champion_played("AlexNext");
-                        api_server.get_winrate_player_champions("AlexNext", 20);
-                        
-                        //api_server.get_winrate_player_champions("AlexNext", 75, "Olaf");
-                        
-                    } 
+                                        console.log("DATA FROM JSON", datas);
+                                        let _object = JSON.parse(datas);
+                                        
+                                        console.log("OBJECT FROM JSON", _object);
+                                        let json_arr = Array.from(_object);
+
+                                        console.log("DATI PARSATI", json_arr);
+    
+                                        let last_played_champ = json_arr.filter(e => e.last_champion_played != undefined);
+    
+                                        let last_matches = json_arr.filter(e => e.champion_stats != undefined);
+    
+                                        console.log(json_arr);
+    
+                                        mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id, last_played_champ, last_matches});
+                                    }
+                                })
+                            }
+                        )
+                    
+                    }
                 } catch(error){
                     //console.log(error);
                 }
@@ -349,7 +369,7 @@ class RiotWSProtocol extends WebSocket {
                                                     Array.from(obj).forEach(e =>  obj_array.push(e));
                                                    
                                                     obj_array.push(obj_difference_between_teams);
-                                                    
+
                                                     let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
                                                     fs.writeFile('information.json', json_array, 'utf8', function (err) {
                                                         if (err) {
