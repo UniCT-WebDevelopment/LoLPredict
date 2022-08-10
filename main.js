@@ -34,7 +34,19 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-f771141e-7364-4965-b5e4-0f9565ab3a94";
+let api_key = "RGAPI-6334d53a-2c05-4ff9-9c84-4209e24b715e";
+let gamestarted = false;
+let champion_in_json = false;
+
+//serve per l'ultimo try dove prende le informazioni del campione e per evitare di fare eseguire codici più volte
+let num_games_played = 0;
+let games_won = 0;
+let winrate_champ;
+let games_supported = 20;
+let code_champion_info_done = false;
+let code_teams_info_done = false;
+let code_player_name_done = false;
+
 
 let mainWindow;
 
@@ -221,7 +233,7 @@ class RiotWSProtocol extends WebSocket {
 
                 //console.log(lolData);
                 try{
-                    if(lolData.data.gameName != undefined && player_name == null && lolData.uri == '/lol-chat/v1/me'){
+                    if(lolData.data.gameName != undefined && player_name == null && lolData.uri == '/lol-chat/v1/me' && code_player_name_done == false){
                         player_name = lolData.data.gameName;
                         let player_level = lolData.data.lol.level;
                         let player_ranked_tier = lolData.data.lol.rankedLeagueTier;
@@ -230,6 +242,8 @@ class RiotWSProtocol extends WebSocket {
                         let icon_id = lolData.data.icon;
                         let last_champ;
                         //svuotare file json
+                        
+                        code_player_name_done = true;
                         fs.writeFileSync(jsonFilePath, "{\"lol\" : \"serverStart\"}" ,'utf8', undefined);
                         
                         api_server.get_data_last_champion_played(player_name)
@@ -274,10 +288,17 @@ class RiotWSProtocol extends WebSocket {
                     
                     }
                 } catch(error){
-                    //console.log(error);
+                    console.log("errore nel prendere le informazioni base del giocatore", error);
                 }
 
-                //aggiungere codice e dati sugli avversari così da avere un dataset completo + rivedere scrittura file / gestire cancellazione etc
+                try{
+                    if(lolData.data.phase == "GameStart"){
+                        gamestarted = true;
+                    }
+                }
+                catch(error){
+
+                }
 
                 try{
                     let summonerId;
@@ -288,16 +309,12 @@ class RiotWSProtocol extends WebSocket {
                     let average_elo_enemies;
                     let average_elo_allies;
                     let difference_between_teams;
-                    //visti i dati che vengono forniti dall'app l'idea è sempre quella di utilizzare le api per ottenere il match da cui poi si prendono i partecipanti
-                    //serve il summonerId che è salvato dalla API come Id
-                    //la funzione ultima da chiamare per calcolare elo etc è 
-                    //https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/Z2FkqeYQXUklIqRdkbrKdyV1nSuAxP68x9tqpVsrCDURtpo
-                    //dove l'ultimo è il summonerId di un tizio random
-                    //da questa funzione si prendono tutti i summonerId o i nickname e si chiama
-                    //https://euw1.api.riotgames.com/lol/league/v4/ entries/by-summoner/Z2FkqeYQXUklIqRdkbrKdyV1nSuAxP68x9tqpVsrCDURtpo
-                    //che ritorna le informazioni richieste in modo semplice
-                    /*
-                    if(lolData.data.phase == "GameStart"){
+                    let winrate_allies_array = new Array();
+                    let winrate_enemies_array = new Array();
+                    
+                    if(champion_in_json == true && code_teams_info_done == false){
+                        code_teams_info_done = true;
+
                         fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
                         .then(result => result.json())
                         .then(data => {
@@ -339,6 +356,10 @@ class RiotWSProtocol extends WebSocket {
                                                     allies_tier.push(data[k].tier);
                                                     allies_rank.push(data[k].rank);
                                                     //console.log("data[k].tier", data[k].tier, "data[k].rank", data[k].rank);
+                                                    let wins_ally = parseInt(data[k].wins);
+                                                    let lose_ally = parseInt(data[k].losses);
+                                                    let winrate_ally_guy = wins_ally/(wins_ally + lose_ally);
+                                                    winrate_allies_array.push(winrate_ally_guy);
                                                     break;
                                                 }
                                             }
@@ -349,6 +370,11 @@ class RiotWSProtocol extends WebSocket {
                                                 if(data[k].queueType == "RANKED_SOLO_5x5"){
                                                     enemies_tier.push(data[k].tier);
                                                     enemies_rank.push(data[k].rank);
+
+                                                    let wins_enemy = parseInt(data[k].wins);
+                                                    let lose_enemy = pareseInt(data[k].losses);
+                                                    let winrate_enemy_guy = wins_enemy/(wins_enemy + lose_enemy);
+                                                    winrate_enemies_array.push(winrate_enemy_guy);
                                                     break;
                                                 }
                                             }
@@ -363,7 +389,19 @@ class RiotWSProtocol extends WebSocket {
     
                                             average_elo_allies = calculate_team_elo(allies_tier, allies_rank);
                                             average_elo_enemies = calculate_team_elo(enemies_tier, enemies_rank);
-                                            difference_between_teams = average_elo_allies - average_elo_enemies; //quindi valori negativi non sono buoni
+
+                                            let average_win_allies, average_win_enemies;
+                                            for(let i = 0; i < 5; i++){
+                                                average_win_allies += winrate_allies_array[i];
+                                                average_win_enemies += winrate_enemies_array[i];
+                                            }
+
+                                            average_win_allies = average_win_allies/5;
+                                            average_win_enemies = average_win_enemies/5;
+
+                                            difference_between_teams = (((average_win_allies - average_win_enemies)*20) +((average_elo_allies - average_elo_enemies)*80))/100; //quindi valori negativi non sono buoni
+
+
                                             console.log("average_elo_allies average_elo_enemies difference_between_teams riga 331", average_elo_allies, average_elo_enemies, difference_between_teams);
 
                                             let obj_difference_between_teams = {"difference_between_teams": difference_between_teams};
@@ -408,10 +446,143 @@ class RiotWSProtocol extends WebSocket {
                             console.log("errore nella prima fetch", error);
                         })
                     }
-                    */
                 }
                 catch(error){
-                    //console.log("ha fatto errore lo studio del game", error);
+                    console.log("ha fatto errore lo studio del game", error);
+                }
+
+                
+                try{
+                    if(gamestarted == true && lolData.data.gameName == player_name && lolData.data.lol.skinname != undefined && code_champion_info_done == false){
+                        champion_played = lolData.data.lol.skinname;
+                        code_champion_info_done = true;
+
+                        fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
+                        .then(result => result.json())
+                        .then(data =>{
+                            let url_games_req = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + data.puuid + "/ids?start=0&count=" + games_supported + "&api_key=";
+                            fetch(url_games_req + api_key)
+                            .then(result => result.json())
+                            .then(data => {
+                                let last_games_played = JSON.stringify(JSON.stringify(data));
+                                let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
+                                let second_half_url = "?api_key=" + api_key;
+
+                                let name_game = last_games_played.split(',');
+                                
+                                for(let i = 0; i < games_supported; i++){
+                                    if(i == 0){
+                                        name_game[i] = name_game[i].substr(4, 15);
+                                    }
+                                    else if(i == num_games-1){
+                                        name_game[i] = name_game[i].substr(2, 15);
+                                    }
+                                    else{
+                                        name_game[i] = name_game[i].substr(2, 15);
+                                    }
+                                }
+
+                                let sum_games = 0;
+
+                                for(let j = 0; j < games_supported; j++){
+
+                                    let complete_url = first_half_url + name_game[j] + second_half_url;
+                                    fetch(complete_url)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        //console.log("eseguendo fetch n" + j);
+                                        sum_games++;
+                                        for(let y = 0; y < 10; y++){
+                                            if(data.info.participants[y].puuid == puuid_player){ 
+                                                if(data.info.participants[y].championName == champion_played){
+                                                    num_games_played++;
+                                                    if(data.info.participants[y].win == true){
+                                                        games_won++;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }  
+                                    })
+                                    .then(() => {
+                                        if(sum_games == games_supported){
+                                            winrate_champ = games_won/num_games_played;
+
+                                            let obj_winrate;
+                                            obj_winrate = {"champion_stats":{ "champion": champion_played, "winrate": winrate_champ, "games_played":num_games_played, "games_winned": games_won}}
+                            
+                                            let string_obj = JSON.stringify(obj_winrate);
+                                            let obj_array = new Array();
+
+                                            fs.readFile('information.json', 'utf8', (err, data)=>{
+                                                if (err){
+                                                    console.log(err);
+                                                } else {
+                                                    let obj = JSON.parse(data); //now it an object
+                                                    Array.from(obj).forEach(e => obj_array.push(e));
+                            
+                                                    obj_array.push(obj_winrate);
+                            
+                                                    let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
+                                                    fs.writeFile('information.json', json_array, 'utf8', function (err) {
+                                                        if (err) {
+                                                            console.log("An error occured while writing JSON Object to File.");
+                                                            return console.log(err);
+                                                        }
+                                                        console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                                                        console.log("scrittura in catch");
+                                                    });
+                                                }
+                                            });
+                                            champion_in_json = true;
+                                        }
+                                    })
+                                    .catch(() =>{
+                                        num_error++;
+                                        if((num_error+sum_games) == games_supported){ 
+                                            winrate_champ = games_won/num_games_played;
+
+                                            let obj_winrate;
+                                            obj_winrate = {"champion_stats":{ "champion": champion_played, "winrate": winrate_champ, "games_played":num_games_played, "games_winned": games_won}}
+                            
+                                            let string_obj = JSON.stringify(obj_winrate);
+                                            let obj_array = new Array();
+
+                                            fs.readFile('information.json', 'utf8', (err, data)=>{
+                                                if (err){
+                                                    console.log(err);
+                                                } else {
+                                                    let obj = JSON.parse(data); //now it an object
+                                                    Array.from(obj).forEach(e => obj_array.push(e));
+                            
+                                                    obj_array.push(obj_winrate);
+                                                        
+                                                    let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
+                                                    fs.writeFile('information.json', json_array, 'utf8', function (err) {
+                                                        if (err) {
+                                                            console.log("An error occured while writing JSON Object to File.");
+                                                            return console.log(err);
+                                                        }
+                                                        console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                                                        console.log("scrittura in catch");
+                                                    });
+                                                }
+                                            });
+                                            champion_in_json = true;
+                                        }
+                                    })
+                                    if((j % 15) == 0){
+                                        sleep(2000); //2000 va bene e non dà troppi rallentamenti se non si tocca la funzione sleep
+                                    }                            
+                                }
+                            })
+                        })
+
+                        
+                    }                    
+                }
+                catch(error){
+                    console.log("errore nel prendere le informazioni del campione usato")
                 }
                 
                 this.emit(topic, payload);

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-let key_api = "RGAPI-f771141e-7364-4965-b5e4-0f9565ab3a94";
+let key_api = "RGAPI-6334d53a-2c05-4ff9-9c84-4209e24b715e";
 
 const jsonFilePath = '../information.json';
 
@@ -9,11 +9,7 @@ let summoner_id_player;
 let puuid_player;
 let winrate_player;
 let games_winned = 0;
-let games_played = 0;
 let last_champion_played;
-let winrate_againts_champion;
-let games_againts_champion = 0;
-let win_againts_champion = 0;
 
 function sleep(miliseconds) {
     var currentTime = new Date().getTime();
@@ -163,7 +159,7 @@ class champion{
     }
 }
 
-function analize_matches_champions(data, num_games, champion_againts){
+function analize_matches_champions(data, num_games){
     let last_games_played = JSON.stringify(JSON.stringify(data));
     let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
     let second_half_url = "?api_key=" + key_api;
@@ -199,23 +195,12 @@ function analize_matches_champions(data, num_games, champion_againts){
         .then(response => response.json())
         .then(data => {
             //console.log("eseguendo fetch n" + j);
-            console.log("partita a buon fine n", j, data);
+            //console.log("partita a buon fine n", j, data);
             sum_games++;
-            let teamid_againts;
-            let teamid_player;
-            let num_player;
-            //console.log("champion againts " + champion_againts);
+
             for(let y = 0; y < 10; y++){
                 //console.log("ciclo n " + y + " di richiesta fetch numero " + j);
                 //console.log(data.info.participants[y]);
-                if(champion_againts != undefined){
-                    if(data.info.participants[y].championName == champion_againts && data.info.participants[y].puuid != puuid_player){
-                        games_againts_champion++;
-                        teamid_againts = data.info.participants[y].teamId;
-                        num_player = y;
-                        //console.log("campione trovato", games_againts_champion, teamid_againts, num_player);
-                    }
-                }
                 if(data.info.participants[y].puuid == puuid_player){
                     teamid_player = data.info.participants[y].teamId;
                     if(data.info.participants[y].win == true){
@@ -233,6 +218,7 @@ function analize_matches_champions(data, num_games, champion_againts){
                             break;
                         }
                     }
+                    
                     if(presence == false){
                         let add_champ = new champion(data.info.participants[y].championName);
                         if(data.info.participants[y].win == true){
@@ -241,22 +227,7 @@ function analize_matches_champions(data, num_games, champion_againts){
                         add_champ.increase_games_played();
                         champions_player.push(add_champ);
                     }
-                    if(champion_againts == undefined)
-                        break;
-                    else{
-                        continue;
-                    }
-                }
-                if(teamid_againts != undefined && teamid_player != undefined){
-                    //console.log("dentro ultimo if");
-                    if(teamid_againts == teamid_player){
-                        games_againts_champion--;
-                    }
-                    else{
-                        if(data.info.participants[num_player].win != true){
-                            win_againts_champion++;
-                        }
-                    }
+
                     break;
                 }
             }  
@@ -275,18 +246,9 @@ function analize_matches_champions(data, num_games, champion_againts){
                 console.log("num_games " + num_games);
                 console.log("games_winned " + games_winned);
 
-                if(champion_againts != undefined){
-                    winrate_againts_champion = (win_againts_champion/games_againts_champion)*100; 
-                    console.log("Winrate againts " + champion_againts + " is: " + winrate_againts_champion);
-                }
 
                 let obj_winrate;
-                if(champion_againts != undefined){
-                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned, "champion_against": champion_againts }}
-                }
-                else{
-                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned, "champion_againt":0}}
-                }
+                obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned}}
 
                 let string_obj = JSON.stringify(obj_winrate);
                 let obj_array = new Array();
@@ -335,19 +297,10 @@ function analize_matches_champions(data, num_games, champion_againts){
                 //console.log("num_games " + sum_games);
                 //console.log("games_winned " + games_winned);
 
-                if(champion_againts != undefined){
-                    winrate_againts_champion = (win_againts_champion/games_againts_champion)*100;
-                    console.log("Winrate againts " + champion_againts + " is " + winrate_againts_champion);
-                }
                 console.log("Fetch error: " + num_error);
 
                 let obj_winrate;
-                if(champion_againts != undefined){
-                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": sum_games, "games_winned":games_winned, "champion_against": champion_againts }}
-                }
-                else{
-                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": sum_games, "games_winned":games_winned, "champion_againt":0}}
-                }
+                obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": sum_games, "games_winned": games_winned}}
 
                 let string_obj = JSON.stringify(obj_winrate);
                 let obj_array = new Array();
@@ -508,14 +461,14 @@ function get_winrate_player(summoner_name, num_games){
     })
 }
 
-function get_winrate_player_champions(summoner_name, num_games, champion_againts = undefined){
+function get_winrate_player_champions(summoner_name, num_games){
     get_info_summoner_name(summoner_name)
     .then(response => response.json())
     .then(data => {
         get_list_matches(data.puuid, num_games)
         .then(response => response.json())
         .then(data => {
-            analize_matches_champions(data, num_games, champion_againts);
+            analize_matches_champions(data, num_games);
         })
     })
 }
@@ -549,26 +502,22 @@ function get_data_last_champion_played(summoner_name){
         })
     })
 }
-/*
-let str = "Visir";
-function get_data_last_champion_played(summoner_name){
-    return new Promise((resolve, reject)=>{
-        if(str == undefined){
-            reject(Error(str));
-        }else{
-            resolve(str);
-        }
-    });
-}
-*/
-module.exports.get_winrate_player = get_winrate_player;
+
+
+
+//module.exports.get_winrate_player = get_winrate_player;
 module.exports.get_winrate_player_champions = get_winrate_player_champions;
+
 module.exports.get_last_champion_played = get_last_champion_played;
 module.exports.get_data_last_champion_played = get_data_last_champion_played;
 
+//21839 riga di dati_ingame.txt - dopo gamestart appare sta scritta
+
+
+
+
 //get_winrate_player("AlexNext", 40);
-//get_winrate_player_champions("AlexNext", 40); //da usare per mostare le informazioni sia nel riquadro che per il machine learning
-//get_winrate_player_champions("AlexNext", 10, "Olaf"); //winrate contro il cammpione con cui è
+//get_winrate_player_champions("AlexNext", 40);
 //get_last_champion_played("AlexNext"); //utile per mettere immagine del campione nella grafica
 
 //dati da prendere - verosimilmente winrate players, winrate con quel champion, winrate contro quello contro cui è (per entrambi i player), differenza di rank nella partita tra la squadre
