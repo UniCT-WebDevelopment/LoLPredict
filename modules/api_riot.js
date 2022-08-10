@@ -148,18 +148,20 @@ class champion{
         else
             return false;
     }
-    get_info(){
+    get_info(){ //
+        /*
         let return_string = {"champion_stats": {"champion": this.champion_name, "winrate": this.winrate, "games_played": this.games_played, "games_winned": this.games_winned}};
         console.log("Champion: " + this.champion_name);
         console.log("Winrate with " + this.champion_name + ": " + this.winrate);
         console.log("Games played with" + this.champion_name + ": " + this.games_played);
         console.log("Games winned with" + this.champion_name + ": " + this.games_winned);
+        */
 
-        return return_string;
+        return return_string; //fare return di this.champion_name e winrate così come richiesto nella UI
     }
 }
 
-function analize_matches_champions(data, num_games){
+function analize_matches_champions(data, num_games){ //funzione che serve per scrivere poi in dati SOLO nella UI
     let last_games_played = JSON.stringify(JSON.stringify(data));
     let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
     let second_half_url = "?api_key=" + key_api;
@@ -239,14 +241,14 @@ function analize_matches_champions(data, num_games){
                 winrate_player = (games_winned/num_games)*100;
                 for(let i = 0; i < champions_player.length; i++){
                     champions_player[i].calculate_winrate();
-                    winrate_champions_array[i] = champions_player[i].get_info();
+                    winrate_champions_array[i] = champions_player[i].get_info(); //cambiare la get_info() perché scrive dati json, magari ritorna solo winrate
                 }
 
                 console.log("winrate player " + winrate_player);
                 console.log("num_games " + num_games);
                 console.log("games_winned " + games_winned);
 
-
+                //lo scopo di questa funzione è SOLO quello d mettere i dati nella UI
                 let obj_winrate;
                 obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned}}
 
@@ -254,7 +256,7 @@ function analize_matches_champions(data, num_games){
                 let obj_array = new Array();
                 
 
-                fs.readFile('information.json', 'utf8', (err, data)=>{
+                fs.readFile('information.json', 'utf8', (err, data)=>{ //togliere scrittura nel file e mettere cosa della promise
                     if (err){
                         console.log(err);
                     } else {
@@ -306,7 +308,7 @@ function analize_matches_champions(data, num_games){
                 let obj_array = new Array();
                 
 
-                fs.readFile('information.json', 'utf8', (err, data)=>{
+                fs.readFile('information.json', 'utf8', (err, data)=>{ //togliere scrittura nel file e mettere cosa della promise
                     if (err){
                         console.log(err);
                     } else {
@@ -524,8 +526,8 @@ module.exports.get_data_last_champion_played = get_data_last_champion_played;
 //come salvare modello di tensorflow
 
 
-//fare funzione per ciccio che ritorna direttamente i dati senza scrivere nel json così da evitare problemi 
-//fixare tutte le altre funzioni sia che prendono dati sia che scrivono nel file
-//funzione che prende anche champion che sta giocando
-//difference between teams prendere anche il winrate della squadra per il 20%
+//fare funzione per ciccio che ritorna direttamente i dati senza scrivere nel json così da evitare problemi -da finire
+//fixare tutte le altre funzioni sia che prendono dati sia che scrivono nel file -da fare solo 'get_winrate_player_champions' con 'analize_matches_champions'
+//funzione che prende anche champion che sta giocando -fatta
+//difference between teams prendere anche il winrate della squadra per il 20% -fatta
 //tensorflow?

@@ -37,6 +37,7 @@ let player_name = null;
 let api_key = "RGAPI-6334d53a-2c05-4ff9-9c84-4209e24b715e";
 let gamestarted = false;
 let champion_in_json = false;
+let champion_played;
 
 //serve per l'ultimo try dove prende le informazioni del campione e per evitare di fare eseguire codici più volte
 let num_games_played = 0;
@@ -46,6 +47,7 @@ let games_supported = 20;
 let code_champion_info_done = false;
 let code_teams_info_done = false;
 let code_player_name_done = false;
+let sum_games = 0;
 
 
 let mainWindow;
@@ -233,7 +235,7 @@ class RiotWSProtocol extends WebSocket {
 
                 //console.log(lolData);
                 try{
-                    if(lolData.data.gameName != undefined && player_name == null && lolData.uri == '/lol-chat/v1/me' && code_player_name_done == false){
+                    if(code_player_name_done == false && lolData.data.gameName != undefined && player_name == null && lolData.uri == '/lol-chat/v1/me'){
                         player_name = lolData.data.gameName;
                         let player_level = lolData.data.lol.level;
                         let player_ranked_tier = lolData.data.lol.rankedLeagueTier;
@@ -294,13 +296,14 @@ class RiotWSProtocol extends WebSocket {
                 try{
                     if(lolData.data.phase == "GameStart"){
                         gamestarted = true;
+                        console.log("gamestart = true");
                     }
                 }
                 catch(error){
 
                 }
 
-                try{
+                try{ //fa il calcolo della differenza tra team
                     let summonerId;
                     let enemies_tier = new Array(); //gold, plat etc
                     let enemies_rank = new Array(); //I, II, III, IV
@@ -314,6 +317,7 @@ class RiotWSProtocol extends WebSocket {
                     
                     if(champion_in_json == true && code_teams_info_done == false){
                         code_teams_info_done = true;
+                        console.log("codice per informazioni del player");
 
                         fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
                         .then(result => result.json())
@@ -452,18 +456,21 @@ class RiotWSProtocol extends WebSocket {
                 }
 
                 
-                try{
-                    if(gamestarted == true && lolData.data.gameName == player_name && lolData.data.lol.skinname != undefined && code_champion_info_done == false){
-                        champion_played = lolData.data.lol.skinname;
+                try{ //serve per prendere i dati sul campione che sta giocando
+                    if(gamestarted == true && code_champion_info_done == false && lolData.data.gameName == player_name && lolData.data.lol.skinname != undefined){
+                        champion_played = lolData.data.lol.skinname; //per qualche motivo riesegue sempre il codice
                         code_champion_info_done = true;
+                        console.log("codice per prendere i dati sul campione");
 
                         fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
                         .then(result => result.json())
                         .then(data =>{
+                            let puuid_player = data.puuid;
                             let url_games_req = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + data.puuid + "/ids?start=0&count=" + games_supported + "&api_key=";
                             fetch(url_games_req + api_key)
                             .then(result => result.json())
                             .then(data => {
+                                console.log("dentro primo then");
                                 let last_games_played = JSON.stringify(JSON.stringify(data));
                                 let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
                                 let second_half_url = "?api_key=" + api_key;
@@ -474,7 +481,7 @@ class RiotWSProtocol extends WebSocket {
                                     if(i == 0){
                                         name_game[i] = name_game[i].substr(4, 15);
                                     }
-                                    else if(i == num_games-1){
+                                    else if(i == games_supported-1){
                                         name_game[i] = name_game[i].substr(2, 15);
                                     }
                                     else{
@@ -482,17 +489,19 @@ class RiotWSProtocol extends WebSocket {
                                     }
                                 }
 
-                                let sum_games = 0;
-
-                                for(let j = 0; j < games_supported; j++){
-
+                                for(let j = 0; j < games_supported; j++){ //per qualche motivo il j non continua dopo 1
+                                    console.log("j - games_supported", j, games_supported);
                                     let complete_url = first_half_url + name_game[j] + second_half_url;
                                     fetch(complete_url)
                                     .then(response => response.json())
                                     .then(data => {
                                         //console.log("eseguendo fetch n" + j);
+                                        console.log("dentro secondo then");
                                         sum_games++;
+                                        console.log("valore sum_games", sum_games);
+                                        console.log("data", data);
                                         for(let y = 0; y < 10; y++){
+                                            console.log("ciclo for dentro y-", y);
                                             if(data.info.participants[y].puuid == puuid_player){ 
                                                 if(data.info.participants[y].championName == champion_played){
                                                     num_games_played++;
@@ -502,10 +511,13 @@ class RiotWSProtocol extends WebSocket {
                                                 }
                                                 break;
                                             }
-                                        }  
+                                        }
+                                        console.log("dopo il for");  
+                                        console.log("games supported", games_supported, "sumgames", sum_games);
                                     })
                                     .then(() => {
                                         if(sum_games == games_supported){
+                                            console.log("dentro terzo then");
                                             winrate_champ = games_won/num_games_played;
 
                                             let obj_winrate;
@@ -537,7 +549,8 @@ class RiotWSProtocol extends WebSocket {
                                             champion_in_json = true;
                                         }
                                     })
-                                    .catch(() =>{
+                                    .catch((error) =>{
+                                        console.log("catch strano", error);
                                         num_error++;
                                         if((num_error+sum_games) == games_supported){ 
                                             winrate_champ = games_won/num_games_played;
@@ -582,7 +595,8 @@ class RiotWSProtocol extends WebSocket {
                     }                    
                 }
                 catch(error){
-                    console.log("errore nel prendere le informazioni del campione usato")
+                    console.log("errore nel prendere le informazioni del campione usato", error);
+                    console.log("lolData.data", lolData.data);
                 }
                 
                 this.emit(topic, payload);
