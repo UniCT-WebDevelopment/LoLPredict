@@ -228,12 +228,23 @@ class RiotWSProtocol extends WebSocket {
                         let player_ranked_level = lolData.data.lol.rankedLeagueDivision;
                         //console.log(player_ranked_level);
                         let icon_id = lolData.data.icon;
+                        let last_champ;
                         //svuotare file json
                         fs.writeFileSync(jsonFilePath, "{\"lol\" : \"serverStart\"}" ,'utf8', undefined);
                         
-                        api_server.get_last_champion_played("AlexNext")
+                        api_server.get_data_last_champion_played("AlexNext")
+                        .then((res)=>{
+                            console.log("LAST CHAMP" + res);
+                            last_champ = res;
+                            mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,
+                                                                            player_ranked_level, icon_id, 
+                                                                            last_champ
+                                                                            });
+                        })
+                        .catch((err)=>console.error("ERRORE PROMISE"+ err));
+                        /*
                         .then(
-                        () => api_server.get_winrate_player_champions           ("AlexNext", 10))
+                        () => api_server.get_winrate_player_champions("AlexNext", 10))
                         .then(()=>{
                                 fs.readFile(jsonFilePath, 'utf-8', (err, datas) => {
                                     if(err){
@@ -259,6 +270,7 @@ class RiotWSProtocol extends WebSocket {
                                 })
                             }
                         )
+                        */
                     
                     }
                 } catch(error){

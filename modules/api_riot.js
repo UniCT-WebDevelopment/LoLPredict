@@ -384,6 +384,57 @@ function analize_matches_champions(data, num_games, champion_againts){
 }
 
 function get_champion_match(puuid){
+    return new Promise((resolve, reject)=>{
+        let url_games_req = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=1&api_key=";
+        puuid_player = puuid;
+        fetch(url_games_req + key_api, {
+            method: "GET",
+            headers:{
+                'Access-Control-Request-Method': "GET",
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            let last_game_played = JSON.stringify(JSON.stringify(data));
+            let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
+            let second_half_url = "?api_key=" + key_api;
+            //console.log(last_game_played);
+            let name_game = last_game_played.substr(4, 15);
+            //console.log(name_game);
+
+            let complete_url = first_half_url + name_game + second_half_url;
+            fetch(complete_url, {
+                method: "GET",
+                headers:{
+                    'Access-Control-Request-Method': "GET",
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                for(let i = 0; i < 10; i++){
+                    if(data.info.participants[i].puuid == puuid_player){
+                        last_champion_played = data.info.participants[i].championName;
+                        break;
+                    }
+                }
+                console.log("LAST CHAMP PROMISE " + last_champion_played);
+
+                    if(last_champion_played == undefined){
+                        console.log("REJECT PROMISE LAST CHAMP")
+                        reject(Error(last_champion_played));
+                    }
+                    else{
+                        console.log("RESOLVE PROMISE LAST CHAMP")
+                        resolve(last_champion_played);
+                    }    
+            })
+        })
+        .catch(err => console.log(err));
+    })
+    
+}
+
+function to_json_champion_match(puuid){
     let url_games_req = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=1&api_key=";
     puuid_player = puuid;
     fetch(url_games_req + key_api, {
@@ -473,14 +524,47 @@ function get_last_champion_played(summoner_name){
     get_info_summoner_name(summoner_name)
     .then(response => response.json())
     .then(data => {
-        get_champion_match(data.puuid);
+        to_json_champion_match(data.puuid);
     })
 }
 
 
+function get_data_last_champion_played(summoner_name){
+    return new Promise((resolve, reject)=>{
+        get_info_summoner_name(summoner_name)
+        .then(response => response.json())
+        .then(data => {
+            return get_champion_match(data.puuid)
+            .then((last_champion_played)=>{
+                console.log("PROMISE LAST CHAMP 1")
+                if(last_champion_played == undefined){
+                    console.log("REJECT PROMISE LAST CHAMP 2")
+                    reject(Error(last_champion_played));
+                }
+                else {
+                    console.log("RESOLVE PROMISE LAST CHAMP 2")
+                    resolve(last_champion_played);
+                }
+            })
+        })
+    })
+}
+/*
+let str = "Visir";
+function get_data_last_champion_played(summoner_name){
+    return new Promise((resolve, reject)=>{
+        if(str == undefined){
+            reject(Error(str));
+        }else{
+            resolve(str);
+        }
+    });
+}
+*/
 module.exports.get_winrate_player = get_winrate_player;
 module.exports.get_winrate_player_champions = get_winrate_player_champions;
 module.exports.get_last_champion_played = get_last_champion_played;
+module.exports.get_data_last_champion_played = get_data_last_champion_played;
 
 //get_winrate_player("AlexNext", 40);
 //get_winrate_player_champions("AlexNext", 40); //da usare per mostare le informazioni sia nel riquadro che per il machine learning
