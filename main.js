@@ -49,6 +49,17 @@ let code_teams_info_done = false;
 let code_player_name_done = false;
 let sum_games = 0;
 
+function sleep(miliseconds) {
+    var currentTime = new Date().getTime();
+    console.log("current time", currentTime);
+
+    //console.log(currentTime);
+    while (currentTime + miliseconds >= new Date().getTime()) {
+        //console.log("aspetta");
+    }
+    console.log("while finito a ", new Date().getTime());
+ }
+
 
 let mainWindow;
 
@@ -458,9 +469,9 @@ class RiotWSProtocol extends WebSocket {
                 
                 try{ //serve per prendere i dati sul campione che sta giocando
                     if(gamestarted == true && code_champion_info_done == false && lolData.data.gameName == player_name && lolData.data.lol.skinname != undefined){
-                        champion_played = lolData.data.lol.skinname; //per qualche motivo riesegue sempre il codice
+                        champion_played = lolData.data.lol.skinname; 
                         code_champion_info_done = true;
-                        console.log("codice per prendere i dati sul campione");
+                        //console.log("codice per prendere i dati sul campione");
 
                         fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
                         .then(result => result.json())
@@ -470,7 +481,6 @@ class RiotWSProtocol extends WebSocket {
                             fetch(url_games_req + api_key)
                             .then(result => result.json())
                             .then(data => {
-                                console.log("dentro primo then");
                                 let last_games_played = JSON.stringify(JSON.stringify(data));
                                 let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
                                 let second_half_url = "?api_key=" + api_key;
@@ -489,19 +499,14 @@ class RiotWSProtocol extends WebSocket {
                                     }
                                 }
 
-                                for(let j = 0; j < games_supported; j++){ //per qualche motivo il j non continua dopo 1
-                                    console.log("j - games_supported", j, games_supported);
-                                    let complete_url = first_half_url + name_game[j] + second_half_url;
+                                let complete_url;
+                                for(let z = 0; z < games_supported; z++){ 
+                                    complete_url = first_half_url + name_game[z] + second_half_url;
                                     fetch(complete_url)
                                     .then(response => response.json())
                                     .then(data => {
-                                        //console.log("eseguendo fetch n" + j);
-                                        console.log("dentro secondo then");
                                         sum_games++;
-                                        console.log("valore sum_games", sum_games);
-                                        console.log("data", data);
                                         for(let y = 0; y < 10; y++){
-                                            console.log("ciclo for dentro y-", y);
                                             if(data.info.participants[y].puuid == puuid_player){ 
                                                 if(data.info.participants[y].championName == champion_played){
                                                     num_games_played++;
@@ -512,12 +517,9 @@ class RiotWSProtocol extends WebSocket {
                                                 break;
                                             }
                                         }
-                                        console.log("dopo il for");  
-                                        console.log("games supported", games_supported, "sumgames", sum_games);
                                     })
                                     .then(() => {
                                         if(sum_games == games_supported){
-                                            console.log("dentro terzo then");
                                             winrate_champ = games_won/num_games_played;
 
                                             let obj_winrate;
@@ -550,7 +552,6 @@ class RiotWSProtocol extends WebSocket {
                                         }
                                     })
                                     .catch((error) =>{
-                                        console.log("catch strano", error);
                                         num_error++;
                                         if((num_error+sum_games) == games_supported){ 
                                             winrate_champ = games_won/num_games_played;
@@ -584,7 +585,7 @@ class RiotWSProtocol extends WebSocket {
                                             champion_in_json = true;
                                         }
                                     })
-                                    if((j % 15) == 0){
+                                    if((z % 15) == 0){
                                         sleep(2000); //2000 va bene e non dà troppi rallentamenti se non si tocca la funzione sleep
                                     }                            
                                 }
