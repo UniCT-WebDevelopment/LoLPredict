@@ -254,6 +254,7 @@ class RiotWSProtocol extends WebSocket {
                         //console.log(player_ranked_level);
                         let icon_id = lolData.data.icon;
                         let last_champ;
+                        let winrate_obj;
                         //svuotare file json
                         
                         code_player_name_done = true;
@@ -261,12 +262,18 @@ class RiotWSProtocol extends WebSocket {
                         
                         api_server.get_data_last_champion_played(player_name)
                         .then((res)=>{
-                            console.log("LAST CHAMP" + res);
                             last_champ = res;
-                            mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,
-                                                                            player_ranked_level, icon_id, 
-                                                                            last_champ
-                                                                            });
+                            api_server.get_winrate_player_champions(player_name, 20)
+                            .then((res)=>{
+                                winrate_obj = res;
+                                let {winrate_player} = winrate_obj;
+                                let {num_games} = winrate_obj;
+                                let {games_winned} = winrate_obj;
+                                mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,
+                                                                                player_ranked_level, icon_id, 
+                                                                                last_champ, winrate_player, num_games, games_winned
+                                                                                });
+                            })
                         })
                         .catch((err)=>console.error("ERRORE PROMISE"+ err));
                         /*

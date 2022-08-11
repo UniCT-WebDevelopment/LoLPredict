@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { resolve } = require('path');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 let key_api = "RGAPI-6334d53a-2c05-4ff9-9c84-4209e24b715e";
@@ -161,181 +162,305 @@ class champion{
     }
 }
 
-function analize_matches_champions(data, num_games){ //funzione che serve per scrivere poi in dati SOLO nella UI
-    let last_games_played = JSON.stringify(JSON.stringify(data));
-    let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
-    let second_half_url = "?api_key=" + key_api;
-
-    let name_game = last_games_played.split(',');
+function analize_matches_champions_to_json(data, num_games){ //funzione che serve per scrivere poi in dati SOLO nella UI
+    return new Promise((resolve, reject)=>{
+        let last_games_played = JSON.stringify(JSON.stringify(data));
+        let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
+        let second_half_url = "?api_key=" + key_api;
     
-    for(let i = 0; i < num_games; i++){
-        //console.log(name_game[i]);
-        if(i == 0){
-            name_game[i] = name_game[i].substr(4, 15);
-        }
-        else if(i == num_games-1){
-            name_game[i] = name_game[i].substr(2, 15);
-        }
-        else{
-            name_game[i] = name_game[i].substr(2, 15);
-        }
-        //console.log(name_game[i]);
-    }
-
-    let sum_games = 0;
-    let num_error = 0;
-
-    for(let j = 0; j < num_games; j++){
-        let complete_url = first_half_url + name_game[j] + second_half_url;
-        console.log("name game", name_game[j]);
-        fetch(complete_url, {
-            method: "GET",
-            headers:{
-                'Access-Control-Request-Method': "GET",
+        let name_game = last_games_played.split(',');
+        
+        for(let i = 0; i < num_games; i++){
+            //console.log(name_game[i]);
+            if(i == 0){
+                name_game[i] = name_game[i].substr(4, 15);
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            //console.log("eseguendo fetch n" + j);
-            //console.log("partita a buon fine n", j, data);
-            sum_games++;
-
-            for(let y = 0; y < 10; y++){
-                //console.log("ciclo n " + y + " di richiesta fetch numero " + j);
-                //console.log(data.info.participants[y]);
-                if(data.info.participants[y].puuid == puuid_player){
-                    teamid_player = data.info.participants[y].teamId;
-                    if(data.info.participants[y].win == true){
-                        games_winned++;
-                    }
-                    let presence = false;
-                    //console.log(data.info.participants[y].championName);
-                    for(let z = 0; z < champions_player.length; z++){
-                        if(champions_player[z].check_champion_presence(data.info.participants[y].championName) == true){
-                            presence = true;
-                            champions_player[z].increase_games_played();
-                            if(data.info.participants[y].win == true){
-                                champions_player[z].increase_games_winned();
-                            }
-                            break;
-                        }
-                    }
-                    
-                    if(presence == false){
-                        let add_champ = new champion(data.info.participants[y].championName);
+            else if(i == num_games-1){
+                name_game[i] = name_game[i].substr(2, 15);
+            }
+            else{
+                name_game[i] = name_game[i].substr(2, 15);
+            }
+            //console.log(name_game[i]);
+        }
+    
+        let sum_games = 0;
+        let num_error = 0;
+    
+        for(let j = 0; j < num_games; j++){
+            let complete_url = first_half_url + name_game[j] + second_half_url;
+            console.log("name game", name_game[j]);
+            fetch(complete_url, {
+                method: "GET",
+                headers:{
+                    'Access-Control-Request-Method': "GET",
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                //console.log("eseguendo fetch n" + j);
+                //console.log("partita a buon fine n", j, data);
+                sum_games++;
+    
+                for(let y = 0; y < 10; y++){
+                    //console.log("ciclo n " + y + " di richiesta fetch numero " + j);
+                    //console.log(data.info.participants[y]);
+                    if(data.info.participants[y].puuid == puuid_player){
+                        teamid_player = data.info.participants[y].teamId;
                         if(data.info.participants[y].win == true){
-                            add_champ.increase_games_winned();
+                            games_winned++;
                         }
-                        add_champ.increase_games_played();
-                        champions_player.push(add_champ);
-                    }
-
-                    break;
-                }
-            }  
-        })
-        .then(() => {
-            let winrate_champions_array = new Array();
-
-            if(sum_games == num_games){ //così da fare il calcolo solo una volta
-                winrate_player = (games_winned/num_games)*100;
-                for(let i = 0; i < champions_player.length; i++){
-                    champions_player[i].calculate_winrate();
-                    winrate_champions_array[i] = champions_player[i].get_info(); //cambiare la get_info() perché scrive dati json, magari ritorna solo winrate
-                }
-
-                console.log("winrate player " + winrate_player);
-                console.log("num_games " + num_games);
-                console.log("games_winned " + games_winned);
-
-                //lo scopo di questa funzione è SOLO quello d mettere i dati nella UI
-                let obj_winrate;
-                obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned}}
-
-                let string_obj = JSON.stringify(obj_winrate);
-                let obj_array = new Array();
-                
-
-                fs.readFile('information.json', 'utf8', (err, data)=>{ //togliere scrittura nel file e mettere cosa della promise
-                    if (err){
-                        console.log(err);
-                    } else {
-                        let obj = JSON.parse(data); //now it an object
-                        Array.from(obj).forEach(e => obj_array.push(e));
-
-                        obj_array.push(obj_winrate);
-
-                        Array.from(winrate_champions_array).forEach(e => obj_array.push(e));
-
-                        //obj_array.push(winrate_champions_array);
-                        let json_array = JSON.stringify(obj_array,  undefined, 3); //convert it back to json
-                        fs.writeFile('information.json', json_array, 'utf8', function (err) {
-                            if (err) {
-                                console.log("An error occured while writing JSON Object to File.");
-                                return console.log(err);
+                        let presence = false;
+                        //console.log(data.info.participants[y].championName);
+                        for(let z = 0; z < champions_player.length; z++){
+                            if(champions_player[z].check_champion_presence(data.info.participants[y].championName) == true){
+                                presence = true;
+                                champions_player[z].increase_games_played();
+                                if(data.info.participants[y].win == true){
+                                    champions_player[z].increase_games_winned();
+                                }
+                                break;
                             }
-                            console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
-                            console.log("scrittura in then.");
-                        });
-                    }
-                });
-
-                
-            }
-        })
-        .catch(() =>{
-            num_error++;
-            console.log("num errori", num_error);
-            let winrate_champions_array = new Array();
-            
-            if((num_error+sum_games) == num_games){ //così da fare il calcolo solo una volta
-                winrate_player = (games_winned/sum_games)*100;
-                for(let i = 0; i < champions_player.length; i++){
-                    champions_player[i].calculate_winrate();
-                    champions_player[i].get_info();
-                }
-
-                //console.log("winrate player " + winrate_player);
-                //console.log("num_games " + sum_games);
-                //console.log("games_winned " + games_winned);
-
-                console.log("Fetch error: " + num_error);
-
-                let obj_winrate;
-                obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": sum_games, "games_winned": games_winned}}
-
-                let string_obj = JSON.stringify(obj_winrate);
-                let obj_array = new Array();
-                
-
-                fs.readFile('information.json', 'utf8', (err, data)=>{ //togliere scrittura nel file e mettere cosa della promise
-                    if (err){
-                        console.log(err);
-                    } else {
-                        let obj = JSON.parse(data); //now it an object
-                        Array.from(obj).forEach(e => obj_array.push(e));
-
-                        obj_array.push(obj_winrate);
-
-                        Array.from(winrate_champions_array).forEach(e => obj_array.push(e));
-
-                        let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
-                        fs.writeFile('information.json', json_array, 'utf8', function (err) {
-                            if (err) {
-                                console.log("An error occured while writing JSON Object to File.");
-                                return console.log(err);
+                        }
+                        
+                        if(presence == false){
+                            let add_champ = new champion(data.info.participants[y].championName);
+                            if(data.info.participants[y].win == true){
+                                add_champ.increase_games_winned();
                             }
-                            console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
-                            console.log("scrittura in catch");
-                        });
+                            add_champ.increase_games_played();
+                            champions_player.push(add_champ);
+                        }
+    
+                        break;
                     }
-                });
+                }  
+            })
+            .then(() => {
+                let winrate_champions_array = new Array();
+    
+                if(sum_games == num_games){ //così da fare il calcolo solo una volta
+                    winrate_player = (games_winned/num_games)*100;
+                    for(let i = 0; i < champions_player.length; i++){
+                        champions_player[i].calculate_winrate();
+                        winrate_champions_array[i] = champions_player[i].get_info(); //cambiare la get_info() perché scrive dati json, magari ritorna solo winrate
+                    }
+    
+                    console.log("winrate player " + winrate_player);
+                    console.log("num_games " + num_games);
+                    console.log("games_winned " + games_winned);
+    
+                    //lo scopo di questa funzione è SOLO quello d mettere i dati nella UI
+                    let obj_winrate;
+                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": num_games, "games_winned":games_winned}}
+    
+                    let string_obj = JSON.stringify(obj_winrate);
+                    let obj_array = new Array();
+                    
+    
+                    fs.readFile('information.json', 'utf8', (err, data)=>{ //togliere scrittura nel file e mettere cosa della promise
+                        if (err){
+                            console.log(err);
+                        } else {
+                            let obj = JSON.parse(data); //now it an object
+                            Array.from(obj).forEach(e => obj_array.push(e));
+    
+                            obj_array.push(obj_winrate);
+    
+                            Array.from(winrate_champions_array).forEach(e => obj_array.push(e));
+    
+                            //obj_array.push(winrate_champions_array);
+                            let json_array = JSON.stringify(obj_array,  undefined, 3); //convert it back to json
+                            fs.writeFile('information.json', json_array, 'utf8', function (err) {
+                                if (err) {
+                                    console.log("An error occured while writing JSON Object to File.");
+                                    return console.log(err);
+                                }
+                                console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                                console.log("scrittura in then.");
+                            });
+                        }
+                    });
+    
+                    
+                }
+            })
+            .catch(() =>{
+                num_error++;
+                console.log("num errori", num_error);
+                let winrate_champions_array = new Array();
+                
+                if((num_error+sum_games) == num_games){ //così da fare il calcolo solo una volta
+                    winrate_player = (games_winned/sum_games)*100;
+                    for(let i = 0; i < champions_player.length; i++){
+                        champions_player[i].calculate_winrate();
+                        champions_player[i].get_info();
+                    }
+    
+                    //console.log("winrate player " + winrate_player);
+                    //console.log("num_games " + sum_games);
+                    //console.log("games_winned " + games_winned);
+    
+                    console.log("Fetch error: " + num_error);
+    
+                    let obj_winrate;
+                    obj_winrate = {"winrate_infos":{ "winrate_player": winrate_player, "num_games": sum_games, "games_winned": games_winned}}
+    
+                    let string_obj = JSON.stringify(obj_winrate);
+                    let obj_array = new Array();
+                    
+    
+                    fs.readFile('information.json', 'utf8', (err, data)=>{ //togliere scrittura nel file e mettere cosa della promise
+                        if (err){
+                            console.log(err);
+                        } else {
+                            let obj = JSON.parse(data); //now it an object
+                            Array.from(obj).forEach(e => obj_array.push(e));
+    
+                            obj_array.push(obj_winrate);
+    
+                            Array.from(winrate_champions_array).forEach(e => obj_array.push(e));
+    
+                            let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
+                            fs.writeFile('information.json', json_array, 'utf8', function (err) {
+                                if (err) {
+                                    console.log("An error occured while writing JSON Object to File.");
+                                    return console.log(err);
+                                }
+                                console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                                console.log("scrittura in catch");
+                            });
+                        }
+                    });
+                }
+            })
+            if((j % 15) == 0){
+                sleep(2000); 
             }
-        })
-        if((j % 15) == 0){
-            sleep(2000); 
         }
-    }
+    })
+    
+}
+
+function analize_matches_champions(data, num_games){ //funzione che serve per scrivere poi in dati SOLO nella UI
+    return new Promise((resolve, reject)=>{
+        let last_games_played = JSON.stringify(JSON.stringify(data));
+        let first_half_url = "https://europe.api.riotgames.com/lol/match/v5/matches/";
+        let second_half_url = "?api_key=" + key_api;
+    
+        let name_game = last_games_played.split(',');
+        
+        for(let i = 0; i < num_games; i++){
+            //console.log(name_game[i]);
+            if(i == 0){
+                name_game[i] = name_game[i].substr(4, 15);
+            }
+            else if(i == num_games-1){
+                name_game[i] = name_game[i].substr(2, 15);
+            }
+            else{
+                name_game[i] = name_game[i].substr(2, 15);
+            }
+            //console.log(name_game[i]);
+        }
+    
+        let sum_games = 0;
+        let num_error = 0;
+    
+        for(let j = 0; j < num_games; j++){
+            let complete_url = first_half_url + name_game[j] + second_half_url;
+            console.log("name game", name_game[j]);
+            fetch(complete_url, {
+                method: "GET",
+                headers:{
+                    'Access-Control-Request-Method': "GET",
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                //console.log("eseguendo fetch n" + j);
+                //console.log("partita a buon fine n", j, data);
+                sum_games++;
+    
+                for(let y = 0; y < 10; y++){
+                    //console.log("ciclo n " + y + " di richiesta fetch numero " + j);
+                    //console.log(data.info.participants[y]);
+                    if(data.info.participants[y].puuid == puuid_player){
+                        teamid_player = data.info.participants[y].teamId;
+                        if(data.info.participants[y].win == true){
+                            games_winned++;
+                        }
+                        let presence = false;
+                        //console.log(data.info.participants[y].championName);
+                        for(let z = 0; z < champions_player.length; z++){
+                            if(champions_player[z].check_champion_presence(data.info.participants[y].championName) == true){
+                                presence = true;
+                                champions_player[z].increase_games_played();
+                                if(data.info.participants[y].win == true){
+                                    champions_player[z].increase_games_winned();
+                                }
+                                break;
+                            }
+                        }
+                        
+                        if(presence == false){
+                            let add_champ = new champion(data.info.participants[y].championName);
+                            if(data.info.participants[y].win == true){
+                                add_champ.increase_games_winned();
+                            }
+                            add_champ.increase_games_played();
+                            champions_player.push(add_champ);
+                        }
+    
+                        break;
+                    }
+                }  
+            })
+            .then(() => {
+                let winrate_champions_array = new Array();
+    
+                if(sum_games == num_games){ //così da fare il calcolo solo una volta
+                    winrate_player = (games_winned/num_games)*100;
+                    for(let i = 0; i < champions_player.length; i++){
+                        champions_player[i].calculate_winrate();
+                        winrate_champions_array[i] = champions_player[i].get_info(); //cambiare la get_info() perché scrive dati json, magari ritorna solo winrate
+                    }
+    
+                    console.log("winrate player " + winrate_player);
+                    console.log("num_games " + num_games);
+                    console.log("games_winned " + games_winned);
+                    
+                    if(winrate_player != undefined){
+                        resolve({winrate_player, num_games, games_winned});
+                    }else{
+                        reject({winrate_player, num_games, games_winned});
+                    }
+                }
+            })
+            .catch(() =>{
+                num_error++;
+                console.log("num errori", num_error);
+                
+                if((num_error+sum_games) == num_games){ //così da fare il calcolo solo una volta
+                    winrate_player = (games_winned/sum_games)*100;
+                    for(let i = 0; i < champions_player.length; i++){
+                        champions_player[i].calculate_winrate();
+                        champions_player[i].get_info();
+                    }
+
+                    if(winrate_player != undefined){
+                        resolve({winrate_player, num_games, games_winned});
+                    }else{
+                        reject({winrate_player, num_games, games_winned});
+                    }
+                }
+            })
+            if((j % 15) == 0){
+                sleep(2000); 
+            }
+        }
+    })
+    
 }
 
 function get_champion_match(puuid){
@@ -464,13 +589,25 @@ function get_winrate_player(summoner_name, num_games){
 }
 
 function get_winrate_player_champions(summoner_name, num_games){
-    get_info_summoner_name(summoner_name)
-    .then(response => response.json())
-    .then(data => {
-        get_list_matches(data.puuid, num_games)
+    return new Promise((resolve, reject)=>{
+        get_info_summoner_name(summoner_name)
         .then(response => response.json())
         .then(data => {
-            analize_matches_champions(data, num_games);
+            get_list_matches(data.puuid, num_games)
+            .then(response => response.json())
+            .then(data => {
+                //restituisce valore
+                return analize_matches_champions(data, num_games)
+                .then((winrate)=>{
+                    console.log("PROMISE LAST CHAMP 1")
+                    if(winrate == undefined){
+                        reject(Error(winrate));
+                    }
+                    else {
+                        resolve(winrate);
+                    }
+                })
+            })
         })
     })
 }

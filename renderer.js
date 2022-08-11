@@ -25,7 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     //richiamare metodo di backend.js per avere le informazioni quando disponibili
     //prendere informazioni e settare name, level e rank
-    ipcRenderer.on("info-player-get", (_,{player_name, player_level,player_ranked_tier, player_ranked_level, icon_id, last_champ})=>{
+    ipcRenderer.on("info-player-get", (_,{player_name, player_level,player_ranked_tier, player_ranked_level, icon_id, last_champ, winrate_player, num_games, games_winned})=>{
         el.playerName.innerHTML = player_name;
         el.playerLevel.innerHTML = player_level;
         el.playerIcon.setAttribute("src", "http://ddragon.leagueoflegends.com/cdn/12.14.1/img/profileicon/"+icon_id+".png" );
@@ -37,6 +37,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         console.log("Eseguo cambio loading screen")
+        console.log("RENDERER WINRATE: ", winrate_player, num_games, games_winned);
         
         el.loadContainer.style.display =  "none";
         el.playerInfoContainer.style.display = "grid";
