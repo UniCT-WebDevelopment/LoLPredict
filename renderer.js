@@ -13,6 +13,9 @@ window.addEventListener("DOMContentLoaded", () => {
         rankIcon: document.getElementById("rankIcon"),
         playerLevel : document.getElementById("playerLevel"),
         lastChampIcon :document.getElementById("lastChampIcon"),
+        playerStat: document.getElementsByClassName("player_stat")[0],
+        winrateCol: document.getElementById("winCol"),
+        playerWinrate : document.getElementById("winrate_tot"),
     }
 
     const ui = {
@@ -25,7 +28,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     //richiamare metodo di backend.js per avere le informazioni quando disponibili
     //prendere informazioni e settare name, level e rank
-    ipcRenderer.on("info-player-get", (_,{player_name, player_level,player_ranked_tier, player_ranked_level, icon_id, last_champ, winrate_player, num_games, games_winned})=>{
+    ipcRenderer.on("info-player-get", (_,{player_name, player_level,player_ranked_tier, player_ranked_level, icon_id, last_champ, winrate_player, num_games, winrate_champions_array})=>{
         el.playerName.innerHTML = player_name;
         el.playerLevel.innerHTML = player_level;
         el.playerIcon.setAttribute("src", "http://ddragon.leagueoflegends.com/cdn/12.14.1/img/profileicon/"+icon_id+".png" );
@@ -36,9 +39,43 @@ window.addEventListener("DOMContentLoaded", () => {
             el.rankIcon.setAttribute("src", "../ranked-emblems/Emblem_" + player_ranked_tier + ".png");
         }
 
-        console.log("Eseguo cambio loading screen")
-        console.log("RENDERER WINRATE: ", winrate_player, num_games, games_winned);
-        
+        console.log("Eseguo cambio loading screen");
+        console.log("RENDERER WINRATE: ", winrate_player, num_games, winrate_champions_array);
+        el.playerWinrate.innerHTML = winrate_player.toFixed(2) + "%";
+
+        for(let i = 0; i < winrate_champions_array.length; i++){
+            let champ_name = winrate_champions_array[i].champion_name;
+
+            if(i == 0){
+                el.playerStat.getElementsByClassName("champ_vs")[0].getElementsByClassName("champ_vs_name")[0].innerHTML = champ_name;
+
+                el.playerStat.getElementsByClassName("champ_vs")[0].getElementsByClassName("champ_vs_img")[0].setAttribute("src", "http://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/"+ champ_name+".png");
+
+                el.playerStat.getElementsByClassName("winrate_vs_champ")[0].innerHTML =  winrate_champions_array[i].winrate.toFixed(2) + "%";
+
+                el.playerStat.getElementsByClassName("games_played")[0].innerHTML =  winrate_champions_array[i].games_played;
+
+                el.playerStat.getElementsByClassName("games_winned")[0].innerHTML =  winrate_champions_array[i].games_winned;
+
+            }else{
+               let new_player_stat =  el.playerStat.cloneNode(true);
+               
+               el.playerStat.getElementsByClassName("champ_vs")[0].getElementsByClassName("champ_vs_name")[0].innerHTML = champ_name;
+
+               el.playerStat.getElementsByClassName("champ_vs")[0].getElementsByClassName("champ_vs_img")[0].setAttribute("src", "http://ddragon.leagueoflegends.com/cdn/12.15.1/img/champion/"+ champ_name+".png");
+
+                console.log("CHAMP NAME " + winrate_champions_array[i].champion_name);
+
+                el.playerStat.getElementsByClassName("winrate_vs_champ")[0].innerHTML =  winrate_champions_array[i].winrate.toFixed(2) + "%";
+
+                el.playerStat.getElementsByClassName("games_played")[0].innerHTML =  winrate_champions_array[i].games_played;
+
+                el.playerStat.getElementsByClassName("games_winned")[0].innerHTML =  winrate_champions_array[i].games_winned;
+
+                el.winrateCol.appendChild(new_player_stat);
+            }
+        }
+
         el.loadContainer.style.display =  "none";
         el.playerInfoContainer.style.display = "grid";
     })

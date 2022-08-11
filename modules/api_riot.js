@@ -157,6 +157,7 @@ class champion{
         console.log("Games played with" + this.champion_name + ": " + this.games_played);
         console.log("Games winned with" + this.champion_name + ": " + this.games_winned);
         */
+       let return_string = {"champion_name": this.champion_name, "winrate": this.winrate, "games_played": this.games_played, "games_winned": this.games_winned};
 
         return return_string; //fare return di this.champion_name e winrate così come richiesto nella UI
     }
@@ -418,8 +419,10 @@ function analize_matches_champions(data, num_games){ //funzione che serve per sc
             })
             .then(() => {
                 let winrate_champions_array = new Array();
-    
+                console.log("THEN");
+                console.log("sum games dentro then", sum_games);
                 if(sum_games == num_games){ //così da fare il calcolo solo una volta
+                    console.log("DENTRO IF di then")
                     winrate_player = (games_winned/num_games)*100;
                     for(let i = 0; i < champions_player.length; i++){
                         champions_player[i].calculate_winrate();
@@ -430,29 +433,44 @@ function analize_matches_champions(data, num_games){ //funzione che serve per sc
                     console.log("num_games " + num_games);
                     console.log("games_winned " + games_winned);
                     
-                    if(winrate_player != undefined){
-                        resolve({winrate_player, num_games, games_winned});
-                    }else{
-                        reject({winrate_player, num_games, games_winned});
+                    let winrate_obj = {
+                        'winrate_player': winrate_player,
+                        'num_games': num_games,
+                        'winrate_champions_array': winrate_champions_array
                     }
+                    console.log(winrate_obj)
+                    //{"champion_name": this.champion_name, "winrate": this.winrate, "games_played": this.games_played, "games_winned": this.games_winned};
+                    
+                    resolve(winrate_obj);
+
                 }
             })
             .catch(() =>{
                 num_error++;
                 console.log("num errori", num_error);
-                
+                console.log("CATCH");
+                console.log("sum_games dentro catch", sum_games);
                 if((num_error+sum_games) == num_games){ //così da fare il calcolo solo una volta
+                    console.log("DENTRO IF CATCH")
                     winrate_player = (games_winned/sum_games)*100;
                     for(let i = 0; i < champions_player.length; i++){
                         champions_player[i].calculate_winrate();
-                        champions_player[i].get_info();
+                        winrate_champions_array[i] = champions_player[i].get_info();
                     }
 
-                    if(winrate_player != undefined){
-                        resolve({winrate_player, num_games, games_winned});
-                    }else{
-                        reject({winrate_player, num_games, games_winned});
+                    console.log("winrate player " + winrate_player);
+                    console.log("num_games " + num_games);
+                    console.log("games_winned " + games_winned);
+
+                    let winrate_obj = {
+                        'winrate_player': winrate_player,
+                        'num_games': num_games,
+                        'winrate_champions_array': winrate_champions_array
                     }
+                    console.log(winrate_obj)
+                    //{"champion_name": this.champion_name, "winrate": this.winrate, "games_played": this.games_played, "games_winned": this.games_winned};
+                    
+                    resolve(winrate_obj);
                 }
             })
             if((j % 15) == 0){
@@ -600,7 +618,7 @@ function get_winrate_player_champions(summoner_name, num_games){
                 return analize_matches_champions(data, num_games)
                 .then((winrate)=>{
                     console.log("PROMISE LAST CHAMP 1")
-                    if(winrate == undefined){
+                    if(winrate == null){
                         reject(Error(winrate));
                     }
                     else {

@@ -7,6 +7,10 @@
     margin: 0;
     font-weight: bold;
 }
+html, body{
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
 
 body{
     backdrop-filter: blur(50px);
@@ -70,7 +74,7 @@ body{
     grid-template-areas:
     "nav nav nav nav" 
     "profile profile profile profile"
-    "data-me data-vs resutl result";
+    "data-me data-me resutl result";
     height: 100vh;
 }
 
@@ -174,8 +178,6 @@ body{
     box-shadow: 2px 5px #0A1428;
 }
 
-
-
 #playerNameBox{
     display: flex;
     align-items: center;
@@ -198,6 +200,26 @@ body{
     background-size: auto;
 }
 
+#playerRankBox:hover{
+    background: rgba(40, 40, 40, 0.851);
+    transform: scale(1.03);
+    background-size: auto;
+}
+
+#playerLevel{
+    font-size: 25px;
+    font-weight: bolder;
+    margin-left: 20px;
+}
+
+#playerLevelBox:hover{
+    background: rgba(40, 40, 40, 0.851);
+    transform: scale(1.03);
+    background-size: auto;
+    font-size: 25px;
+    font-weight: bolder;
+}
+
 #playerRankBox{    /*metti immagine che ha rank di corrispondenza*/
     display: flex;
     align-items: center;
@@ -208,8 +230,6 @@ body{
 }
 
 #rankIcon{
-    border: 3px solid rgb(186, 0, 0);
-    border-radius: 40%;
     height: 95%;
     display: inline-block;
 }
@@ -228,6 +248,8 @@ body{
     background: rgba(15, 15, 15, 0.674);
     background-size: contain;
     background-repeat: no-repeat;
+    font-size: 25px;
+    font-weight: bolder;
 }
 
 #playerRank{
