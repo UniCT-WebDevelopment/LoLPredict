@@ -260,6 +260,7 @@ class RiotWSProtocol extends WebSocket {
                         code_player_name_done = true;
                         fs.writeFileSync(jsonFilePath, "{\"lol\" : \"serverStart\"}" ,'utf8', undefined);
                         
+                        //gestire il fatto che si posssono non avere partite
                         api_server.get_data_last_champion_played(player_name)
                         .then((res)=>{
                             last_champ = res;
