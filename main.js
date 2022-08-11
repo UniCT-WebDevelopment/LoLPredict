@@ -298,7 +298,62 @@ class RiotWSProtocol extends WebSocket {
                             }
                         )
                         */
-                    
+
+                        let winrate_player_info;
+                        let won_player;
+                        let lose_player;
+                        let num_games_info;
+                        fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + player_name +"?api_key=" + api_key)
+                        .then(result => result.json())
+                        .then(data => {
+                            fetch("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + data.id + "?api_key=" + api_key)
+                            .then(result => result.json())
+                            .then(data => {
+                                console.log("dati dalla seconda fetch", data);
+                                for(let k = 0; k < 3; k++){
+                                    if(data[k].queueType == "RANKED_SOLO_5x5"){
+                                        //console.log("data[k].wins", data[k].wins);
+                                        //console.log("data[k].losses", data[k].losses)
+                                        won_player = data[k].wins;
+                                        lose_player = data[k].losses;
+                                        //console.log("dopo assegnazione valori", won_player, lose_player);
+                                        num_games_info = won_player + lose_player;
+                                        //console.log("numgames_info", num_games_info);
+                                        winrate_player_info = (won_player/(num_games_info))*100;
+                                        break;
+                                    }
+                                }
+                            })
+                            .then(() =>{
+                                //console.log("won_player", won_player, "lose_player", lose_player, "num_games_info", num_games_info);
+                                let player_info = { "winrate_infos": { "winrate_player": winrate_player_info, "num_games": num_games_info, "games_winned": won_player } };
+        
+                                let string_obj = JSON.stringify(player_info);
+                                let obj_array = new Array();
+        
+                                fs.readFile('information.json', 'utf8', (err, datas)=>{
+                                    if (err){
+                                        console.log("errore lettura", err);
+                                    } else {
+                                        //console.log("datas letti dal file", datas);
+                                        let obj = JSON.parse(datas); //now it an object
+                                        Array.from(obj).forEach(e =>  obj_array.push(e));
+                                       
+                                        obj_array.push(player_info);
+        
+                                        let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
+                                        fs.writeFile('information.json', json_array, 'utf8', function (err) {
+                                            if (err) {
+                                                console.log("An error occured while writing JSON Object to File.");
+                                                return console.log(err);
+                                            }
+                                            console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                                            console.log("JSON file has been saved.");
+                                        });
+                                    }
+                                });
+                            })
+                        });                        
                     }
                 } catch(error){
                     console.log("errore nel prendere le informazioni base del giocatore", error);
@@ -330,12 +385,12 @@ class RiotWSProtocol extends WebSocket {
                         code_teams_info_done = true;
                         console.log("codice per informazioni del player");
 
-                        fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
+                        fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + player_name +"?api_key=" + api_key)
                         .then(result => result.json())
                         .then(data => {
 
                             summonerId = data.id;
-                            summonerId = "FW4mwI3UhFBKruDOOyBVCbbAO_KjHg-HI-sSH27Iq9XckdU";
+                            summonerId = "X82Oq0h87oqfadaKqjRtZkKi-uujjXXQhv8BJv8Io13rlAM";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
@@ -387,7 +442,7 @@ class RiotWSProtocol extends WebSocket {
                                                     enemies_rank.push(data[k].rank);
 
                                                     let wins_enemy = parseInt(data[k].wins);
-                                                    let lose_enemy = pareseInt(data[k].losses);
+                                                    let lose_enemy = parseInt(data[k].losses);
                                                     let winrate_enemy_guy = wins_enemy/(wins_enemy + lose_enemy);
                                                     winrate_enemies_array.push(winrate_enemy_guy);
                                                     break;
@@ -405,19 +460,24 @@ class RiotWSProtocol extends WebSocket {
                                             average_elo_allies = calculate_team_elo(allies_tier, allies_rank);
                                             average_elo_enemies = calculate_team_elo(enemies_tier, enemies_rank);
 
-                                            let average_win_allies, average_win_enemies;
+                                            let average_win_allies = 0;
+                                            let average_win_enemies = 0;
                                             for(let i = 0; i < 5; i++){
                                                 average_win_allies += winrate_allies_array[i];
                                                 average_win_enemies += winrate_enemies_array[i];
                                             }
+                                            //console.log("winrate_allies_array", winrate_allies_array);
+                                            //console.log("winrate_enemies_array", winrate_enemies_array);
 
                                             average_win_allies = average_win_allies/5;
                                             average_win_enemies = average_win_enemies/5;
 
-                                            difference_between_teams = (((average_win_allies - average_win_enemies)*20) +((average_elo_allies - average_elo_enemies)*80))/100; //quindi valori negativi non sono buoni
+                                            //console.log("valori average_win_allies", average_win_allies, "average_win_enemies", average_win_enemies, "average_elo_allies", average_elo_allies, "average_elo_enemies", average_elo_enemies);
+
+                                            difference_between_teams = (((average_win_allies - average_win_enemies)*10) +((average_elo_allies - average_elo_enemies)*90))/100; //quindi valori negativi non sono buoni
 
 
-                                            console.log("average_elo_allies average_elo_enemies difference_between_teams riga 331", average_elo_allies, average_elo_enemies, difference_between_teams);
+                                            //console.log("average_elo_allies average_elo_enemies difference_between_teams riga 420", average_elo_allies, average_elo_enemies, difference_between_teams);
 
                                             let obj_difference_between_teams = {"difference_between_teams": difference_between_teams};
 
@@ -429,7 +489,7 @@ class RiotWSProtocol extends WebSocket {
                                                 if (err){
                                                     console.log("errore lettura", err);
                                                 } else {
-                                                    console.log("datas letti dal file", datas);
+                                                    //console.log("datas letti dal file", datas);
                                                     let obj = JSON.parse(datas); //now it an object
                                                     Array.from(obj).forEach(e =>  obj_array.push(e));
                                                    
