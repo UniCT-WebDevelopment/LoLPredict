@@ -276,35 +276,6 @@ class RiotWSProtocol extends WebSocket {
                             })
                         })
                         .catch((err)=>console.error("ERRORE PROMISE"+ err));
-                        /*
-                        .then(
-                        () => api_server.get_winrate_player_champions("AlexNext", 10))
-                        .then(()=>{
-                                fs.readFile(jsonFilePath, 'utf-8', (err, datas) => {
-                                    if(err){
-                                        console.log(err);
-                                    }else{
-
-                                        console.log("DATA FROM JSON", datas);
-                                        let _object = JSON.parse(datas);
-                                        
-                                        console.log("OBJECT FROM JSON", _object);
-                                        let json_arr = Array.from(_object);
-
-                                        console.log("DATI PARSATI", json_arr);
-    
-                                        let last_played_champ = json_arr.filter(e => e.last_champion_played != undefined);
-    
-                                        let last_matches = json_arr.filter(e => e.champion_stats != undefined);
-    
-                                        console.log(json_arr);
-    
-                                        mainWindow.webContents.send("info-player-get", {player_name , player_level, player_ranked_tier,player_ranked_level, icon_id, last_played_champ, last_matches});
-                                    }
-                                })
-                            }
-                        )
-                        */
 
                         let winrate_player_info;
                         let won_player;
@@ -397,7 +368,7 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            summonerId = "X82Oq0h87oqfadaKqjRtZkKi-uujjXXQhv8BJv8Io13rlAM";
+                            summonerId = "U-qjeDymtvZ167R1dHWAMTGEhDexhEb_3LE1CTAKhizKRcg";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
@@ -702,3 +673,4 @@ connector.on('disconnect', () => {
 connector.start();
 console.log('Listening for League Client');
 
+//aggiungere in caso la possibilità di refreshare i dati nel json mettendo i flag delle variabili a false
