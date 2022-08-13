@@ -35,7 +35,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-6334d53a-2c05-4ff9-9c84-4209e24b715e";
+let api_key = "RGAPI-65dfbefd-2a4a-468b-a61e-c5d5abae4a97";
 let gamestarted = false;
 let champion_in_json = false;
 let champion_played;
@@ -277,7 +277,6 @@ class RiotWSProtocol extends WebSocket {
                                                                                 player_ranked_level, icon_id, 
                                                                                 last_champ, winrate_player, num_games, winrate_champions_array
                                                                                 });
-                                await predict_tf.run();
                             })
                         })
                         .catch((err)=>console.error("ERRORE PROMISE"+ err));
@@ -373,7 +372,7 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            summonerId = "U-qjeDymtvZ167R1dHWAMTGEhDexhEb_3LE1CTAKhizKRcg";
+                            summonerId = "xzDVinOV3XrmgoWEK60QvmrzAYVwyRihgxVrDdEIEFuVnpQ";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
@@ -487,6 +486,20 @@ class RiotWSProtocol extends WebSocket {
                                                         console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
                                                         console.log("JSON file has been saved.");
                                                     });
+
+                                                    let loadModel = async () => {
+                                                        console.log("Loading Model from main")
+                                                        await predict_tf.loadModel();
+                                                    }
+                                                    
+                                                    loadModel();
+
+                                                    let predict = async () => {
+                                                        console.log("Predicting from Model from main")
+                                                        await predict_tf.predict();
+                                                    }
+                                                    
+                                                    predict();
                                                 }
                                             });
                                         }
@@ -563,7 +576,7 @@ class RiotWSProtocol extends WebSocket {
                                     })
                                     .then(() => {
                                         if(sum_games == games_supported){
-                                            winrate_champ = games_won/num_games_played;
+                                            winrate_champ = (games_won/num_games_played)*100;
 
                                             let obj_winrate;
                                             obj_winrate = {"champion_stats":{ "champion": champion_played, "winrate": winrate_champ, "games_played":num_games_played, "games_winned": games_won}}
@@ -676,6 +689,8 @@ connector.on('disconnect', () => {
 
 
 connector.start();
+
+
 console.log('Listening for League Client');
 
 //aggiungere in caso la possibilità di refreshare i dati nel json mettendo i flag delle variabili a false
