@@ -73,13 +73,20 @@ async function getData_fromJson(){
     const json_data = fs.readFileSync(data_to_predict_URL, {encoding: 'utf8', flag: 'r'});
 
     let obj = JSON.parse(json_data); //now it an object
-    //console.log("Object.keys(obj).length", Object.keys(obj).length);
-    for(let i = 0; i < Object.keys(obj).length; i+=4){
-        //console.log("global_winrate", data[i].winrate_infos.winrate_player, "winrate_champion", data[i+1].champion_stats.winrate, "dbt", data[i+2].difference_between_teams, "result", data[i+3].result)
-        let data_to_push = {"global_winrate": obj[i].winrate_infos.winrate_player, "winrate_champion": obj[i+1].champion_stats.winrate, "dbt": obj[i+2].difference_between_teams, "result": obj[i+3].result};
-        console.log(data_to_push);
-        dati_utili.push(data_to_push);
-    }
+    console.log("obj letto dal file", obj);
+    console.log("lunghezza dato", Object.keys(obj).length);
+    console.log("obj[0]", obj[0]);
+    console.log("obj[0].winrate_infos", obj[0].winrate_infos);
+    console.log("obj[1]", obj[1]);
+    console.log("obj[1].champion_stats.winrate", obj[1].champion_stats.winrate);
+    console.log("obj[2]", obj[2]);
+    console.log("obj[2].difference_between_teams", obj[2].difference_between_teams);
+
+    //console.log("global_winrate", obj[i].winrate_infos.winrate_player, "winrate_champion", obj[i+1].champion_stats.winrate, "dbt", obj[i+2].difference_between_teams, "result", obj[i+3].result);
+
+    let data_to_push = {"global_winrate": obj[0].winrate_infos.winrate_player, "winrate_champion": obj[1].champion_stats.winrate, "dbt": obj[2].difference_between_teams};
+    console.log("data to push" ,data_to_push);
+    dati_utili.push(data_to_push);
     /*
     await fetch(dataURL)
     .then(resp => resp.json())
@@ -98,6 +105,7 @@ async function getData_fromJson(){
         console.log("andato in catch la richiesta", error);
     })
     */
+    console.log("dati utili", dati_utili);
     return dati_utili;
 }
 
@@ -174,9 +182,10 @@ async function trainModel(model, inputs, targets){
     
 }
 
-async function predictModel(model,data_xy, {inputs, iMin, iMax, oMin, oMax}){
+async function predictModel(model,data_xy, {inputs, iMin, iMax, oMin, oMax}){ 
+    console.log("dentro predict model");
 
-    const [x, y] = tf.tidy(() => {
+    const [x, y] = tf.tidy(() => { //da fixare
         const nx = tf.linspace(0,1,100); //crea un vettore uni dim da 100
         const ny = model.predict(nx.reshape([100, 1])); //modifica forma del tensore e genera predizione su esso (perché la fa?)
 
@@ -186,9 +195,13 @@ async function predictModel(model,data_xy, {inputs, iMin, iMax, oMin, oMax}){
         return [x.dataSync(), y.dataSync()]; //scarica valori dal tf.Tensor
     })
 
+    console.log("dopo tidy");
+
     const predictedValues = Array.from(x).map((val, i)=>{
         return {x: val, y: y[i]};
     })
+
+    console.log("dopo ultima funzione");
 
     /*
     tfvis.render.scatterplot(
@@ -269,8 +282,9 @@ async function loadModel(){
 }
 
 async function predict(){
+    console.log("esecuzione di predict");
     const data_to_pred = await getData_fromJson();
-
+    console.log("dopo get data", data_to_pred);
     for(let i = 0; i < data_to_pred.length; i++){
         if(data_to_pred[i].result == "win"){
             data_to_pred[i].result = 1;
@@ -296,7 +310,9 @@ async function predict(){
 
     console.log(data_xy)
 
+    console.log("prima di data to tensor");
     const data_to_tensor = dataToTensor(data_to_pred);
+    console.log("dopo data to tensor e prima di predict model");
     const prediction = await predictModel(modelToLoad, data_to_pred, data_to_tensor);
     console.log("predizione eseguita: ");
     prediction.print();

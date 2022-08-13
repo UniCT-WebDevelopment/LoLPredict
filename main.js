@@ -372,7 +372,7 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            summonerId = "xzDVinOV3XrmgoWEK60QvmrzAYVwyRihgxVrDdEIEFuVnpQ";
+                            summonerId = "URMQz-_tjp1-jnAt_fv6FnGLiBVfnE4RyEtBaeXkjdcomL0";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
@@ -483,23 +483,29 @@ class RiotWSProtocol extends WebSocket {
                                                             console.log("An error occured while writing JSON Object to File.");
                                                             return console.log(err);
                                                         }
+
+
+                                                        console.log("dentro then di predict");
+                                                        let loadModel = async () => {
+                                                            console.log("Loading Model from main")
+                                                            await predict_tf.loadModel();
+                                                        }
+
+                                                        console.log("prima di loadmodel");
+                                                        loadModel();
+
+                                                        let predict = async () => {
+                                                            console.log("Predicting from Model from main")
+                                                            await predict_tf.predict();
+                                                        }
+                                                        console.log("prima di predict");
+                                                        predict();
+
+
                                                         console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
                                                         console.log("JSON file has been saved.");
                                                     });
 
-                                                    let loadModel = async () => {
-                                                        console.log("Loading Model from main")
-                                                        await predict_tf.loadModel();
-                                                    }
-                                                    
-                                                    loadModel();
-
-                                                    let predict = async () => {
-                                                        console.log("Predicting from Model from main")
-                                                        await predict_tf.predict();
-                                                    }
-                                                    
-                                                    predict();
                                                 }
                                             });
                                         }
