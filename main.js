@@ -8,6 +8,7 @@ const fs = require("fs");
 const { setTimeout } = require("timers/promises");
 const https = require('node:https');
 const api_server = require('./modules/api_riot');
+const predict_tf = require('./modules/predict_tf');
 
 const jsonFilePath = 'information.json';
 
@@ -276,6 +277,7 @@ class RiotWSProtocol extends WebSocket {
                                                                                 player_ranked_level, icon_id, 
                                                                                 last_champ, winrate_player, num_games, winrate_champions_array
                                                                                 });
+                                await predict_tf.run();
                             })
                         })
                         .catch((err)=>console.error("ERRORE PROMISE"+ err));
