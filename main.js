@@ -35,7 +35,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-65dfbefd-2a4a-468b-a61e-c5d5abae4a97";
+let api_key = "RGAPI-8ec8796b-0be2-498c-ae89-2467f0e20eb4";
 let gamestarted = false;
 let champion_in_json = false;
 let champion_played;
@@ -372,7 +372,7 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            summonerId = "URMQz-_tjp1-jnAt_fv6FnGLiBVfnE4RyEtBaeXkjdcomL0";
+                            summonerId = "X82Oq0h87oqfadaKqjRtZkKi-uujjXXQhv8BJv8Io13rlAM";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
@@ -486,24 +486,36 @@ class RiotWSProtocol extends WebSocket {
 
 
                                                         console.log("dentro then di predict");
-                                                        let loadModel = async () => {
+                                                        /*let loadModel = async () => {
                                                             console.log("Loading Model from main")
                                                             await predict_tf.loadModel();
                                                         }
-
+                                                        
                                                         console.log("prima di loadmodel");
-                                                        loadModel();
+                                                        loadModel();*/
 
-                                                        let predict = async () => {
+                                                        let value_predicted;
+                                                        /*let predict = async () => {
                                                             console.log("Predicting from Model from main")
                                                             await predict_tf.predict();
                                                         }
+                                                        console.log("prima di predict main");
+                                                        let predicted_value;
+                                                        predict.then(data =>{
+                                                            predicted_value = data;
+                                                        })*/
+
                                                         console.log("prima di predict");
-                                                        predict();
+                                                        predict_tf.predict()
+                                                        .then(data =>{
+                                                            console.log("prima di assegnazione");
+                                                            value_predicted = data;
+                                                            console.log("data, ", data, "value_predicted", value_predicted);
+                                                            mainWindow.webContents.send("value-predicted", {value_predicted});
+                                                        })
 
-
-                                                        console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
-                                                        console.log("JSON file has been saved.");
+                                                        //console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
+                                                        //console.log("JSON file has been saved.");
                                                     });
 
                                                 }

@@ -16,6 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
         playerStat: document.getElementsByClassName("player_stat")[0],
         winrateCol: document.getElementById("winCol"),
         playerWinrate : document.getElementById("winrate_tot"),
+        result_machine_learning: document.getElementById("result"), //da migliorare, roba di ciccio
     }
 
     const ui = {
@@ -78,6 +79,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
         el.loadContainer.style.display =  "none";
         el.playerInfoContainer.style.display = "grid";
+    })
+
+    ipcRenderer.on("value-predicted", (_, {value_predicted}) =>{
+        el.result_machine_learning.innerHTML = value_predicted + " valore predetto dal machine learning, cioè probabilità di vincità";
     })
 
     ui.closeBtn.addEventListener('click', ()=>{
