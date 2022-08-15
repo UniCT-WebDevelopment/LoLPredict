@@ -130,6 +130,7 @@ body{
     overflow-y: scroll;
     position: relative;
     height: calc(100% - 55px);
+    border-radius: 10px;
 }
 
 .winrate_col_vs{
@@ -185,6 +186,29 @@ body{
     background: rgba(15, 15, 15, 0.674); /*metti immagine del campione che ha giocato di più nelle ultime partite fetchate o dell'ultima partita o immagine dell'icona*/
     background-size: contain;
     background-repeat: no-repeat;
+    border-radius: 8px;
+}
+
+#resultBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.857);
+    border-radius: 10px;
+    height: 100%;
+    font-size: 25px;
+    padding: 5px;
+    text-align: center;
+}
+
+#result-text{
+    color:#ffe4ae;
+}
+
+#prediction{
+    font-size: 45px;
+    color:rgb(0, 146, 98); /*brown per % sotto al 30%, rgb(255, 194, 80) per % sotto al 40%, rgb(155, 145, 15) per % sotto al 70%, rgb(0, 146, 98) per % fino al 100%*/
 }
 
 #playerIcon{
@@ -195,13 +219,13 @@ body{
 }
 
 #playerNameBox:hover{
-    background: rgba(40, 40, 40, 0.851);
+    background: rgb(40, 40, 40);
     transform: scale(1.03);
     background-size: auto;
 }
 
 #playerRankBox:hover{
-    background: rgba(40, 40, 40, 0.851);
+    background: rgba(40, 40, 40);
     transform: scale(1.03);
     background-size: auto;
 }
@@ -213,7 +237,7 @@ body{
 }
 
 #playerLevelBox:hover{
-    background: rgba(40, 40, 40, 0.851);
+    background: rgba(40, 40, 40);
     transform: scale(1.03);
     background-size: auto;
     font-size: 25px;
@@ -227,6 +251,7 @@ body{
     background: rgba(15, 15, 15, 0.674);
     background-size: contain;
     background-repeat: no-repeat;
+    border-radius: 8px;
 }
 
 #rankIcon{
@@ -250,6 +275,7 @@ body{
     background-repeat: no-repeat;
     font-size: 25px;
     font-weight: bolder;
+    border-radius: 8px;
 }
 
 #playerRank{

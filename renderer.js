@@ -16,7 +16,8 @@ window.addEventListener("DOMContentLoaded", () => {
         playerStat: document.getElementsByClassName("player_stat")[0],
         winrateCol: document.getElementById("winCol"),
         playerWinrate : document.getElementById("winrate_tot"),
-        result_machine_learning: document.getElementById("result"), //da migliorare, roba di ciccio
+        prediction: document.getElementById("prediction"), //da migliorare, roba di ciccio
+        resultText: document.getElementById("result-text"),
     }
 
     const ui = {
@@ -82,7 +83,32 @@ window.addEventListener("DOMContentLoaded", () => {
     })
 
     ipcRenderer.on("value-predicted", (_, {value_predicted}) =>{
-        el.result_machine_learning.innerHTML = value_predicted + " valore predetto dal machine learning, cioè probabilità di vincità";
+        let color;
+        let value = value_predicted.toFixed(2);
+
+        if(value < 30){
+            color = "brown";
+        }else if(value >= 30 && value < 40){
+            color = "rgb(255, 194, 80)";
+        }else if(value >= 40 & value < 70){
+            color ="rgb(155, 145, 15)";
+        }else{
+            color = "rgb(0, 146, 98)";
+        }
+
+        el.prediction.style.color = color;
+        el.resultText.innerHTML = "Pronostico di LoL Predict per la partita in corso:";
+        el.prediction.innerHTML = value + "%";
+    })
+
+    ipcRenderer.on("end-game", (_)=>{
+        el.resultText.innerHTML = "Nessun pronostico da visualizzare";
+        el.prediction.innerHTML = "";
+    })
+
+    ipcRenderer.on("champ-select", (_)=>{
+        el.resultText.innerHTML = "Selezione campioni in corso... Il pronostico verrà calcolato alla fine";
+        el.prediction.innerHTML = "";
     })
 
     ui.closeBtn.addEventListener('click', ()=>{

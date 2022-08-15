@@ -2,7 +2,7 @@ const fs = require('fs');
 const { resolve } = require('path');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-let key_api = "RGAPI-8ec8796b-0be2-498c-ae89-2467f0e20eb4";
+let key_api = "RGAPI-5511bc7c-9ff2-4f60-b024-7144598bbd19";
 
 const jsonFilePath = '../information.json';
 
