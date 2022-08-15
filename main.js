@@ -703,6 +703,24 @@ class RiotWSProtocol extends WebSocket {
                     console.log("errore nel prendere le informazioni del campione usato", error);
                     console.log("lolData.data", lolData.data);
                 }
+
+                try{
+                    if(lolData.data.phase == "EndOfGame"){
+                        mainWindow.webContents.send("end-game", {});
+                    }
+                }
+                catch{
+                    console.log("loldata endphase");
+                }
+
+                try{
+                    if(lolData.data.phase == 'ChampSelect'){
+                        mainWindow.webContents.send("champ-select", {});
+                    }
+                }
+                catch{
+                    console.log("loldata champselect");
+                }
                 
                 this.emit(topic, payload);
                 break;
