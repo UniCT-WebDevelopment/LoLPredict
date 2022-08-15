@@ -372,11 +372,12 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            summonerId = "X82Oq0h87oqfadaKqjRtZkKi-uujjXXQhv8BJv8Io13rlAM";
+                            //summonerId = "X82Oq0h87oqfadaKqjRtZkKi-uujjXXQhv8BJv8Io13rlAM";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
                                 let call_num = 0;
+                                let call_fail = 0;
                                 //console.log("dati seconda fetch",data);
 
                                 let participants_array = new Array();
@@ -394,6 +395,10 @@ class RiotWSProtocol extends WebSocket {
                                     //console.log("data.participants[i].summonerId", data.participants[i].summonerId);
                                     //console.log("data.participants[i].teamId", data.participants[i].teamId);
                                 }
+                                
+                                let enemies_skip = 0;
+                                let allies_skip = 0;
+
                                 for(let i = 0; i < 10; i++){
                                     fetch("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + participants_array[i] + "?api_key=" + api_key)
                                     .then(result => result.json())
@@ -401,17 +406,30 @@ class RiotWSProtocol extends WebSocket {
                                         //console.log("partecipanti", participants_array);
                                         //console.log("data terza fetch", data);
                                         //console.log("data[k].queueType", data[0].queueType);
+                                        let stop = false;
                                         if(teamId_array[i] == teamId_player){
                                             //console.log("dati dei player alleati", data);
                                             for(let k = 0; k < 3; k++){
-                                                if(data[k].queueType == "RANKED_SOLO_5x5"){
-                                                    allies_tier.push(data[k].tier);
-                                                    allies_rank.push(data[k].rank);
-                                                    //console.log("data[k].tier", data[k].tier, "data[k].rank", data[k].rank);
-                                                    let wins_ally = parseInt(data[k].wins);
-                                                    let lose_ally = parseInt(data[k].losses);
-                                                    let winrate_ally_guy = wins_ally/(wins_ally + lose_ally);
-                                                    winrate_allies_array.push(winrate_ally_guy);
+                                                try{
+                                                    if(data[k].queueType == "RANKED_SOLO_5x5"){
+                                                        allies_tier.push(data[k].tier);
+                                                        allies_rank.push(data[k].rank);
+                                                        //console.log("data[k].tier", data[k].tier, "data[k].rank", data[k].rank);
+                                                        let wins_ally = parseInt(data[k].wins);
+                                                        let lose_ally = parseInt(data[k].losses);
+                                                        let winrate_ally_guy = wins_ally/(wins_ally + lose_ally);
+                                                        winrate_allies_array.push(winrate_ally_guy);
+                                                        stop = true;
+                                                        break;   
+                                                    }
+                                                }
+                                                catch{
+                                                    stop = true;
+                                                    call_fail++;
+                                                    allies_skip++;
+                                                    break;
+                                                }
+                                                if(stop == true){
                                                     break;
                                                 }
                                             }
@@ -419,14 +437,26 @@ class RiotWSProtocol extends WebSocket {
                                         else{
                                             console.log("dati dei player nemici", data);
                                             for(let k = 0; k < 3; k++){
-                                                if(data[k].queueType == "RANKED_SOLO_5x5"){
-                                                    enemies_tier.push(data[k].tier);
-                                                    enemies_rank.push(data[k].rank);
-
-                                                    let wins_enemy = parseInt(data[k].wins);
-                                                    let lose_enemy = parseInt(data[k].losses);
-                                                    let winrate_enemy_guy = wins_enemy/(wins_enemy + lose_enemy);
-                                                    winrate_enemies_array.push(winrate_enemy_guy);
+                                                try{
+                                                    if(data[k].queueType == "RANKED_SOLO_5x5"){
+                                                        enemies_tier.push(data[k].tier);
+                                                        enemies_rank.push(data[k].rank);
+    
+                                                        let wins_enemy = parseInt(data[k].wins);
+                                                        let lose_enemy = parseInt(data[k].losses);
+                                                        let winrate_enemy_guy = wins_enemy/(wins_enemy + lose_enemy);
+                                                        winrate_enemies_array.push(winrate_enemy_guy);
+                                                        stop = true;
+                                                        break;
+                                                    }
+                                                }
+                                                catch{
+                                                    stop = true;
+                                                    call_fail++;
+                                                    enemies_skip++;
+                                                    break;
+                                                }
+                                                if(stop == true){
                                                     break;
                                                 }
                                             }
@@ -435,7 +465,7 @@ class RiotWSProtocol extends WebSocket {
                                     })
                                     .then(() =>{
                                         call_num++;
-                                        if(call_num == 10){
+                                        if((call_num == 10) || ((call_num + call_fail) == 10)){
                                             //console.log("allies tier e allies rank", allies_tier, allies_rank);
                                             //console.log("enemies tier e enemis rank", enemies_tier, enemies_rank);   
     
@@ -451,8 +481,8 @@ class RiotWSProtocol extends WebSocket {
                                             //console.log("winrate_allies_array", winrate_allies_array);
                                             //console.log("winrate_enemies_array", winrate_enemies_array);
 
-                                            average_win_allies = average_win_allies/5;
-                                            average_win_enemies = average_win_enemies/5;
+                                            average_win_allies = average_win_allies/(5 - allies_skip);
+                                            average_win_enemies = average_win_enemies/(5 - enemies_skip);
 
                                             //console.log("valori average_win_allies", average_win_allies, "average_win_enemies", average_win_enemies, "average_elo_allies", average_elo_allies, "average_elo_enemies", average_elo_enemies);
 
