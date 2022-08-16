@@ -35,7 +35,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-5cc945dc-f015-4b1a-b092-fdf25faeb2ad";
+let api_key = "RGAPI-22fa734b-d401-4b46-a16f-88d858455a2f";
 let gamestarted = false;
 let champion_in_json = false;
 let champion_played;
@@ -372,17 +372,18 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            summonerId = "DLLpfDTtfnjaFGNjiaMBAuPI8L4IgLZHWnjIExgromnITN4";
+                            //summonerId = "0JlJWg_uNXCxhTNfVWFhifgttZ3-w6skIRhxVyMcrOPefrI";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
                                 let call_num = 0;
                                 let call_fail = 0;
-                                //console.log("dati seconda fetch",data);
+                                console.log("dati seconda fetch",data);
 
                                 let participants_array = new Array();
                                 let teamId_array = new Array();
                                 let teamId_player;
+                                
 
                                 for(let i = 0; i < 10; i++){
                                     participants_array.push(data.participants[i].summonerId);
@@ -392,8 +393,8 @@ class RiotWSProtocol extends WebSocket {
                                         teamId_player = data.participants[i].teamId;
                                     }
 
-                                    //console.log("data.participants[i].summonerId", data.participants[i].summonerId);
-                                    //console.log("data.participants[i].teamId", data.participants[i].teamId);
+                                    console.log("data.participants[i].summonerId", data.participants[i].summonerId);
+                                    console.log("data.participants[i].teamId", data.participants[i].teamId);
                                 }
                                 
                                 let enemies_skip = 0;

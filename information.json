@@ -9,15 +9,9 @@
  {
   "champion_stats": {
    "champion": "Neeko",
-   "winrate": 60,
-   "games_played": 5,
-   "games_winned": 3
+   "winrate": 71.42857142857143,
+   "games_played": 7,
+   "games_winned": 5
   }
- },
- {
-  "difference_between_teams": null
- },
- {
-  "difference_between_teams": null
  }
 ]
