@@ -35,7 +35,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-5511bc7c-9ff2-4f60-b024-7144598bbd19";
+let api_key = "RGAPI-e9abc26b-1962-49ec-97bb-9c2b7728c3c3";
 let gamestarted = false;
 let champion_in_json = false;
 let champion_played;
@@ -372,7 +372,7 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            //summonerId = "X82Oq0h87oqfadaKqjRtZkKi-uujjXXQhv8BJv8Io13rlAM";
+                            summonerId = "DLLpfDTtfnjaFGNjiaMBAuPI8L4IgLZHWnjIExgromnITN4";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
