@@ -70,6 +70,7 @@ const createWindow = () => {
         height: 700,
         minWidth: 900,
         minHeight: 700,
+        icon: "icon.ico",
         titleBarStyle: "hiddenInset",
         transparent: true,
         frame:false,
