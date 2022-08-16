@@ -372,7 +372,7 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            //summonerId = "0JlJWg_uNXCxhTNfVWFhifgttZ3-w6skIRhxVyMcrOPefrI";
+                            //summonerId = "URMQz-_tjp1-jnAt_fv6FnGLiBVfnE4RyEtBaeXkjdcomL0";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {

@@ -1,6 +1,6 @@
 //40-35-25
-const tf = require('@tensorflow/tfjs');
-require("@tensorflow/tfjs-node");
+//const tf = require('@tensorflow/tfjs');
+const tf = require("@tensorflow/tfjs-node");
 //const tfvis = require("@tensorflow/tfjs-vis");
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const fs = require("fs");

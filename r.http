@@ -1,5 +1,0 @@
-GET https://riot:AvgOeCnPbvhl6GSRKeWZzQ@127.0.0.1:51491/lol-career-stats/v1/summoner-games/t98zb5-DNQNNLYnLi82-fQwZsXjQ79d7_we2jUbKZSxfb4Oj7eSwg2fN2aVfg3qiBnevyPkiK8fcLw
-
-###
-GET https://127.0.0.1:63241/lol-summoner/v1/summoners
-Authorization: Basic cmlvdDowamV1NS1xMzhZQkZQeVNHVEZRbE5B
