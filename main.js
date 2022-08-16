@@ -35,7 +35,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-5511bc7c-9ff2-4f60-b024-7144598bbd19";
+let api_key = "RGAPI-5cc945dc-f015-4b1a-b092-fdf25faeb2ad";
 let gamestarted = false;
 let champion_in_json = false;
 let champion_played;
