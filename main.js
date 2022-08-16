@@ -35,7 +35,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-e9abc26b-1962-49ec-97bb-9c2b7728c3c3";
+let api_key = "RGAPI-5cc945dc-f015-4b1a-b092-fdf25faeb2ad";
 let gamestarted = false;
 let champion_in_json = false;
 let champion_played;
@@ -80,7 +80,7 @@ const createWindow = () => {
         }
     })
     mainWindow.setBackgroundColor("rgba(10, 20, 40, 0.8)");
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
     mainWindow.loadFile("./public/index.html");
 
     ipcMain.on('closeApp', ()=>{

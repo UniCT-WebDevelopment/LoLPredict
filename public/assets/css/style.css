@@ -208,7 +208,7 @@ body{
 
 #prediction{
     font-size: 45px;
-    color:rgb(0, 146, 98); /*brown per % sotto al 30%, rgb(255, 194, 80) per % sotto al 40%, rgb(155, 145, 15) per % sotto al 70%, rgb(0, 146, 98) per % fino al 100%*/
+    color:rgb(155, 145, 15); /*brown per % sotto al 30%, rgb(255, 194, 80) per % sotto al 40%, rgb(155, 145, 15) per % sotto al 70%, rgb(0, 146, 98) per % fino al 100%*/
 }
 
 #playerIcon{
