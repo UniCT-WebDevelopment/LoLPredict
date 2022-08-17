@@ -63,7 +63,7 @@ function createModel(){
 
 function dataToTensor(data){
     return tf.tidy(()=>{
-        tf.util.shuffle(data); //mescola array?
+        tf.util.shuffle(data); //mescola array
 
         
         const inputs = _inputs.map(d => d);
