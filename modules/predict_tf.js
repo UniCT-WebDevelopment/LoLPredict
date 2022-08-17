@@ -127,7 +127,7 @@ async function predictModel(model,data_xy, {inputs, iMin, iMax, oMin, oMax}){
     console.log("dentro predict model");
     //console.log("model = ", model);
 
-    const [x, y] = tf.tidy(() => { //da fixare
+    const [x, y] = tf.tidy(() => {
         //console.log("before linspace");
         const nx = tf.linspace(0,1,100); //crea un vettore uni dim da 100
         //console.log("prima di predict, nx = ", nx);
