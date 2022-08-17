@@ -123,7 +123,7 @@ async function trainModel(model, inputs, targets){
     
 }
 
-async function predictModel(model,data_xy, {inputs, iMin, iMax, oMin, oMax}){ 
+async function predictModel(model, {inputs, iMin, iMax, oMin, oMax}){ 
     console.log("dentro predict model");
     //console.log("model = ", model);
 
@@ -133,8 +133,8 @@ async function predictModel(model,data_xy, {inputs, iMin, iMax, oMin, oMax}){
         //console.log("prima di predict, nx = ", nx);
 
         let tens_reshap = nx.reshape([100, 1]);
-        //console.log("tens_reshap", tens_reshap);
-        const ny = model.predict(tens_reshap); //modifica forma del tensore e genera predizione su esso (perché la fa?)
+
+        const ny = model.predict(tens_reshap); //modifica forma del tensore e genera predizione su esso
         //console.log("ny =", ny);
 
         const x = nx.mul(iMax.sub(iMin)).add(iMin);
@@ -248,7 +248,7 @@ async function predict(){
     let modelToLoad = await loadModel();
     //console.log("dentro loadmodel", modelToLoad);
 
-    const prediction = await predictModel(modelToLoad, data_to_pred, data_to_tensor);
+    const prediction = await predictModel(modelToLoad, data_to_tensor);
     //console.log("predizione eseguita: ");
     //console.log("predizione", prediction[0].x);
     console.log("fine predizone");
