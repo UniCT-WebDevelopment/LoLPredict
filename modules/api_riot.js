@@ -668,21 +668,3 @@ module.exports.get_winrate_player_champions = get_winrate_player_champions;
 module.exports.get_last_champion_played = get_last_champion_played;
 module.exports.get_data_last_champion_played = get_data_last_champion_played;
 
-//21839 riga di dati_ingame.txt - dopo gamestart appare sta scritta
-
-
-
-
-//get_winrate_player("AlexNext", 40);
-//get_winrate_player_champions("AlexNext", 40);
-//get_last_champion_played("AlexNext"); //utile per mettere immagine del campione nella grafica
-
-//dati da prendere - verosimilmente winrate players, winrate con quel champion, winrate contro quello contro cui è (per entrambi i player), differenza di rank nella partita tra la squadre
-//come salvare modello di tensorflow
-
-
-//fare funzione per ciccio che ritorna direttamente i dati senza scrivere nel json così da evitare problemi -da finire
-//fixare tutte le altre funzioni sia che prendono dati sia che scrivono nel file -da fare solo 'get_winrate_player_champions' con 'analize_matches_champions'
-//funzione che prende anche champion che sta giocando -fatta
-//difference between teams prendere anche il winrate della squadra per il 20% -fatta
-//tensorflow?

@@ -251,7 +251,6 @@ async function predict(){
     const prediction = await predictModel(modelToLoad, data_to_pred, data_to_tensor);
     //console.log("predizione eseguita: ");
     //console.log("predizione", prediction[0].x);
-    //prediction.print();
     console.log("fine predizone");
     return prediction[0].x;
 }

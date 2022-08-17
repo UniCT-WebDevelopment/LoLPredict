@@ -107,32 +107,6 @@ app.whenReady().then(createWindow);
 
 console.log("SONO IL MAIN");
 
-/*
-setTimeout(5000, ()=>{
-    let options = {
-        hostname: '127.0.0.1',
-        port: port,
-        path:'/lol-service-status/v1/lcu-status',
-        method: 'GET',
-        rejectUnauthorized: false
-    }
-
-    let req = https.request(options, (res)=>{
-        console.log('All OK. Server matched our pinned cert or public key');
-        console.log('statusCode:', res.statusCode);
-        // Print the HPKP values
-        console.log('headers:', res.headers['public-key-pins']);
-        res.on("data", (d)=>{console.log("\n DATI FETCH \n"+d+"\nDATI FETCH")});
-    })
-
-    req.on('error', (e) => {
-        console.error("ERROR"+e.message);
-      });
-    
-    req.end();
-})
-*/
-
 function calculate_team_elo(players_tier, players_rank){
     console.log("player_tiers", players_tier, "players_rank", players_rank);
     console.log("player_tiers[1]", players_tier[1], "players_rank[1]", players_rank[1]);
@@ -516,26 +490,9 @@ class RiotWSProtocol extends WebSocket {
                                                             return console.log(err);
                                                         }
 
-
                                                         console.log("dentro then di predict");
-                                                        /*let loadModel = async () => {
-                                                            console.log("Loading Model from main")
-                                                            await predict_tf.loadModel();
-                                                        }
-                                                        
-                                                        console.log("prima di loadmodel");
-                                                        loadModel();*/
 
                                                         let value_predicted;
-                                                        /*let predict = async () => {
-                                                            console.log("Predicting from Model from main")
-                                                            await predict_tf.predict();
-                                                        }
-                                                        console.log("prima di predict main");
-                                                        let predicted_value;
-                                                        predict.then(data =>{
-                                                            predicted_value = data;
-                                                        })*/
 
                                                         console.log("prima di predict");
                                                         predict_tf.predict()
@@ -758,7 +715,4 @@ connector.on('disconnect', () => {
 
 connector.start();
 
-
 console.log('Listening for League Client');
-
-//aggiungere in caso la possibilità di refreshare i dati nel json mettendo i flag delle variabili a false
