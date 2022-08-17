@@ -10,18 +10,6 @@ const data_to_predict_URL = "information.json";
 let _inputs = new Array();
 
 async function getData(){
-    /*
-    const cardDataReq = await fetch(dataURL);
-    const carsData = await cardDataReq.json();
-
-    const data = carsData.map(car => {
-        return {
-            mpg: car.Miles_per_Gallon,
-            weight: car.Weight_in_lbs,
-            horsepower: car.Horsepower
-        }
-    })
-    return data;*/
     let dati_utili = new Array();
 
     const json_data = fs.readFileSync(dataURL, {encoding: 'utf8', flag: 'r'});
@@ -56,18 +44,6 @@ async function getData(){
 }
 
 async function getData_fromJson(){
-    /*
-    const cardDataReq = await fetch(dataURL);
-    const carsData = await cardDataReq.json();
-
-    const data = carsData.map(car => {
-        return {
-            mpg: car.Miles_per_Gallon,
-            weight: car.Weight_in_lbs,
-            horsepower: car.Horsepower
-        }
-    })
-    return data;*/
     let dati_utili = new Array();
 
     const json_data = fs.readFileSync(data_to_predict_URL, {encoding: 'utf8', flag: 'r'});
@@ -216,17 +192,6 @@ async function predictModel(model,data_xy, {inputs, iMin, iMax, oMin, oMax}){
 
     return predictedValues;
 
-    /*
-    tfvis.render.scatterplot(
-        {name : "Predicted vs Original"},
-        {values: [data_xy, predictedValues], series: ["original", "predicted"]},
-        {
-            xLabel:"dbt",
-            yLabel:"Result",
-            height: 300
-        }
-    )
-    */
 }
 
 async function run(){
@@ -245,30 +210,6 @@ async function run(){
     }
 
     //console.log("dati mappati", data);
-    /*
-    let data_xy = data.map(d => {
-        return {x: d, y: d.result};
-    });
-
-    for(let i = 0; i < data_xy.length; i++){
-        console.log("data_xy[i].x", data_xy[i].x);
-        data_xy[i].x = _inputs[i];
-        console.log("data_xy[i].x", data_xy[i].x);
-    }
-
-    console.log(data_xy)
-    */
-    /*
-    tfvis.render.scatterplot(
-        {name: "Winrate personale vs Result"},
-        {values: data_xy},
-        {
-            xLabel:"x", //Miles_per_Gallon?
-            yLabel:"y", //Weight_in_lbs?
-            height: 300
-        }
-    );
-    */
 
     //console.log("prima di createmodel");
     const model = createModel();
@@ -294,7 +235,7 @@ async function loadModel(){
     console.log("loadmodel dentro");
     let model_br;
     try{
-        //let path_model = path.resolve('model.json'); // '/Users/joe/joe.txt' if run from my home folder
+        //let path_model = path.resolve('model.json'); 
         //console.log("path_model", path_model);
         model_br = await tf.loadLayersModel('file://models/model.json'); //prova a dare file
     }
