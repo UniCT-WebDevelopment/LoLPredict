@@ -22,24 +22,7 @@ async function getData(){
         console.log(data_to_push);
         dati_utili.push(data_to_push);
     }
-    /*
-    await fetch(dataURL)
-    .then(resp => resp.json())
-    .then(data =>{
-        //console.log("Object.keys(data).length", Object.keys(data).length);
-        console.log("dati di fetchurl per tensorflow", data);
-        for(let i = 0; i < Object.keys(data).length; i+=4){
-            //console.log("global_winrate", data[i].winrate_infos.winrate_player, "winrate_champion", data[i+1].champion_stats.winrate, "dbt", data[i+2].difference_between_teams, "result", data[i+3].result)
-            let data_to_push = {"global_winrate": data[i].winrate_infos.winrate_player, "winrate_champion": data[i+1].champion_stats.winrate, "dbt": data[i+2].difference_between_teams, "result": data[i+3].result};
-            dati_utili.push(data_to_push);
-        }
-        //console.log("fine preso array");
-        //console.log(dati_utili);
-    })
-    .catch(error => {
-        console.log("andato in catch la richiesta", error);
-    })
-    */
+
     return dati_utili;
 }
 
@@ -63,24 +46,7 @@ async function getData_fromJson(){
     let data_to_push = {"global_winrate": obj[0].winrate_infos.winrate_player, "winrate_champion": obj[1].champion_stats.winrate, "dbt": obj[2].difference_between_teams};
     console.log("data to push" ,data_to_push);
     dati_utili.push(data_to_push);
-    /*
-    await fetch(dataURL)
-    .then(resp => resp.json())
-    .then(data =>{
-        //console.log("Object.keys(data).length", Object.keys(data).length);
-        console.log("dati di fetchurl per tensorflow", data);
-        for(let i = 0; i < Object.keys(data).length; i+=4){
-            //console.log("global_winrate", data[i].winrate_infos.winrate_player, "winrate_champion", data[i+1].champion_stats.winrate, "dbt", data[i+2].difference_between_teams, "result", data[i+3].result)
-            let data_to_push = {"global_winrate": data[i].winrate_infos.winrate_player, "winrate_champion": data[i+1].champion_stats.winrate, "dbt": data[i+2].difference_between_teams, "result": data[i+3].result};
-            dati_utili.push(data_to_push);
-        }
-        //console.log("fine preso array");
-        //console.log(dati_utili);
-    })
-    .catch(error => {
-        console.log("andato in catch la richiesta", error);
-    })
-    */
+
     console.log("dati utili", dati_utili);
     return dati_utili;
 }
@@ -196,7 +162,7 @@ async function predictModel(model,data_xy, {inputs, iMin, iMax, oMin, oMax}){
 
 async function run(){
     console.log("prima di getdata");
-    const data = await getData(); //i dati estrapolati dal JSON {mpg, weight}
+    const data = await getData(); //i dati estrapolati dal JSON
     //console.log("dopo getdata prima di for");
     
     for(let i = 0; i < data.length; i++){
@@ -208,8 +174,6 @@ async function run(){
 
         _inputs[i] = ((data[i].global_winrate * 35) + (data[i].winrate_champion * 40) + (data[i].dbt * 25)) / 100;
     }
-
-    //console.log("dati mappati", data);
 
     //console.log("prima di createmodel");
     const model = createModel();
@@ -235,7 +199,7 @@ async function loadModel(){
     console.log("loadmodel dentro");
     let model_br;
     try{
-        //let path_model = path.resolve('model.json'); 
+        //let path_model = path.resolve('model.json');
         //console.log("path_model", path_model);
         model_br = await tf.loadLayersModel('file://models/model.json'); //prova a dare file
     }
@@ -295,6 +259,4 @@ async function predict(){
 }
 
 
-//module.exports.loadModel = loadModel;
 module.exports.predict = predict;
-//module.exports.run = run;
