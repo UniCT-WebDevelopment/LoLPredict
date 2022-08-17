@@ -1,7 +1,6 @@
 //40-35-25
 //const tf = require('@tensorflow/tfjs');
 const tf = require("@tensorflow/tfjs-node");
-//const tfvis = require("@tensorflow/tfjs-vis");
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const fs = require("fs");
 const path = require('path');
@@ -177,7 +176,6 @@ async function run(){
 
     //console.log("prima di createmodel");
     const model = createModel();
-    //tfvis.show.modelSummary({name:"model info"}, model);
 
     //console.log("prima di data to tensor");
     const dataset = dataToTensor(data);
