@@ -81,7 +81,7 @@ const createWindow = () => {
         }
     })
     mainWindow.setBackgroundColor("rgba(10, 20, 40, 0.8)");
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
     mainWindow.loadFile("./public/index.html");
 
     ipcMain.on('closeApp', ()=>{

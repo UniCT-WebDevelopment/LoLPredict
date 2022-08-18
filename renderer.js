@@ -1,9 +1,19 @@
 const { ipcRenderer } = require("electron");
+const { Body } = require("node-fetch");
 
 //comando per avviare app electron
 //npm run start
 
 window.addEventListener("DOMContentLoaded", () => {
+    
+    /*let objj = 3;
+    let tf_script = document.createElement("script");
+    tf_script.src = "../tf_predict.js";
+    tf_script.type = 'text/javascript';
+    tf_script.async = false;
+    document.body.appendChild(tf_script);
+    */
+
     const el = {
         playerInfoContainer: document.getElementById("playerInfoContainer"),
         loadContainer: document.getElementById("caricamento"),
