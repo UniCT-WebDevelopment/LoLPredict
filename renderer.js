@@ -1,19 +1,9 @@
 const { ipcRenderer } = require("electron");
-const { Body } = require("node-fetch");
-
 //comando per avviare app electron
 //npm run start
+const _tf = require('./tf_predict.js')
 
-window.addEventListener("DOMContentLoaded", () => {
-    
-    /*let objj = 3;
-    let tf_script = document.createElement("script");
-    tf_script.src = "../tf_predict.js";
-    tf_script.type = 'text/javascript';
-    tf_script.async = false;
-    document.body.appendChild(tf_script);
-    */
-
+window.addEventListener("DOMContentLoaded", () => {    
     const el = {
         playerInfoContainer: document.getElementById("playerInfoContainer"),
         loadContainer: document.getElementById("caricamento"),
@@ -92,7 +82,29 @@ window.addEventListener("DOMContentLoaded", () => {
         el.playerInfoContainer.style.display = "grid";
     })
 
-    ipcRenderer.on("value-predicted", (_, {value_predicted}) =>{
+    ipcRenderer.on("value-predicted", (_, {value_predicted}) =>{ //predict
+        let color;
+        let value = value_predicted.toFixed(2);
+
+        if(value < 30){
+            color = "brown";
+        }else if(value >= 30 && value < 40){
+            color = "rgb(255, 194, 80)";
+        }else if(value >= 40 & value < 70){
+            color ="rgb(155, 145, 15)";
+        }else{
+            color = "rgb(0, 146, 98)";
+        }
+
+        el.prediction.style.color = color;
+        el.resultText.innerHTML = "Pronostico di LoL Predict per la partita in corso:";
+        el.prediction.innerHTML = value + "%";
+    })
+
+    ipcRenderer.on('predict', (_)=>{
+        let value_predicted = await _tf.predict();
+        //prenderne il valore
+        //stamparlo a schermo
         let color;
         let value = value_predicted.toFixed(2);
 
@@ -114,6 +126,7 @@ window.addEventListener("DOMContentLoaded", () => {
     ipcRenderer.on("end-game", (_)=>{
         el.resultText.innerHTML = "Nessun pronostico da visualizzare";
         el.prediction.innerHTML = "";
+        await _tf.train();
     })
 
     ipcRenderer.on("champ-select", (_)=>{

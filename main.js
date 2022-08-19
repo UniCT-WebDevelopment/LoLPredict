@@ -20,6 +20,7 @@ const jsonFilePath = 'information.json';
 const { data } = require("jquery");
 const LCUConnector = require("lcu-connector");
 const WebSocket = require('ws');
+const { info } = require('console');
 
 const MESSAGE_TYPES = {
     WELCOME: 0,
@@ -35,10 +36,12 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-22fa734b-d401-4b46-a16f-88d858455a2f";
+let api_key = "RGAPI-04d9ed27-d8d9-46f0-b704-721e695a202a";
 let gamestarted = false;
 let champion_in_json = false;
 let champion_played;
+let summonerId;
+let puuid_player;
 
 //serve per l'ultimo try dove prende le informazioni del campione e per evitare di fare eseguire codici più volte
 let num_games_played = 0;
@@ -327,7 +330,6 @@ class RiotWSProtocol extends WebSocket {
                 }
 
                 try{ //fa il calcolo della differenza tra team
-                    let summonerId;
                     let enemies_tier = new Array(); //gold, plat etc
                     let enemies_rank = new Array(); //I, II, III, IV
                     let allies_tier = new Array();
@@ -492,9 +494,11 @@ class RiotWSProtocol extends WebSocket {
 
                                                         console.log("dentro then di predict");
 
-                                                        let value_predicted;
+                                                        //let value_predicted;
 
                                                         console.log("prima di predict");
+                                                        mainWindow.webContents.send("predict", {});
+                                                        /*
                                                         predict_tf.predict()
                                                         .then(data =>{
                                                             console.log("prima di assegnazione");
@@ -502,7 +506,7 @@ class RiotWSProtocol extends WebSocket {
                                                             console.log("data, ", data, "value_predicted", value_predicted);
                                                             mainWindow.webContents.send("value-predicted", {value_predicted});
                                                         })
-
+                                                        */
                                                         //console.log("FILEPATH: "+ jsonFilePath, "obj" + string_obj);
                                                         //console.log("JSON file has been saved.");
                                                     });
@@ -539,7 +543,7 @@ class RiotWSProtocol extends WebSocket {
                         fetch("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + lolData.data.gameName +"?api_key=" + api_key)
                         .then(result => result.json())
                         .then(data =>{
-                            let puuid_player = data.puuid;
+                            puuid_player = data.puuid;
                             let url_games_req = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + data.puuid + "/ids?start=0&count=" + games_supported + "&api_key=";
                             fetch(url_games_req + api_key)
                             .then(result => result.json())
@@ -665,7 +669,60 @@ class RiotWSProtocol extends WebSocket {
 
                 try{
                     if(lolData.data.phase == "EndOfGame"){
-                        mainWindow.webContents.send("end-game", {});
+                        //leggere il file
+                        //mantenere quello che già c'è
+                        //fare la fetch del risultato
+                        //aggiungere il result al contenuto del file
+                        //riscrivere sul file
+                        let url_games_req = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid_player + "/ids?start=0&count=" + games_supported + "&api_key=";
+                            fetch(url_games_req + api_key)
+                            .then(result => result.json())
+                            .then(datas => {
+                                let last_games_played = JSON.stringify(JSON.stringify(datas));
+                                let name_game = last_games_played.split(',');
+                                name_game[0] = name_game[0].substr(4, 15);
+                                fetch('https://europe.api.riotgames.com/lol/match/v5/matches/'+name_game[0]+'?api_key='+ api_key)
+                                .then(resp => resp.json())
+                                .then(datas=>{
+                                    for(let i = 0; i < 10; i++){
+                                        if(datas.info.participants[i].puuid == puuid_player){
+                                            let result = {};
+                                            if(datas.info.participants[i].win == true){
+                                                result = {'result':'win'};
+                                            }else{
+                                                result = {'result':'loose'};
+                                            }   
+                                            let obj_array = new Array();
+
+                                            fs.readFile('information.json', 'utf8', (err, data)=>{
+                                                if (err){
+                                                    console.log(err);
+                                                } else {
+                                                    let obj = JSON.parse(data); //now it an object
+                                                    Array.from(obj).forEach(e => obj_array.push(e));
+                            
+                                                    obj_array.push(result);
+                            
+                                                    let json_array = JSON.stringify(obj_array,  undefined, 1); //convert it back to json
+                                                    fs.writeFile('information.json', json_array, 'utf8', function (err) {
+                                                        if (err) {
+                                                            console.log("An error occured while writing JSON Object to File.");
+                                                            return console.log(err);
+                                                        }
+                                                        console.log("FILEPATH: "+ string_obj);
+                                                        mainWindow.webContents.send("end-game", {});
+                                                    });
+                                                }
+                                            });
+
+                                            break;
+                                        }
+                                    }
+                                    
+                                })
+                                .then(err => console.log("ERRORE END GAME" + err));
+                            })
+                        
                     }
                 }
                 catch{

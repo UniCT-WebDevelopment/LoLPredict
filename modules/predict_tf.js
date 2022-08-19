@@ -119,8 +119,6 @@ async function trainModel(model, inputs, targets){
         callbacks: tf.callbacks.earlyStopping({ 
             monitor: "targets" }),
     })
-
-    
 }
 
 async function predictModel(model, {inputs, iMin, iMax, oMin, oMax}){ 
@@ -254,6 +252,5 @@ async function predict(){
     console.log("fine predizone");
     return prediction[0].x;
 }
-
 
 module.exports.predict = predict;

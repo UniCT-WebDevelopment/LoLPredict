@@ -2,7 +2,7 @@ const dataURL = "./training_data.json";
 const data_to_predict_URL = "../information.json";
 let _inputs = new Array();
 
-async function getData(){
+async function getData(){//per prendere i dati per creare il modello
     let dati_utili = new Array();
 
     //const json_data = fs.readFileSync(dataURL, {encoding: 'utf8', flag: 'r'});
@@ -245,18 +245,51 @@ async function predict(){
     let modelToLoad = await loadModel();
     //console.log("dentro loadmodel", modelToLoad);
     const prediction = await predictModel(modelToLoad, data_to_tensor);
-    
-    //training da fare quando finisce la partita
-    /*
-    const { inputs, outputs } = data_to_tensor;
-    await trainModel(modelToLoad, inputs, outputs);
-    */
-
     //console.log("predizione eseguita: ");
     //console.log("predizione", prediction[0].x);
     console.log("fine predizione");
     return prediction[0].x;
 }
 
+async function trainModel(){
+    console.log("esecuzione di predict");
+    const data_to_pred = await getData_fromJson();
+    //console.log("dopo get data", data_to_pred);
+    for(let i = 0; i < data_to_pred.length; i++){
+        if(data_to_pred[i].result == "win"){
+            data_to_pred[i].result = 1;
+        }else{
+            data_to_pred[i].result = 0;
+        }
 
+        _inputs[i] = ((data_to_pred[i].global_winrate * 35) + (data_to_pred[i].winrate_champion * 40) + (data_to_pred[i].dbt * 25)) / 100;
+    }
+
+    //console.log("dati mappati", data_to_pred);
+
+    let data_xy = data_to_pred.map(d => {
+        return {x: d, y: d.result};
+    });
+    
+    //console.log("dopo data_xy");
+    
+    for(let i = 0; i < data_xy.length; i++){
+        console.log("data_xy[i].x", data_xy[i].x);
+        data_xy[i].x = _inputs[i];
+        console.log("data_xy[i].x", data_xy[i].x);
+    }
+    
+    //console.log("dopo manipolazione data_xy");
+    //console.log(data_xy)
+    //console.log("prima di data to tensor");
+
+    const data_to_tensor = dataToTensor(data_to_pred);
+    let modelToLoad = await loadModel();
+    const { inputs, outputs } = data_to_tensor;
+
+    await trainModel(modelToLoad, inputs, outputs);
+    await model.save('localstorage://\models');
+}
+
+module.exports.train = trainModel;
 module.exports.predict = predict;
