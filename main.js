@@ -8,7 +8,6 @@ const fs = require("fs");
 const { setTimeout } = require("timers/promises");
 const https = require('node:https');
 const api_server = require('./modules/api_riot');
-const predict_tf = require('./modules/predict_tf');
 
 const jsonFilePath = 'information.json';
 
@@ -36,7 +35,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-04d9ed27-d8d9-46f0-b704-721e695a202a";
+let api_key = "RGAPI-d88a916d-abce-49bf-972b-374581799229";
 let gamestarted = false;
 let champion_in_json = false;
 let champion_played;
@@ -84,7 +83,7 @@ const createWindow = () => {
         }
     })
     mainWindow.setBackgroundColor("rgba(10, 20, 40, 0.8)");
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
     mainWindow.loadFile("./public/index.html");
 
     ipcMain.on('closeApp', ()=>{
@@ -349,7 +348,7 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            //summonerId = "URMQz-_tjp1-jnAt_fv6FnGLiBVfnE4RyEtBaeXkjdcomL0";
+                            //summonerId = "sEkvTJugLua0WsZ-QZl1BXMkU1E6cwHb3yRrDIM2derRZ6E";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
@@ -690,7 +689,7 @@ class RiotWSProtocol extends WebSocket {
                                             if(datas.info.participants[i].win == true){
                                                 result = {'result':'win'};
                                             }else{
-                                                result = {'result':'loose'};
+                                                result = {'result':'lose'};
                                             }   
                                             let obj_array = new Array();
 
@@ -709,7 +708,7 @@ class RiotWSProtocol extends WebSocket {
                                                             console.log("An error occured while writing JSON Object to File.");
                                                             return console.log(err);
                                                         }
-                                                        console.log("FILEPATH: "+ string_obj);
+
                                                         mainWindow.webContents.send("end-game", {});
                                                     });
                                                 }

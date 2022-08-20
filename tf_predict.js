@@ -1,15 +1,15 @@
 const dataURL = "./training_data.json";  
 const data_to_predict_URL = "../information.json";
 let _inputs = new Array();
+const name = document.getElementById("playerName");
 
 async function getData(){//per prendere i dati per creare il modello
     let dati_utili = new Array();
 
     //const json_data = fs.readFileSync(dataURL, {encoding: 'utf8', flag: 'r'});
-    const json_data = await fetch(dataURL)
+    const obj = await fetch(dataURL)
                             .then(resp => resp.json());
 
-    let obj = JSON.parse(json_data); //now it an object
     //console.log("Object.keys(obj).length", Object.keys(obj).length);
     for(let i = 0; i < Object.keys(obj).length; i+=4){
         //console.log("global_winrate", data[i].winrate_infos.winrate_player, "winrate_champion", data[i+1].champion_stats.winrate, "dbt", data[i+2].difference_between_teams, "result", data[i+3].result)
@@ -25,11 +25,14 @@ async function getData_fromJson(){
     let dati_utili = new Array();
 
     //const json_data = fs.readFileSync(dataURL, {encoding: 'utf8', flag: 'r'});
-    const json_data = await fetch(dataURL)
-                            .then(resp => resp.json());
-
-    let obj = JSON.parse(json_data); //now it an object
-
+    const obj = await fetch(dataURL)
+                            .then(resp => resp.json())
+                            
+    console.log("tf_predict: json_data " + JSON.stringify(obj))
+    /*
+    let obj = JSON.stringify(JSON.stringify(json_data)); //now it an object
+    console.log("tf_predict: obj " + obj)
+    */
     console.log("obj letto dal file", obj);
     console.log("lunghezza dato", Object.keys(obj).length);
     console.log("obj[0]", obj[0]);
@@ -115,9 +118,29 @@ async function trainModel(model, inputs, targets){
         shuffle : true,
         callbacks: tf.callbacks.earlyStopping({ 
             monitor: "targets" }),
-    })
+    }) 
+}
+
+async function _trainModel_(model, inputs, targets){
+    console.log("prima di compile");
+    model.compile({
+        optimizer: tf.train.adam(),
+        loss: tf.losses.meanSquaredError, //quanto un modello si comporta male sui dati
+        metrics: ['mse']
+    });
 
     
+    const batchSize = 1; //sotto gruppo di dati da addestrare
+    const epochs = 120; //epochs numero di iterazioni
+    console.log("prima di fit");
+
+    return await model.fit(inputs, targets, { //fa training del modello con certi input, target e parametri
+        batchSize,
+        epochs,
+        shuffle : true,
+        callbacks: tf.callbacks.earlyStopping({ 
+            monitor: "targets" }),
+    }) 
 }
 
 async function predictModel(model, {inputs, iMin, iMax, oMin, oMax}){ 
@@ -184,7 +207,7 @@ async function run(){
     //console.log("dataset", dataset);
     await trainModel(model, inputs, outputs);
     //console.log("prima di save");
-    await model.save('localstorage://\models');//da vedere se richiamandola crea model nella cartella public
+    await model.save('localstorage://model');//da vedere se richiamandola crea model nella cartella public
 
     console.log("Done");
     //await predictModel(model,data_xy, dataset);//PREDICT
@@ -192,66 +215,81 @@ async function run(){
 
 async function loadModel(){
     console.log("loadmodel dentro");
+    //name.innerHTML = "nel loadmodel";
+
     let model_br;
+    //name.innerHTML = "prima del try nel loadmodel";
+
     try{
         //let path_model = path.resolve('model.json');
         //console.log("path_model", path_model);
-        model_br = await tf.loadLayersModel('localstorage://../models/model.json'); //prova a dare file
+        model_br = await tf.loadLayersModel('localstorage://model'); //prova a dare file
+        //name.innerHTML = "try loadmodel";
+
     }
     catch(e){
         console.log("errore nel loadmodel", e);
+        //name.innerHTML = "errore nel loadmodel";
     }
     
     console.log("summary del model");
+    //name.innerHTML = "summary del model";
+
     model_br.summary();
     return model_br;
 }
 
 async function predict(){
-    console.log("esecuzione di predict");
-    const data_to_pred = await getData_fromJson();
-    //console.log("dopo get data", data_to_pred);
-    for(let i = 0; i < data_to_pred.length; i++){
-        if(data_to_pred[i].result == "win"){
-            data_to_pred[i].result = 1;
-        }else{
-            data_to_pred[i].result = 0;
+        console.log("esecuzione di predict");
+        //name.innerHTML = "esecuzione di predict";
+        const data_to_pred = await getData_fromJson();
+        //console.log("dopo get data", data_to_pred);
+        for(let i = 0; i < data_to_pred.length; i++){
+            if(data_to_pred[i].result == "win"){
+                data_to_pred[i].result = 1;
+            }else{
+                data_to_pred[i].result = 0;
+            }
+
+            _inputs[i] = ((data_to_pred[i].global_winrate * 35) + (data_to_pred[i].winrate_champion * 40) + (data_to_pred[i].dbt * 25)) / 100;
         }
 
-        _inputs[i] = ((data_to_pred[i].global_winrate * 35) + (data_to_pred[i].winrate_champion * 40) + (data_to_pred[i].dbt * 25)) / 100;
-    }
+        //console.log("dati mappati", data_to_pred);
 
-    //console.log("dati mappati", data_to_pred);
+        let data_xy = data_to_pred.map(d => {
+            return {x: d, y: d.result};
+        });
+        
+        //console.log("dopo data_xy");
+        
+        for(let i = 0; i < data_xy.length; i++){
+            console.log("data_xy[i].x", data_xy[i].x);
+            data_xy[i].x = _inputs[i];
+            console.log("data_xy[i].x", data_xy[i].x);
+        }
+        
+        //console.log("dopo manipolazione data_xy");
+        //console.log(data_xy)
+        console.log("prima di data to tensor");
 
-    let data_xy = data_to_pred.map(d => {
-        return {x: d, y: d.result};
-    });
+        const data_to_tensor = dataToTensor(data_to_pred);
+
+        console.log("dopo data to tensor e prima di predict model");
+        let modelToLoad = await loadModel();
+        //name.innerHTML = "dopo load";
     
-    //console.log("dopo data_xy");
-    
-    for(let i = 0; i < data_xy.length; i++){
-        console.log("data_xy[i].x", data_xy[i].x);
-        data_xy[i].x = _inputs[i];
-        console.log("data_xy[i].x", data_xy[i].x);
-    }
-    
-    //console.log("dopo manipolazione data_xy");
-    //console.log(data_xy)
-    //console.log("prima di data to tensor");
+        console.log("dentro loadmodel", modelToLoad);
+        const prediction = await predictModel(modelToLoad, data_to_tensor);
+        //name.innerHTML = "dopo di predict (from predict)";
 
-    const data_to_tensor = dataToTensor(data_to_pred);
-
-    //console.log("dopo data to tensor e prima di predict model");
-    let modelToLoad = await loadModel();
-    //console.log("dentro loadmodel", modelToLoad);
-    const prediction = await predictModel(modelToLoad, data_to_tensor);
-    //console.log("predizione eseguita: ");
-    //console.log("predizione", prediction[0].x);
-    console.log("fine predizione");
-    return prediction[0].x;
+        //console.log("predizione eseguita: ");
+        console.log("predizione", prediction[0].x);
+        console.log("fine predizione");
+        //name.innerHTML = "fine";
+        return prediction[0].x;
 }
 
-async function trainModel(){
+async function _trainModel(){
     console.log("esecuzione di predict");
     const data_to_pred = await getData_fromJson();
     //console.log("dopo get data", data_to_pred);
@@ -287,9 +325,10 @@ async function trainModel(){
     let modelToLoad = await loadModel();
     const { inputs, outputs } = data_to_tensor;
 
-    await trainModel(modelToLoad, inputs, outputs);
-    await model.save('localstorage://\models');
+    await _trainModel_(modelToLoad, inputs, outputs);
+    await model.save('localstorage://model');
 }
 
-module.exports.train = trainModel;
+module.exports.run = run;
+module.exports.train = _trainModel;
 module.exports.predict = predict;

@@ -2,8 +2,10 @@ const { ipcRenderer } = require("electron");
 //comando per avviare app electron
 //npm run start
 const _tf = require('./tf_predict.js')
-
-window.addEventListener("DOMContentLoaded", () => {    
+const ciao = require('./index.js')
+let isReady = false;
+window.addEventListener("DOMContentLoaded", () => {   
+    //document.getElementById('load_txt').innerHTML = ciao.fun();
     const el = {
         playerInfoContainer: document.getElementById("playerInfoContainer"),
         loadContainer: document.getElementById("caricamento"),
@@ -27,6 +29,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     console.log("sono render");
+    SaveModel()
+
 
     //richiamare metodo di backend.js per avere le informazioni quando disponibili
     //prendere informazioni e settare name, level e rank
@@ -102,31 +106,13 @@ window.addEventListener("DOMContentLoaded", () => {
     })
 
     ipcRenderer.on('predict', (_)=>{
-        let value_predicted = await _tf.predict();
-        //prenderne il valore
-        //stamparlo a schermo
-        let color;
-        let value = value_predicted.toFixed(2);
-
-        if(value < 30){
-            color = "brown";
-        }else if(value >= 30 && value < 40){
-            color = "rgb(255, 194, 80)";
-        }else if(value >= 40 & value < 70){
-            color ="rgb(155, 145, 15)";
-        }else{
-            color = "rgb(0, 146, 98)";
-        }
-
-        el.prediction.style.color = color;
-        el.resultText.innerHTML = "Pronostico di LoL Predict per la partita in corso:";
-        el.prediction.innerHTML = value + "%";
+        handlePrediction();
     })
 
     ipcRenderer.on("end-game", (_)=>{
         el.resultText.innerHTML = "Nessun pronostico da visualizzare";
         el.prediction.innerHTML = "";
-        await _tf.train();
+        //handleTraining();
     })
 
     ipcRenderer.on("champ-select", (_)=>{
@@ -145,4 +131,44 @@ window.addEventListener("DOMContentLoaded", () => {
     ui.maxBtn.addEventListener('click', ()=>{
         ipcRenderer.send('maximizeApp');
     })
+
+    async function handlePrediction(){
+        console.log("Prima di predict");
+        let value_predicted;
+        try{
+            value_predicted = await _tf.predict();
+            console.log("Dentro try dop predict")
+        }catch(err){
+            console.log("Dentro catch dop predict", err)
+        }
+        console.log("Dopo try/catch");
+        
+        //el.playerName.innerHTML = "Dopo di predict"
+        let color;
+        let value = value_predicted.toFixed(2);
+
+        if(value < 30){
+            color = "brown";
+        }else if(value >= 30 && value < 40){
+            color = "rgb(255, 194, 80)";
+        }else if(value >= 40 & value < 70){
+            color ="rgb(155, 145, 15)";
+        }else{
+            color = "rgb(0, 146, 98)";
+        }
+
+        el.prediction.style.color = color;
+        el.resultText.innerHTML = "Pronostico di LoL Predict per la partita in corso:";
+        el.prediction.innerHTML = value + "%";
+        //prenderne il valore
+        //stamparlo a schermo
+    }
+
+    async function SaveModel(){
+        _tf.run();
+    }
+
+    async function handleTraining(){
+        _tf.train();
+    }
 })

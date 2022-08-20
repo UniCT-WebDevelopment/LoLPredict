@@ -294,12 +294,34 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 #load_txt{
     font-size: 50;
     text-align: center;
 }
+
+.loader {
+    border: 16px solid #676767;
+    border-radius: 50%;
+    border-top: 16px solid #e2bd72;;
+    width: 100px;
+    height: 100px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
 /* width */
 ::-webkit-scrollbar {
