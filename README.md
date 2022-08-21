@@ -4,6 +4,8 @@ LoL_predict is an app whose purpose is to dare a prediction on the game that the
 ### How does it work?
 The main informations of the player are shown using the data that is given by the LOL game launcher client and Riot Games official API. In the first case the app listens for events from the LOL Client, in the second case HTTPS Requests on official League of Legends API are made.
 The data taken into consideration to make the prediction are the Winrate of the player, the Winrate with the Champion who is currently playing, the difference in Elo and Winrate between the opposing team and your own.
+* Used Tecnologies: NodeJS, JS, HTML5, CSS, Tensorflow.js library, electron and electron-builder.
+
 ### User Interface
 * Loading Screen: at first when starting the application a screen appears where the player is expected to create a lobby or do some other similar activity.
   * INSERIRE SCREENSHOT
@@ -18,10 +20,10 @@ The data taken into consideration to make the prediction are the Winrate of the 
 ### Build and Run
 * Clone and change directory
 * Build your standalone electron app:
-```
-$ npm run build
-```
+ * ```
+   $ npm run build
+   ```
 * Run your app in dev envrionment:
-``` 
-$ npm run start
-```
+ * ``` 
+   $ npm run start
+  ```
