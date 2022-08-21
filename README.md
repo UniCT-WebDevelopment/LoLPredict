@@ -16,5 +16,12 @@ The data taken into consideration to make the prediction are the Winrate of the 
 * Install NodeJS (latest LTS is recomended).
 
 ### Build and Run
-''' cioaoo 
-'''
+* Clone and change directory
+* Build your standalone electron app:
+```
+$ npm run build
+```
+* Run your app in dev envrionment:
+``` 
+$ npm run start
+```
