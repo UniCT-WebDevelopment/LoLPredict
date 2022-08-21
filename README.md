@@ -11,3 +11,9 @@ The data taken into consideration to make the prediction are the Winrate of the 
   * INSERIRE SCREENSHOT
 * Prediction Box: once the player enters the game the prediction will start and it will be shown in the box on the right.
   * INSERIRE SCREENSHOT
+  
+### Prerequisites
+* Install NodeJS (latest LTS is recomended).
+
+### Build and Run
+> cioaoo
