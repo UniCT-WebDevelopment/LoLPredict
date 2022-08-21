@@ -20,10 +20,15 @@ The data taken into consideration to make the prediction are the Winrate of the 
 ### Build and Run
 * Clone and change directory
 * Build your standalone electron app:
- * ```
+```
    $ npm run build
-   ```
+```
+ and then execute lol_predict in lol_predict/dist/win-unpacked/
+ 
 * Run your app in dev envrionment:
- * ``` 
+``` 
    $ npm run start
-  ```
+```
+
+### Authors
+LoL_predict is a university project by Alessandro Ingrosso ( @alaendro ) and Francesco Di Bella ( @FrancescoDiBella ), two students of University of Catania.
