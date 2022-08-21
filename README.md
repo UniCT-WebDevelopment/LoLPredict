@@ -6,8 +6,8 @@ The main informations of the player are shown using the data that is given by th
 The data taken into consideration to make the prediction are the Winrate of the player, the Winrate with the Champion who is currently playing, the difference in Elo and Winrate between the opposing team and your own.
 ### User Interface
 * Loading Screen: at first when starting the application a screen appears where the player is expected to create a lobby or do some other similar activity.
-** INSERIRE SCREENSHOT
+  * INSERIRE SCREENSHOT
 * Main Screen: once the player creates a lobby he will have his data such as Nickname, Elo, Level and Result of the last games on the screen.
-** INSERIRE SCREENSHOT
+  * INSERIRE SCREENSHOT
 * Prediction Box: once the player enters the game the prediction will start and it will be shown in the box on the right.
-** INSERIRE SCREENSHOT
+  * INSERIRE SCREENSHOT
