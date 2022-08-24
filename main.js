@@ -35,7 +35,7 @@ const MESSAGE_TYPES = {
 
 var lolData = null;
 let player_name = null;
-let api_key = "RGAPI-d88a916d-abce-49bf-972b-374581799229";
+let api_key = "RGAPI-d2705e36-feed-4cb7-91c9-666a4b317f85";
 let gamestarted = false;
 let champion_in_json = false;
 let champion_played;
@@ -348,7 +348,7 @@ class RiotWSProtocol extends WebSocket {
                         .then(data => {
 
                             summonerId = data.id;
-                            //summonerId = "sEkvTJugLua0WsZ-QZl1BXMkU1E6cwHb3yRrDIM2derRZ6E";
+                            summonerId = "a-xlb3liM3-LRd_33uxqZfArHieoAyECVS_J7N8a9iRSEnI";
                             fetch("https://euw1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+ summonerId +"?api_key=" + api_key)
                             .then(result => result.json())
                             .then(data => {
@@ -535,7 +535,8 @@ class RiotWSProtocol extends WebSocket {
                 
                 try{ //serve per prendere i dati sul campione che sta giocando
                     if(gamestarted == true && code_champion_info_done == false && lolData.data.gameName == player_name && lolData.data.lol.skinname != undefined){
-                        champion_played = lolData.data.lol.skinname; 
+                        //champion_played = lolData.data.lol.skinname; 
+                        console.log("loldata nome champ", lolData);
                         code_champion_info_done = true;
                         //console.log("codice per prendere i dati sul campione");
 
@@ -730,6 +731,9 @@ class RiotWSProtocol extends WebSocket {
 
                 try{
                     if(lolData.data.phase == 'ChampSelect'){
+                        /*if(lolData.data.squarePortraitPath != undefined){
+                            champion_played = lolData.data.name;
+                        }*/
                         mainWindow.webContents.send("champ-select", {});
                     }
                 }
@@ -737,6 +741,16 @@ class RiotWSProtocol extends WebSocket {
                     console.log("loldata champselect");
                 }
                 
+                try{
+                    if(lolData.data.squarePortraitPath != undefined){
+                        champion_played = lolData.data.name;
+                        //console.log("trovato campione", champion_played);
+                    }
+                }
+                catch{
+                    console.log("non preso campione");
+                }
+
                 this.emit(topic, payload);
                 break;
             default:
