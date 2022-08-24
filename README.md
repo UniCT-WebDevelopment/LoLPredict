@@ -8,12 +8,11 @@ The data taken into consideration to make the prediction are the Winrate of the 
 
 ### User Interface
 * Loading Screen: at first when starting the application a screen appears where the player is expected to create a lobby or do some other similar activity.
-* <img src="https://github.com/alaendro/lol_predict/blob/main/docs/lol_p1.PNG" width="200">
-  
+  <img src="https://github.com/alaendro/lol_predict/blob/main/docs/lol_p1.PNG" width="500">  
 * Main Screen: once the player creates a lobby he will have his data such as Nickname, Elo, Level and Result of the last games on the screen.
-  ![Main Screen](/docs/lol_p2.PNG | width=200)
+  <img src="https://github.com/alaendro/lol_predict/blob/main/docs/lol_p2.PNG" width="500">
 * Prediction Box: once the player enters the game the prediction will start and it will be shown in the box on the right.
-  ![Main Screen + Prediction](/docs/lol_p3.PNG | width=200)
+  <img src="https://github.com/alaendro/lol_predict/blob/main/docs/lol_p3.PNG" width="500">
   
 ### Prerequisites
 * Install NodeJS (latest LTS is recomended).
