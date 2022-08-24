@@ -8,7 +8,7 @@ The data taken into consideration to make the prediction are the Winrate of the 
 
 ### User Interface
 * Loading Screen: at first when starting the application a screen appears where the player is expected to create a lobby or do some other similar activity.
-  * ![Schermata Caricamento](https://discordapp.com/channels/@me/772523216589684786/1011985659969425488)
+  * ![Schermata Caricamento](/docs/lol_p1.PNG)
 * Main Screen: once the player creates a lobby he will have his data such as Nickname, Elo, Level and Result of the last games on the screen.
   * INSERIRE SCREENSHOT
 * Prediction Box: once the player enters the game the prediction will start and it will be shown in the box on the right.
